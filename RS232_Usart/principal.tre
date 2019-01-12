@@ -1,0 +1,35 @@
+ÀÄprincipal
+   ÀÄMAIN  0/44  Ram=2
+      ÃÄ??0??
+      ÃÄlcd_ini  0/64  Ram=2
+      ³  ÃÄ@delay_ms1  0/21  Ram=1
+      ³  ÃÄlcd_envia_nibble  0/39  Ram=1
+      ³  ÃÄ@delay_ms1  0/21  Ram=1
+      ³  ÃÄlcd_envia_nibble  0/39  Ram=1
+      ³  ÃÄ@const57  0/8  Ram=0
+      ³  ÃÄlcd_envia_byte  0/32  Ram=3
+      ³  ³  ÃÄlcd_envia_nibble  0/39  Ram=1
+      ³  ³  ÀÄlcd_envia_nibble  0/39  Ram=1
+      ³  ÀÄ@delay_ms1  0/21  Ram=1
+      ÃÄusart_inicializa  0/32  Ram=2
+      ÃÄlcd_pos_xy  0/18  Ram=4
+      ³  ÀÄlcd_envia_byte  0/32  Ram=3
+      ³     ÃÄlcd_envia_nibble  0/39  Ram=1
+      ³     ÀÄlcd_envia_nibble  0/39  Ram=1
+      ÃÄusart_recebe  0/7  Ram=0
+      ÃÄusart_transmite  0/9  Ram=1
+      ÀÄlcd_escreve  0/42  Ram=1
+         ÃÄlcd_envia_byte  0/32  Ram=3
+         ³  ÃÄlcd_envia_nibble  0/39  Ram=1
+         ³  ÀÄlcd_envia_nibble  0/39  Ram=1
+         ÃÄ@delay_ms1  0/21  Ram=1
+         ÃÄlcd_pos_xy  0/18  Ram=4
+         ³  ÀÄlcd_envia_byte  0/32  Ram=3
+         ³     ÃÄlcd_envia_nibble  0/39  Ram=1
+         ³     ÀÄlcd_envia_nibble  0/39  Ram=1
+         ÃÄlcd_envia_byte  0/32  Ram=3
+         ³  ÃÄlcd_envia_nibble  0/39  Ram=1
+         ³  ÀÄlcd_envia_nibble  0/39  Ram=1
+         ÀÄlcd_envia_byte  0/32  Ram=3
+            ÃÄlcd_envia_nibble  0/39  Ram=1
+            ÀÄlcd_envia_nibble  0/39  Ram=1

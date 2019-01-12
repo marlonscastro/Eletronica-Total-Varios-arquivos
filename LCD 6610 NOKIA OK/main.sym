@@ -1,0 +1,127 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+019.6   C1OUT
+019.7   C2OUT
+020     @SCRATCH
+021     @SCRATCH
+021     _RETURN_
+022     @SCRATCH
+023     @SCRATCH
+024-027 i
+028     color
+029-02F MAIN.Texto
+030     glcd_text57.x
+030     glcd_circle.x
+030     glcd_init.contrast
+030     MAIN.@SCRATCH1
+031     glcd_text57.y
+031     glcd_circle.y
+031     glcd_contrast.contrast
+031     glcd_cls.color
+031     glcd_init.@SCRATCH1
+032     glcd_circle.radius
+032-033 glcd_cls.i
+032-033 glcd_text57.textptr
+032     @delay_ms1.P1
+033     glcd_circle.fill
+034-035 glcd_cls.n
+034     glcd_circle.color
+034     glcd_text57.size
+035     glcd_text57.color
+035     glcd_circle.a
+036     glcd_circle.b
+036     glcd_text57.bkcolor
+037     glcd_circle.P
+037     glcd_text57.j
+038     glcd_text57.k
+038     glcd_circle.@SCRATCH1
+039     glcd_text57.l
+039     glcd_circle.@SCRATCH2
+03A     glcd_text57.m
+03A     glcd_circle.@SCRATCH3
+03B-03F glcd_text57.pixelData
+03B     glcd_circle.@SCRATCH4
+03C     glcd_line.x1
+03D     glcd_line.y1
+03E     glcd_line.x2
+03F     glcd_line.y2
+040     glcd_line.couleur
+040     glcd_text57.@SCRATCH1
+041-042 glcd_line.dy
+041     @MUL88.P1
+041     glcd_text57.@SCRATCH2
+042     @MUL88.P1
+043-044 glcd_line.dx
+045     glcd_line.addx
+046     glcd_line.addy
+047-048 glcd_line.P
+049-04A glcd_line.diff
+04B     glcd_line.i
+04C     glcd_pixel.x
+04C     glcd_line.@SCRATCH1
+04D     glcd_pixel.y
+04E     glcd_pixel.color
+04F     glcd_setarea.startx
+050     glcd_setarea.endx
+051     glcd_setarea.starty
+052     glcd_setarea.endy
+053     glcd_write_command.byteforglcd_command
+053     glcd_write_data.byteforglcd_data
+054     glcd_write_dorc.byteforglcd
+09B-09C @READ_PROGRAM_MEMORY8.P1
+FC6     SSPCON1
+FC6.5   SSPEN
+
+ROM Allocation:
+01FC  @delay_ms1
+0004  FONT
+00F8  FONT2
+03B1  glcd_init
+030A  glcd_write_command
+0344  glcd_write_data
+0211  glcd_write_dorc
+0391  glcd_cls
+037E  glcd_setarea
+045B  glcd_contrast
+047A  glcd_pixel
+048A  glcd_line
+0565  glcd_circle
+0540  @MUL88
+065C  glcd_text57
+0763  MAIN
+0763  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    H:\LCD 6610 NOKIA\
+
+Project Files:
+    main.c
+    C:\Program Files (x86)\PICC\devices\16F688.h
+    PCF8833.c
+    FONT.c
+
+Units:
+    H:\LCD 6610 NOKIA\main (main)
+
+Compiler Settings:
+    Processor:      PIC16F688
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.PJT
+    Call Tree:   main.tre
+    Statistics:  main.sta

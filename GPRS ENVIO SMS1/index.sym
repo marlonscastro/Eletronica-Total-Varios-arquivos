@@ -1,0 +1,116 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028-029 strtok.save
+02A     i
+02B     y
+02C     k
+02D-032 arg
+033.0   podeEntrar
+034     vet
+035-048 MAIN.temp
+049-05C MAIN.temp2
+05D-062 MAIN.arggps
+063     MAIN.a
+064     MAIN.b
+065     MAIN.chrgps
+066     MAIN.@SCRATCH1
+067     MAIN.@SCRATCH2
+068     MAIN.@SCRATCH3
+069     MAIN.@SCRATCH4
+06A     MAIN.@SCRATCH5
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+09B-09C @READ_PROGRAM_MEMORY8.P1
+0A0-0E5 MAIN.gps
+0EF     splitstr.num
+0EF     @GETCH_2_.@SCRATCH1
+120-121 splitstr.str
+120-121 retNum.str
+122-123 splitstr.strret
+122-123 retNum.strret
+123     @PUTCHAR_2_.P1
+124     retNum.a
+124     splitstr.chr
+125     retNum.b
+125     splitstr.i
+126     retNum.cont
+126     splitstr.j
+127     splitstr.cont
+127     retNum.@SCRATCH1
+128     splitstr.index
+128     retNum.@SCRATCH2
+129     retNum.@SCRATCH3
+129     splitstr.@SCRATCH1
+12A-12B strlen.s
+12A     splitstr.@SCRATCH2
+12B     splitstr.@SCRATCH3
+12C-12D strlen.sc
+12E     strlen.@SCRATCH1
+12F     serial_isr.@SCRATCH1
+130     serial_isr.@SCRATCH2
+
+ROM Allocation:
+0137  @PUTCHAR_2_
+01FE  @GETCH_2_
+015B  strlen
+00D9  retNum
+0031  @const171
+017B  splitstr
+00B3  serial_isr
+0226  MAIN
+003A  @const191
+0049  @const192
+0061  @const193
+0070  @const194
+007F  @const195
+008B  @const197
+0096  @const199
+0226  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    E:\SkyDrive\Eletronica\PROJETOS PIC CCS\GPRS ENVIO SMS1\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\16F628A.h
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+
+Units:
+    E:\SkyDrive\Eletronica\PROJETOS PIC CCS\GPRS ENVIO SMS1\index (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX8:       index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

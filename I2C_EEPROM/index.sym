@@ -1,0 +1,110 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     CurrentLine
+005     QuantChrLine
+006     OffsetX
+007     clear_screen.p
+007-008 Write_i2cEeprom.Addr
+007     @delay_us1.P1
+008     clear_screen.c
+009     Write_i2cEeprom.data
+00A     @delay_ms1.P1
+00A     Communication.Condition
+00A     Write_i2cEeprom.@SCRATCH1
+00B     Write_i2cEeprom.@SCRATCH2
+00C     SerialWrite.byte_data
+00D     SerialWrite.i
+00E     SerialWrite.@SCRATCH1
+00E     @PSTRINGC_84.@SCRATCH1
+00F     @PSTRINGC_84.@SCRATCH2
+010     HMF6598_Printchar.cvar
+011     HMF6598_Printchar.i
+012     newLine.@SCRATCH1
+012     HMF6598_Printchar.@SCRATCH1
+013     HMF6598_Write_data.byte_data
+013     HMF6598_Printchar.@SCRATCH2
+014     HMF6598_Gotoxy.x
+015     HMF6598_Gotoxy.y
+016     HMF6598_Gotoxy.OffsetChr
+017     HMF6598_Gotoxy.@SCRATCH1
+018     HMF6598_Write_command.byte_command
+018     HMF6598_Gotoxy.@SCRATCH2
+019     @DIV88.P1
+019     HMF6598_OutPort.byteDC
+01A     @DIV88.P1
+01B     @DIV88.@SCRATCH1
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1_LOW
+FBE     CCP_1
+FBF     CCP_1_HIGH
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @READ_PACKED_MEMORY.P1
+FE9-FEA @WRITE_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PROGRAM_MEMORY.P3
+FE9-FEA @READ_PROGRAM_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0256  @delay_ms1
+020E  @delay_us1
+0004  TEXT
+0114  TEXT2
+034A  HMF6598_InitLcd
+022E  HMF6598_OutPort
+024A  HMF6598_Write_command
+0302  HMF6598_Write_data
+040A  newLine
+031A  clear_screen
+02A6  HMF6598_Gotoxy
+027E  @DIV88
+0434  HMF6598_Printchar
+03C2  Communication
+0576  Write_i2cEeprom
+051E  SerialWrite
+0200  @const143
+04FC  @PSTRINGC_84
+05B4  MAIN
+05B4  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\ELETRONICA\PROJETOS PIC CCS\I2C_EEPROM\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\18F4550.h
+    HMF6598SYH-PY.c
+    i2cEEprom.c
+
+Units:
+    D:\ELETRONICA\PROJETOS PIC CCS\I2C_EEPROM\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

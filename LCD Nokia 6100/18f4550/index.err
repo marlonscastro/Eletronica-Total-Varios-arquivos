@@ -1,0 +1,47 @@
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\NOK6100.h" Line 9(2,5): Undefined identifier
+*** Error 48 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\NOK6100.h" Line 9(19,29): Expecting a (
+*** Error 48 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\NOK6100.h" Line 9(22,27): Expecting a (
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\NOK6100.h" Line 11(2,5): Undefined identifier
+*** Error 48 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\NOK6100.h" Line 11(19,27): Expecting a (
+*** Error 48 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\NOK6100.h" Line 11(22,27): Expecting a (
+*** Error 18 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\NOK6100.h" Line 325(10,21): File can not be opened
+    Not in project "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\bitmaps.h"
+    Not in "C:\Program Files\PICC\devices\bitmaps.h"
+    Not in "C:\Program Files\PICC\drivers\bitmaps.h"
+    Not in "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\bitmaps.h"
+*** Error 18 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\NOK6100.h" Line 326(10,19): File can not be opened
+    Not in project "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\icons.h"
+    Not in "C:\Program Files\PICC\devices\icons.h"
+    Not in "C:\Program Files\PICC\drivers\icons.h"
+    Not in "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\icons.h"
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 59(12,19): Undefined identifier   NLCD_CS
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 62(10,15): Undefined identifier   SSPEN
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 63(13,21): Undefined identifier   SSP2STAT
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 66(13,21): Undefined identifier   NLCD_SDO
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 67(4,13): Undefined identifier   NLCD_SCLK
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 69(4,13): Undefined identifier   NLCD_SCLK
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 70(13,21): Undefined identifier   NLCD_SDO
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 73(10,15): Undefined identifier   SSPEN
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 74(13,21): Undefined identifier   SSP2STAT
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 77(12,19): Undefined identifier   NLCD_CS
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 82(12,19): Undefined identifier   NLCD_CS
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 85(10,15): Undefined identifier   SSPEN
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 86(13,21): Undefined identifier   SSP2STAT
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 89(13,21): Undefined identifier   NLCD_SDO
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 90(4,13): Undefined identifier   NLCD_SCLK
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 92(4,13): Undefined identifier   NLCD_SCLK
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 93(13,21): Undefined identifier   NLCD_SDO
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 96(10,15): Undefined identifier   SSPEN
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 97(13,21): Undefined identifier   SSP2STAT
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 100(12,19): Undefined identifier   NLCD_CS
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 105(12,19): Undefined identifier   NLCD_CS
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 108(15,25): Undefined identifier   NLCD_RESET
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 110(15,25): Undefined identifier   NLCD_RESET
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 288(32,36): Undefined identifier   bmp0
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 292(32,36): Undefined identifier   bmp1
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 296(32,36): Undefined identifier   bmp2
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 320(33,42): Undefined identifier   PixelSet0
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 325(33,42): Undefined identifier   PixelSet1
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 330(33,42): Undefined identifier   PixelSet2
+*** Error 12 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\PCF8833.h" Line 335(33,42): Undefined identifier   PixelSet3
+      38 Errors,  0 Warnings.

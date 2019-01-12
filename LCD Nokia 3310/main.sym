@@ -1,0 +1,82 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020     char_row
+021     charsel
+022     charpos
+023     chardata
+024-025 ddram
+026     MAIN.k
+027     nokia_gotoxy.xnokia
+027     @delay_ms1.P1
+027     MAIN.@SCRATCH1
+028     nokia_printchar.cvar
+028     nokia_gotoxy.ynokia
+029     nokia_write_data.bytefornokia_data
+029     nokia_gotoxy.@SCRATCH1
+029     table_to_nokialcd.@SCRATCH1
+02A     nokia_write_command.bytefornokia_command
+02A     table_to_nokialcd.@SCRATCH2
+02B     nokia_write_dorc.bytefornokia
+02B     @MUL88.P1
+02C     @MUL88.P1
+02C     nokia_write_dorc.caa
+02D     nokia_write_dorc.@SCRATCH1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+026B  @delay_ms1
+0004  TABLE5
+00F8  TABLE6
+025D  nokia_init
+0292  nokia_clean_ddram
+0230  nokia_write_command
+024D  nokia_write_data
+0211  nokia_write_dorc
+0240  nokia_gotoxy
+02D2  nokia_printchar
+02D4  table_to_nokialcd
+02AD  @MUL88
+030E  MAIN
+01F2  @const117
+0200  @const118
+030E  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD Nokia 3310\
+
+Project Files:
+    main.c
+    C:\Program Files (x86)\PICC\devices\16F628A.h
+    drive3310.c
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD Nokia 3310\main (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Project:     main.PJT

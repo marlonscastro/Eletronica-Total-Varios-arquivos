@@ -1,0 +1,12 @@
+ÀÄmain
+   ÀÄMAIN  0/74  Ram=2
+      ÃÄ??0??
+      ÃÄinit_ext_eeprom  0/65  Ram=3
+      ÃÄ@const81  0/10  Ram=0
+      ÃÄ@PUTCHAR_1_  0/34  Ram=1
+      ÃÄwrite_ext_eeprom  0/78  Ram=6
+      ³  ÀÄ@delay_ms1  (Inline)  Ram=1
+      ÃÄread_ext_eeprom  0/67  Ram=6
+      ÃÄ@PUTCHAR_1_  0/34  Ram=1
+      ÃÄ@PUTCHAR_1_  0/34  Ram=1
+      ÀÄ@PUTCHAR_1_  0/34  Ram=1

@@ -1,0 +1,43 @@
+
+ROM used: 81 (4%)
+          81 (4%) including unused fragments
+
+          0 Average locations per line
+          7 Average locations per statement
+
+RAM used: 16 (7%) at main() level
+          16 (7%) worst case
+
+Stack used: 1 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   41    12 100  hd_motor.c
+  208     0   0  C:\Arquivos de programas\PICC\devices\16F628A.h
+----- -----
+  249    12 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     21  26   1             @delay_ms1
+0     56  69  10   455  6.3  main
+
+Program metrics:
+    Functions               1
+    Statements              12
+    Comments                74
+    Volume (V)              457
+    Difficilty (D)          6.1
+    Effort to implement (E) 2811
+    Time to implement (T)   3 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   3
+    Maintainability (MI)    133
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-007FF    77  1967  
+
+
+

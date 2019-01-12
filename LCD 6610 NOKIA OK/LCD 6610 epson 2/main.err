@@ -1,0 +1,7 @@
+*** Error 18 "C:\Documents and Settings\Administrador\Desktop\LCD 6610\lcddriver.c" Line 7(10,23): File can not be opened
+    Not in project "C:\Documents and Settings\Administrador\Desktop\LCD 6610\imagedata.c"
+    Not in "C:\Arquivos de programas\PICC\devices\imagedata.c"
+    Not in "C:\Arquivos de programas\PICC\drivers\imagedata.c"
+    Not in "C:\Documents and Settings\Administrador\Desktop\LCD 6610\imagedata.c"
+*** Error 12 "C:\Documents and Settings\Administrador\Desktop\LCD 6610\lcddriver.c" Line 461(12,16): Undefined identifier   Font
+      2 Errors,  0 Warnings.

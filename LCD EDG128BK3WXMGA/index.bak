@@ -1,0 +1,10 @@
+#include <16f876.h>
+#use delay(clock=16000000)
+#FUSES NOWDT, NOBROWNOUT, PUT, XT  
+#include "EDG128BK3WXMGA.c"
+
+void main(void){
+   PE12864_InitLcd();
+   printf(PE12864_Printchar, "Teste LCD 128x64");
+   while(true){}
+}

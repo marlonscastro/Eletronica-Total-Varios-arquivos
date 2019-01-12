@@ -1,0 +1,42 @@
+CCS PCH C Compiler, Version 4.114, 93460303               06-mai-13 15:39
+
+               Filename: D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD6100Nokia\18f4550\index.lst
+
+               ROM used: 26 bytes (0%)
+                         Largest free fragment is 32742
+               RAM used: 4 (0%) at main() level
+                         4 (0%) worst case
+               Stack:    0 locations
+
+*
+0000:  GOTO   0004
+.................... #include <18F4550.h> 
+.................... //////// Standard Header file for the PIC18F4550 device //////////////// 
+.................... #device PIC18F4550 
+.................... #list 
+....................  
+.................... #use delay(clock=48000000) 
+.................... #fuses HSPLL, PLL4, CPUDIV1, PUT, NOWDT, NOBROWNOUT, NOLVP 
+....................  
+.................... void main(void){ 
+0004:  CLRF   FF8
+0006:  BCF    FD0.7
+0008:  CLRF   FEA
+000A:  CLRF   FE9
+000C:  MOVF   FC1,W
+000E:  ANDLW  C0
+0010:  IORLW  0F
+0012:  MOVWF  FC1
+0014:  MOVLW  07
+0016:  MOVWF  FB4
+.................... } 
+0018:  SLEEP 
+
+Configuration Fuses:
+   Word  1: CE23   PLL4 CPUDIV1 USBDIV HSPLL FCMEN IESO
+   Word  2: 1E38   PUT NOBROWNOUT BORV20 VREGEN NOWDT WDT32768
+   Word  3: 8700   CCP2C1 PBADEN LPT1OSC MCLR
+   Word  4: 00A1   STVREN NOLVP ICPRT NOXINST NODEBUG
+   Word  5: C00F   NOPROTECT NOCPB NOCPD
+   Word  6: E00F   NOWRT NOWRTC NOWRTB NOWRTD
+   Word  7: 400F   NOEBTR NOEBTRB

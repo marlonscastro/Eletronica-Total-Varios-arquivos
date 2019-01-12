@@ -1,0 +1,800 @@
+CCS PCH C Compiler, Version 4.114, 93467473               09-jul-11 12:24
+
+               Filename: C:\Users\Marlon\Desktop\LCD6100Nokia\DRIVER\index.lst
+
+               ROM used: 662 bytes (2%)
+                         Largest free fragment is 32106
+               RAM used: 4 (0%) at main() level
+                         26 (1%) worst case
+               Stack:    4 locations
+
+*
+0000:  GOTO   025C
+.................... #include <18F4550.h> 
+.................... //////// Standard Header file for the PIC18F4550 device //////////////// 
+.................... #device PIC18F4550 
+.................... #list 
+....................  
+.................... #use delay(clock=48000000) 
+0004:  CLRF   FEA
+0006:  MOVLW  05
+0008:  MOVWF  FE9
+000A:  MOVF   FEF,W
+000C:  BZ    002A
+000E:  MOVLW  0F
+0010:  MOVWF  01
+0012:  CLRF   00
+0014:  DECFSZ 00,F
+0016:  BRA    0014
+0018:  DECFSZ 01,F
+001A:  BRA    0012
+001C:  MOVLW  8F
+001E:  MOVWF  00
+0020:  DECFSZ 00,F
+0022:  BRA    0020
+0024:  NOP   
+0026:  DECFSZ FEF,F
+0028:  BRA    000E
+002A:  RETLW  00
+.................... #fuses HSPLL, PLL4, CPUDIV1, PUT, NOWDT, NOBROWNOUT, NOLVP 
+.................... #include "driver6610Epson.c" 
+.................... // Driver teste para o LCD 128x64 (PowerTip PE12864LRF-004-H/* 
+.................... //#include "nokialcd_io.h" 
+.................... //#include "nokialcd_driver.h" 
+.................... #include "nokialcd_controlcodes.h" 
+.................... //******************************************************************** 
+.................... // 
+.................... //               EPSON Controller Definitions 
+.................... // 
+.................... //******************************************************************** 
+.................... #define EP_DISON       0xAF 
+.................... #define EP_DISOFF      0xAE 
+.................... #define EP_DISNOR      0xA6 
+.................... #define EP_DISINV      0xA7 
+.................... #define EP_SLPIN       0x95 
+.................... #define EP_SLPOUT      0x94 
+.................... #define EP_COMSCN      0xBB 
+.................... #define EP_DISCTL      0xCA 
+.................... #define EP_PASET       0x75 
+.................... #define EP_CASET       0x15 
+.................... #define EP_DATCTL      0xBC 
+.................... #define EP_RGBSET8     0xCE 
+.................... #define EP_RAMWR       0x5C 
+.................... #define EP_RAMRD       0x5D 
+.................... #define EP_PTLIN       0xA8 
+.................... #define EP_PTLOUT      0xA9 
+.................... #define EP_RMWIN       0xE0 
+.................... #define EP_RMWOUT      0xEE 
+.................... #define EP_ASCSET      0xAA 
+.................... #define EP_SCSTART     0xAB 
+.................... #define EP_OSCON       0xD1 
+.................... #define EP_OSCOFF      0xD2 
+.................... #define EP_PWRCTR      0x20 
+.................... #define EP_VOLCTR      0x81 
+.................... #define EP_VOLUP       0xD6 
+.................... #define EP_VOLDOWN     0xD7 
+.................... #define EP_TMPGRD      0x82 
+.................... #define EP_EPCTIN      0xCD 
+.................... #define EP_EPCOUT      0xCC 
+.................... #define EP_EPMWR       0xFC 
+.................... #define EP_EPMRD       0xFD 
+.................... #define EP_EPSRRD1     0x7C 
+.................... #define EP_EPSRRD2     0x7D 
+.................... #define EP_NOP         0x25 
+....................  
+.................... //******************************************************************** 
+.................... // 
+.................... //         PHILLIPS Controller Definitions 
+.................... // 
+.................... //******************************************************************** 
+.................... /*#define   PH_NOPP      0x00 
+.................... #define   PH_BSTRON      0x03 
+.................... #define PH_SLEEPIN     0x10 
+.................... #define   PH_SLEEPOUT   0x11 
+.................... #define   PH_NORON      0x13 
+.................... #define   PH_INVOFF      0x20 
+.................... #define PH_INVON         0x21 
+.................... #define   PH_SETCON      0x25 
+.................... #define PH_DISPOFF     0x28 
+.................... #define PH_DISPON      0x29 
+.................... #define PH_CASETP      0x2A 
+.................... #define PH_PASETP      0x2B 
+.................... #define PH_RAMWRP      0x2C 
+.................... #define PH_RGBSET       0x2D 
+.................... #define   PH_MADCTL      0x36 
+.................... #define   PH_COLMOD      0x3A 
+.................... #define PH_DISCTR      0xB9 
+.................... #define   PH_EC         0xC0*/ 
+....................  
+....................  
+.................... //******************************************************* 
+.................... //            Generic LCD commands 
+.................... //******************************************************* 
+....................    #define LCD_RAMWR 0x5C 
+....................    #define LCD_PASET 0x75 
+....................    #define LCD_CASET 0x15 
+....................    #define LCD_NOP   0x25 
+....................  
+....................  
+.................... static const char font5x8[] = { 
+.................... // taken from KS0108 library, http://en.radzio.dxp.pl 
+.................... // (c) Rados³aw Kwiecieñ, radek@dxp.pl 
+....................    0x00, 0x00, 0x00, 0x00, 0x00, // (spacja) 
+....................    0x00, 0x00, 0x5F, 0x00, 0x00, // ! 
+....................    0x00, 0x07, 0x00, 0x07, 0x00, // " 
+....................    0x14, 0x7F, 0x14, 0x7F, 0x14, // # 
+....................    0x24, 0x2A, 0x7F, 0x2A, 0x12, // $ 
+....................    0x23, 0x13, 0x08, 0x64, 0x62, // % 
+....................    0x36, 0x49, 0x55, 0x22, 0x50, // & 
+....................    0x00, 0x05, 0x03, 0x00, 0x00, // ' 
+....................    0x00, 0x1C, 0x22, 0x41, 0x00, // ( 
+....................    0x00, 0x41, 0x22, 0x1C, 0x00, // ) 
+....................    0x08, 0x2A, 0x1C, 0x2A, 0x08, // * 
+....................    0x08, 0x08, 0x3E, 0x08, 0x08, // + 
+....................    0x00, 0x50, 0x30, 0x00, 0x00, // , 
+....................    0x08, 0x08, 0x08, 0x08, 0x08, // - 
+....................    0x00, 0x30, 0x30, 0x00, 0x00, // . 
+....................    0x20, 0x10, 0x08, 0x04, 0x02, // / 
+....................    0x3E, 0x51, 0x49, 0x45, 0x3E, // 0 
+....................    0x00, 0x42, 0x7F, 0x40, 0x00, // 1 
+....................    0x42, 0x61, 0x51, 0x49, 0x46, // 2 
+....................    0x21, 0x41, 0x45, 0x4B, 0x31, // 3 
+....................    0x18, 0x14, 0x12, 0x7F, 0x10, // 4 
+....................    0x27, 0x45, 0x45, 0x45, 0x39, // 5 
+....................    0x3C, 0x4A, 0x49, 0x49, 0x30, // 6 
+....................    0x01, 0x71, 0x09, 0x05, 0x03, // 7 
+....................    0x36, 0x49, 0x49, 0x49, 0x36, // 8 
+....................    0x06, 0x49, 0x49, 0x29, 0x1E, // 9 
+....................    0x00, 0x36, 0x36, 0x00, 0x00, // : 
+....................    0x00, 0x56, 0x36, 0x00, 0x00, // ; 
+....................    0x00, 0x08, 0x14, 0x22, 0x41, // < 
+....................    0x14, 0x14, 0x14, 0x14, 0x14, // = 
+....................    0x41, 0x22, 0x14, 0x08, 0x00, // > 
+....................    0x02, 0x01, 0x51, 0x09, 0x06, // ? 
+....................    0x32, 0x49, 0x79, 0x41, 0x3E, // @ 
+....................    0x7E, 0x11, 0x11, 0x11, 0x7E, // A 
+....................    0x7F, 0x49, 0x49, 0x49, 0x36, // B 
+....................    0x3E, 0x41, 0x41, 0x41, 0x22, // C 
+....................    0x7F, 0x41, 0x41, 0x22, 0x1C, // D 
+....................    0x7F, 0x49, 0x49, 0x49, 0x41, // E 
+....................    0x7F, 0x09, 0x09, 0x01, 0x01, // F 
+....................    0x3E, 0x41, 0x41, 0x51, 0x32, // G 
+....................    0x7F, 0x08, 0x08, 0x08, 0x7F, // H 
+....................    0x00, 0x41, 0x7F, 0x41, 0x00, // I 
+....................    0x20, 0x40, 0x41, 0x3F, 0x01, // J 
+....................    0x7F, 0x08, 0x14, 0x22, 0x41, // K 
+....................    0x7F, 0x40, 0x40, 0x40, 0x40, // L 
+....................    0x7F, 0x02, 0x04, 0x02, 0x7F, // M 
+....................    0x7F, 0x04, 0x08, 0x10, 0x7F, // N 
+....................    0x3E, 0x41, 0x41, 0x41, 0x3E, // O 
+....................    0x7F, 0x09, 0x09, 0x09, 0x06, // P 
+....................    0x3E, 0x41, 0x51, 0x21, 0x5E, // Q 
+....................    0x7F, 0x09, 0x19, 0x29, 0x46, // R 
+....................    0x46, 0x49, 0x49, 0x49, 0x31, // S 
+....................    0x01, 0x01, 0x7F, 0x01, 0x01, // T 
+....................    0x3F, 0x40, 0x40, 0x40, 0x3F, // U 
+....................    0x1F, 0x20, 0x40, 0x20, 0x1F, // V 
+....................    0x7F, 0x20, 0x18, 0x20, 0x7F, // W 
+....................    0x63, 0x14, 0x08, 0x14, 0x63, // X 
+....................    0x03, 0x04, 0x78, 0x04, 0x03, // Y 
+....................    0x61, 0x51, 0x49, 0x45, 0x43, // Z 
+....................    0x00, 0x00, 0x7F, 0x41, 0x41, // [ 
+....................    0x02, 0x04, 0x08, 0x10, 0x20, // "\" 
+....................    0x41, 0x41, 0x7F, 0x00, 0x00, // ] 
+....................    0x04, 0x02, 0x01, 0x02, 0x04, // ^ 
+....................    0x40, 0x40, 0x40, 0x40, 0x40, // _ 
+....................    0x00, 0x01, 0x02, 0x04, 0x00, // ` 
+....................    0x20, 0x54, 0x54, 0x54, 0x78, // a 
+....................    0x7F, 0x48, 0x44, 0x44, 0x38, // b 
+....................    0x38, 0x44, 0x44, 0x44, 0x20, // c 
+....................    0x38, 0x44, 0x44, 0x48, 0x7F, // d 
+....................    0x38, 0x54, 0x54, 0x54, 0x18, // e 
+....................    0x08, 0x7E, 0x09, 0x01, 0x02, // f 
+....................    0x08, 0x14, 0x54, 0x54, 0x3C, // g 
+....................    0x7F, 0x08, 0x04, 0x04, 0x78, // h 
+....................    0x00, 0x44, 0x7D, 0x40, 0x00, // i 
+....................    0x20, 0x40, 0x44, 0x3D, 0x00, // j 
+....................    0x00, 0x7F, 0x10, 0x28, 0x44, // k 
+....................    0x00, 0x41, 0x7F, 0x40, 0x00, // l 
+....................    0x7C, 0x04, 0x18, 0x04, 0x78, // m 
+....................    0x7C, 0x08, 0x04, 0x04, 0x78, // n 
+....................    0x38, 0x44, 0x44, 0x44, 0x38, // o 
+....................    0x7C, 0x14, 0x14, 0x14, 0x08, // p 
+....................    0x08, 0x14, 0x14, 0x18, 0x7C, // q 
+....................    0x7C, 0x08, 0x04, 0x04, 0x08, // r 
+....................    0x48, 0x54, 0x54, 0x54, 0x20, // s 
+....................    0x04, 0x3F, 0x44, 0x40, 0x20, // t 
+....................    0x3C, 0x40, 0x40, 0x20, 0x7C, // u 
+....................    0x1C, 0x20, 0x40, 0x20, 0x1C, // v 
+....................    0x3C, 0x40, 0x30, 0x40, 0x3C, // w 
+....................    0x44, 0x28, 0x10, 0x28, 0x44, // x 
+....................    0x0C, 0x50, 0x50, 0x50, 0x3C, // y 
+....................    0x44, 0x64, 0x54, 0x4C, 0x44, // z 
+....................    0x00, 0x08, 0x36, 0x41, 0x00, // { 
+....................    0x00, 0x00, 0x7F, 0x00, 0x00, // | 
+....................    0x00, 0x41, 0x36, 0x08, 0x00, // } 
+....................    0x08, 0x08, 0x2A, 0x1C, 0x08, // -> 
+....................    0x08, 0x1C, 0x2A, 0x08, 0x08  // <- 
+.................... }; 
+....................  
+....................  
+.................... // 12-Bit Color Definitions 
+.................... #define WHITE   0xFFF 
+.................... #define BLACK   0x000 
+.................... #define RED     0xF00 
+.................... #define GREEN   0x0F0 
+.................... #define BLUE    0x00F 
+.................... #define CYAN    0x0FF 
+.................... #define MAGENTA 0xF0F 
+.................... #define YELLOW  0xFF0 
+.................... #define BROWN   0xB22 
+.................... #define ORANGE  0xFA0 
+.................... #define PINK    0xF6A 
+....................  
+.................... #define FONT_WIDTH 6 
+.................... #define FONT_HEIGHT 8 
+....................  
+.................... #define LCD_PORT   PORTD 
+.................... #define LCD_PIN    PIND 
+.................... #define LCD_DDR    DDRD 
+....................  
+.................... #define LCDRST     pin_A1//(1 << 4) 
+.................... #define LCDCS      pin_A0 
+.................... #define SPICLK     pin_B0//(1 << 1) 
+.................... #define SPIDATA    pin_B1//(1 << 2) 
+.................... //#define SPIMISO    pin_b3;//(1 << 3) 
+....................  
+.................... #define ON   1 
+.................... #define OFF  0 
+....................  
+.................... // FIXME - these depend upon the vendor 
+.................... // correction factor that modifies operation of LCDSetWindow 
+.................... #define LCD_Y_OFFSET 2 
+.................... // number of visible pixels 
+.................... #define LCD_WIDTH 130 
+.................... #define LCD_HEIGHT 130 
+....................  
+.................... void LCDInitController(); 
+.................... void LCDWriteWindow(int x1, int y1, int x2, int y2); 
+.................... void LCDWritePair(int c1, int c2); 
+.................... void LCDSetPixel(int color, int x, int y); 
+.................... void LCDFillBox(int color, int x1, int y1, int x2, int y2); 
+.................... void LCDClearScreen(int color); 
+.................... void drawChar(char c, int fg, int bg, int x, int y); 
+.................... void drawString(char *s, int fg, int bg, int x, int y); 
+.................... void LCDCommand(int data); 
+.................... void LCDData(int data); 
+.................... void Epson_InitLcd(void); 
+....................  
+.................... /*void LCDCommand(int data){ 
+....................    unsigned char dbyte, i, mask = 0x80; 
+....................  
+....................    data&=0xff; 
+....................    output_low(LCDCS);  //LCDCS 
+....................    if(data & 0x100) { 
+....................       output_high(SPIDATA); //SPIMOSI 
+....................    } else { 
+....................       output_low(SPIDATA);  //SPIMOSI 
+....................    } 
+....................    output_low(SPICLK);  //SPICLK 
+....................    dbyte = data; 
+....................    //bitsleep(); 
+....................    output_high(SPICLK); //SPICLK 
+....................   
+....................    for (i=8; i>0; i--) { 
+....................     output_low(SPICLK); 
+....................     if (dbyte&mask) 
+....................       output_high(SPIDATA); 
+....................     else 
+....................       output_low(SPIDATA); 
+....................       output_low(SPICLK);         //SPICLK       
+....................       mask>>=0x01; 
+....................       output_high(SPICLK);      //SPICLK     
+....................    }    
+....................    output_high(LCDCS); 
+....................    //bitsleep(); 
+.................... } 
+.................... void LCDData(int data){ 
+....................    unsigned char dbyte, i, mask = 0x80; 
+....................    data = 0x100 + ((data) & 0xff); 
+....................    output_low(LCDCS);  //LCDCS 
+....................    if(data & 0x100) { 
+....................       output_high(SPIDATA); //SPIMOSI 
+....................    } else { 
+....................       output_low(SPIDATA);  //SPIMOSI 
+....................    } 
+....................    output_low(SPICLK);  //SPICLK 
+....................    dbyte = data; 
+....................    //bitsleep(); 
+....................    output_high(SPICLK); //SPICLK 
+....................   
+....................    for (i=8; i>0; i--) { 
+....................     output_low(SPICLK); 
+....................     if (dbyte&mask) 
+....................       output_high(SPIDATA); 
+....................     else 
+....................       output_low(SPIDATA); 
+....................       output_low(SPICLK);         //SPICLK       
+....................       mask>>=0x01; 
+....................       output_high(SPICLK);      //SPICLK     
+....................    }    
+....................    output_high(LCDCS); 
+....................    //bitsleep(); 
+.................... }*/ 
+.................... void LCDData(int data) { 
+....................    int j; 
+....................    output_low(LCDCS); 
+*
+0068:  BCF    F92.0
+006A:  BCF    F89.0
+....................    //data = 0x100 + ((data) & 0xff); 
+....................     
+....................    output_low(SPICLK); 
+006C:  BCF    F93.0
+006E:  BCF    F8A.0
+....................    output_high(SPIDATA);    
+0070:  BCF    F93.1
+0072:  BSF    F8A.1
+....................    output_high(SPICLK);    
+0074:  BCF    F93.0
+0076:  BSF    F8A.0
+....................    for (j=8; j; j--) { 
+0078:  MOVLW  08
+007A:  MOVWF  1A
+007C:  MOVF   1A,F
+007E:  BZ    009E
+....................     output_low(SPICLK); 
+0080:  BCF    F93.0
+0082:  BCF    F8A.0
+....................     if (data&0x80) 
+0084:  BTFSS  19.7
+0086:  BRA    008E
+....................       output_high(SPIDATA); 
+0088:  BCF    F93.1
+008A:  BSF    F8A.1
+....................     else 
+008C:  BRA    0092
+....................       output_low(SPIDATA); 
+008E:  BCF    F93.1
+0090:  BCF    F8A.1
+....................       data<<=0x01; 
+0092:  BCF    FD8.0
+0094:  RLCF   19,F
+....................       output_high(SPICLK);      //SPICLK     
+0096:  BCF    F93.0
+0098:  BSF    F8A.0
+....................    }        
+009A:  DECF   1A,F
+009C:  BRA    007C
+....................    output_high(LCDCS); 
+009E:  BCF    F92.0
+00A0:  BSF    F89.0
+.................... } 
+00A2:  RETLW  00
+.................... void LCDCommand(int data) { 
+....................    int j; 
+....................    output_low(LCDCS); 
+*
+002C:  BCF    F92.0
+002E:  BCF    F89.0
+....................    //data&=0xff; 
+....................    
+....................    output_low(SPICLK); 
+0030:  BCF    F93.0
+0032:  BCF    F8A.0
+....................    output_low(SPIDATA);    
+0034:  BCF    F93.1
+0036:  BCF    F8A.1
+....................    output_high(SPICLK);    
+0038:  BCF    F93.0
+003A:  BSF    F8A.0
+....................    for (j=8; j; j--) { 
+003C:  MOVLW  08
+003E:  MOVWF  19
+0040:  MOVF   19,F
+0042:  BZ    0062
+....................     output_low(SPICLK); 
+0044:  BCF    F93.0
+0046:  BCF    F8A.0
+....................     if (data&0x80) 
+0048:  BTFSS  18.7
+004A:  BRA    0052
+....................       output_high(SPIDATA); 
+004C:  BCF    F93.1
+004E:  BSF    F8A.1
+....................     else 
+0050:  BRA    0056
+....................       output_low(SPIDATA); 
+0052:  BCF    F93.1
+0054:  BCF    F8A.1
+....................       data<<=0x01; 
+0056:  BCF    FD8.0
+0058:  RLCF   18,F
+....................       output_high(SPICLK);      //SPICLK     
+005A:  BCF    F93.0
+005C:  BSF    F8A.0
+....................    }        
+005E:  DECF   19,F
+0060:  BRA    0040
+....................    output_high(LCDCS); 
+0062:  BCF    F92.0
+0064:  BSF    F89.0
+.................... } 
+0066:  RETLW  00
+....................  
+.................... void    Epson_InitLcd(void){ 
+....................    //LCD_DDR |= (SPICLK | SPIMOSI | LCDCS | LCDRST); 
+....................   // LCD_DDR &= ~SPIMISO; 
+....................     
+....................    output_low(SPICLK);   //SPICLK 
+*
+00A4:  BCF    F93.0
+00A6:  BCF    F8A.0
+....................    output_low(SPIDATA);  //SPIMOSI 
+00A8:  BCF    F93.1
+00AA:  BCF    F8A.1
+....................    output_high(LCDCS);   //LCDCS 
+00AC:  BCF    F92.0
+00AE:  BSF    F89.0
+....................    output_low(LCDRST);   //LCDRST 
+00B0:  BCF    F92.1
+00B2:  BCF    F89.1
+....................  
+....................    delay_ms(5); 
+00B4:  MOVLW  05
+00B6:  MOVWF  05
+00B8:  RCALL  0004
+....................    output_high(LCDRST); 
+00BA:  BCF    F92.1
+00BC:  BSF    F89.1
+....................    output_high(SPICLK); 
+00BE:  BCF    F93.0
+00C0:  BSF    F8A.0
+....................    output_high(SPIDATA);    
+00C2:  BCF    F93.1
+00C4:  BSF    F8A.1
+....................  
+....................    delay_ms(5);   
+00C6:  MOVLW  05
+00C8:  MOVWF  05
+00CA:  RCALL  0004
+....................  
+....................    LCDCommand(EP_DISCTL);     // display control(EPSON) 
+00CC:  MOVLW  CA
+00CE:  MOVWF  18
+00D0:  RCALL  002C
+....................    LCDData(0x0C);         // 12 = 1100 - CL dividing ratio [don't divide] switching period 8H (default) 
+00D2:  MOVLW  0C
+00D4:  MOVWF  19
+00D6:  RCALL  0068
+....................    LCDData(0x20);         // 130 line display 
+00D8:  MOVLW  20
+00DA:  MOVWF  19
+00DC:  RCALL  0068
+....................    LCDData(0x00);         // no inversely highlighted lines 
+00DE:  CLRF   19
+00E0:  RCALL  0068
+....................    LCDData(0x01);         // dispersion 
+00E2:  MOVLW  01
+00E4:  MOVWF  19
+00E6:  RCALL  0068
+....................     
+....................    LCDCommand(EP_COMSCN);     // common scanning direction(EPSON) 
+00E8:  MOVLW  BB
+00EA:  MOVWF  18
+00EC:  RCALL  002C
+....................    LCDData(0x01); 
+00EE:  MOVLW  01
+00F0:  MOVWF  19
+00F2:  RCALL  0068
+....................      
+....................    LCDCommand(EP_OSCON);     // internal oscillator ON(EPSON) 
+00F4:  MOVLW  D1
+00F6:  MOVWF  18
+00F8:  RCALL  002C
+....................     
+....................    LCDCommand(EP_SLPOUT);     // sleep out(EPSON) 
+00FA:  MOVLW  94
+00FC:  MOVWF  18
+00FE:  RCALL  002C
+....................  
+....................    LCDCommand(EP_PWRCTR);    // power ctrl(EPSON) 
+0100:  MOVLW  20
+0102:  MOVWF  18
+0104:  RCALL  002C
+....................    LCDData(0x0F);          //everything on, no external reference resistors 
+0106:  MOVLW  0F
+0108:  MOVWF  19
+010A:  RCALL  0068
+....................    LCDCommand(EP_DISINV);     // invert display mode(EPSON) 
+010C:  MOVLW  A7
+010E:  MOVWF  18
+0110:  RCALL  002C
+....................  
+....................    LCDCommand(EP_DATCTL);     // data control(EPSON) 
+0112:  MOVLW  BC
+0114:  MOVWF  18
+0116:  RCALL  002C
+....................    LCDData(0x00);         // normal column addressing 
+0118:  CLRF   19
+011A:  RCALL  0068
+....................    LCDData(0x00);         // normal RGB arrangement 
+011C:  CLRF   19
+011E:  RCALL  0068
+....................    LCDData(0x02);         // 16-bit Grayscale Type A 
+0120:  MOVLW  02
+0122:  MOVWF  19
+0124:  RCALL  0068
+....................     
+....................    LCDCommand(EP_VOLCTR);     // electronic volume, this is the contrast/brightness(EPSON) 
+0126:  MOVLW  81
+0128:  MOVWF  18
+012A:  RCALL  002C
+....................    LCDData(0x28);         // volume (contrast) setting - fine tuning, original 
+012C:  MOVLW  28
+012E:  MOVWF  19
+0130:  RCALL  0068
+....................    LCDData(0x03);         // internal resistor ratio - coarse adjustment 
+0132:  MOVLW  03
+0134:  MOVWF  19
+0136:  RCALL  0068
+....................  
+....................    LCDCommand(EP_NOP);     // nop(EPSON) 
+0138:  MOVLW  25
+013A:  MOVWF  18
+013C:  RCALL  002C
+....................  
+....................    //for(j=0; j<30000; j++) {} 
+....................    delay_ms(1); 
+013E:  MOVLW  01
+0140:  MOVWF  05
+0142:  RCALL  0004
+....................  
+....................    LCDCommand(EP_DISON);      // display on(EPSON) 
+0144:  MOVLW  AF
+0146:  MOVWF  18
+0148:  RCALL  002C
+....................     
+.................... } 
+014A:  GOTO   0272 (RETURN)
+....................  
+.................... /*void drawChar(char c, int fg, int bg, int x, int y) { 
+....................    int idx = c-' '; 
+....................    if(idx < 0 || idx >= 96) idx = 0; 
+....................    const char *p = font5x8 + idx*5; 
+....................  
+....................    LCDWriteWindow(x, y, x+5, y+8); 
+....................    for(int j=0; j<8; j++) { 
+....................       char mask = (1<<j); 
+....................       for(int i=0; i<3; i++) { 
+.................... //#if FONT_AVR_PGMSPACE 
+.................... //         char b1 = pgm_read_byte(p + i*2) & mask; 
+....................  //        char b2 = (i==2) ? 0 : pgm_read_byte(p + i*2+1) & mask; 
+.................... //#else 
+....................          char b1 = p[i*2] & mask; 
+....................          char b2 = (i==2) ? 0 : p[i*2+1] & mask; 
+.................... //#endif 
+....................          LCDWritePair(b1?fg:bg, b2?fg:bg); 
+....................       } 
+....................    } 
+.................... } 
+.................... void drawString(char *s, int fg, int bg, int x, int y) { 
+....................    while(*s) { 
+....................       drawChar(*s, fg, bg, x, y); 
+....................       x += 6; 
+....................       s++; 
+....................    } 
+.................... } 
+.................... */ 
+....................  
+.................... static inline void LCDSetWindow(int x1, int y1, int x2, int y2) { 
+....................    LCDCommand(LCD_PASET);   // page start/end ram 
+*
+015E:  MOVLW  75
+0160:  MOVWF  18
+0162:  RCALL  002C
+....................    LCDData(y1 + LCD_Y_OFFSET); 
+0164:  MOVLW  02
+0166:  ADDWF  15,W
+0168:  MOVWF  18
+016A:  MOVWF  19
+016C:  RCALL  0068
+....................    LCDData(y2 + LCD_Y_OFFSET); 
+016E:  MOVLW  02
+0170:  ADDWF  17,W
+0172:  MOVWF  18
+0174:  MOVWF  19
+0176:  RCALL  0068
+....................  
+....................    LCDCommand(LCD_CASET);   // column start/end ram 
+0178:  MOVLW  15
+017A:  MOVWF  18
+017C:  RCALL  002C
+....................    LCDData(x1); 
+017E:  MOVFF  14,19
+0182:  RCALL  0068
+....................    LCDData(x2); 
+0184:  MOVFF  16,19
+0188:  RCALL  0068
+.................... } 
+....................  
+.................... static inline void LCDBeginWrite() { 
+....................    LCDCommand(LCD_RAMWR); 
+018A:  MOVLW  5C
+018C:  MOVWF  18
+018E:  RCALL  002C
+.................... } 
+....................  
+.................... void LCDWriteWindow(int x1, int y1, int x2, int y2) { 
+....................    LCDSetWindow(x1, y1, x2, y2); 
+*
+014E:  MOVFF  10,14
+0152:  MOVFF  11,15
+0156:  MOVFF  12,16
+015A:  MOVFF  13,17
+....................    LCDBeginWrite(); 
+.................... } 
+*
+0190:  RETLW  00
+....................  
+.................... void LCDWritePair(int c1, int c2) { 
+....................    LCDData(c1 >> 4); 
+*
+0212:  SWAPF  08,W
+0214:  MOVWF  0A
+0216:  MOVLW  0F
+0218:  ANDWF  0A,F
+021A:  MOVFF  0A,19
+021E:  RCALL  0068
+....................    LCDData((c1<<4) | ((c2>>8) & 0x0f)); 
+0220:  SWAPF  08,W
+0222:  MOVWF  0A
+0224:  MOVLW  F0
+0226:  ANDWF  0A,F
+0228:  MOVLW  00
+022A:  ANDLW  0F
+022C:  IORWF  0A,F
+022E:  MOVFF  0A,19
+0232:  RCALL  0068
+....................    LCDData(c2); 
+0234:  MOVFF  09,19
+0238:  RCALL  0068
+.................... } 
+023A:  GOTO   0258 (RETURN)
+....................  
+.................... void LCDSetPixel(int color, int x, int y) { 
+....................    LCDWriteWindow(x, y, x, y); 
+023E:  MOVFF  06,10
+0242:  MOVFF  07,11
+0246:  MOVFF  06,12
+024A:  MOVFF  07,13
+024E:  RCALL  014E
+....................    LCDWritePair(0, color); 
+0250:  CLRF   08
+0252:  MOVFF  05,09
+0256:  BRA    0212
+.................... } 
+0258:  GOTO   0292 (RETURN)
+....................  
+.................... void LCDFillBox(int color, int x1, int y1, int x2, int y2) { 
+*
+0192:  SWAPF  06,W
+0194:  MOVWF  0B
+0196:  MOVLW  0F
+0198:  ANDWF  0B,F
+019A:  SWAPF  06,W
+019C:  MOVWF  10
+019E:  MOVLW  F0
+01A0:  ANDWF  10,F
+01A2:  MOVLW  00
+01A4:  ANDLW  0F
+01A6:  IORWF  10,W
+01A8:  MOVWF  0C
+01AA:  MOVFF  06,0D
+01AE:  MOVF   07,W
+01B0:  SUBWF  09,W
+01B2:  ADDLW  01
+01B4:  MOVWF  10
+01B6:  MOVF   08,W
+01B8:  SUBWF  0A,W
+01BA:  ADDLW  01
+01BC:  MULWF  10
+01BE:  MOVF   FF3,W
+01C0:  ADDLW  01
+01C2:  MOVWF  00
+01C4:  BCF    FD8.0
+01C6:  RRCF   00,W
+01C8:  MOVWF  0F
+....................    int c1 = color >> 4; 
+....................    int c2 = (color<<4) | ((color>>8) & 0x0f); 
+....................    int c3 = color; 
+....................    int i; 
+....................    int num_words = ((x2-x1+1) * (y2-y1+1) + 1) / 2; 
+....................  
+....................    LCDWriteWindow(x1, y1, x2, y2); 
+01CA:  MOVFF  07,10
+01CE:  MOVFF  08,11
+01D2:  MOVFF  09,12
+01D6:  MOVFF  0A,13
+01DA:  RCALL  014E
+....................    for(i=0; i<num_words; i++) { 
+01DC:  CLRF   0E
+01DE:  MOVF   0F,W
+01E0:  SUBWF  0E,W
+01E2:  BC    01FA
+....................       LCDData(c1); 
+01E4:  MOVFF  0B,19
+01E8:  RCALL  0068
+....................       LCDData(c2); 
+01EA:  MOVFF  0C,19
+01EE:  RCALL  0068
+....................       LCDData(c3); 
+01F0:  MOVFF  0D,19
+01F4:  RCALL  0068
+....................    } 
+01F6:  INCF   0E,F
+01F8:  BRA    01DE
+.................... } 
+01FA:  GOTO   020E (RETURN)
+....................  
+.................... void LCDClearScreen(int color) { 
+....................    LCDFillBox(color, 0, 0, LCD_WIDTH-1, LCD_HEIGHT-1); 
+01FE:  MOVFF  05,06
+0202:  CLRF   07
+0204:  CLRF   08
+0206:  MOVLW  81
+0208:  MOVWF  09
+020A:  MOVWF  0A
+020C:  BRA    0192
+.................... } 
+020E:  GOTO   0278 (RETURN)
+....................  
+....................  
+....................  
+.................... void main(void){ 
+*
+025C:  CLRF   FF8
+025E:  BCF    FD0.7
+0260:  CLRF   FEA
+0262:  CLRF   FE9
+0264:  MOVF   FC1,W
+0266:  ANDLW  C0
+0268:  IORLW  0F
+026A:  MOVWF  FC1
+026C:  MOVLW  07
+026E:  MOVWF  FB4
+....................    Epson_InitLcd(); 
+0270:  BRA    00A4
+....................    LCDClearScreen(124); 
+0272:  MOVLW  7C
+0274:  MOVWF  05
+0276:  BRA    01FE
+....................    LCDWriteWindow(10, 10, 60, 60);    
+0278:  MOVLW  0A
+027A:  MOVWF  10
+027C:  MOVWF  11
+027E:  MOVLW  3C
+0280:  MOVWF  12
+0282:  MOVWF  13
+0284:  RCALL  014E
+....................    LCDSetPixel(50, 60,60); 
+0286:  MOVLW  32
+0288:  MOVWF  05
+028A:  MOVLW  3C
+028C:  MOVWF  06
+028E:  MOVWF  07
+0290:  BRA    023E
+....................    //printf(Epson_Printchar, "128x64 ST7565SG"); 
+....................    while(true){} 
+0292:  BRA    0292
+.................... } 
+0294:  SLEEP 
+
+Configuration Fuses:
+   Word  1: CE23   PLL4 CPUDIV1 USBDIV HSPLL FCMEN IESO
+   Word  2: 1E38   PUT NOBROWNOUT BORV20 VREGEN NOWDT WDT32768
+   Word  3: 8700   CCP2C1 PBADEN LPT1OSC MCLR
+   Word  4: 00A1   STVREN NOLVP ICPRT NOXINST NODEBUG
+   Word  5: C00F   NOPROTECT NOCPB NOCPD
+   Word  6: E00F   NOWRT NOWRTC NOWRTB NOWRTD
+   Word  7: 400F   NOEBTR NOEBTRB

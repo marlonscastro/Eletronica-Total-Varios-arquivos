@@ -1,0 +1,88 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020     CurrentLine
+021     QuantChrLine
+022     OffsetX
+023     clear_screen.p
+023     @delay_ms1.P1
+023     MAIN.@SCRATCH1
+024     PE12864_Printchar.cvar
+024     clear_screen.c
+025     PE12864_Printchar.i
+026     newLine.@SCRATCH1
+026     PE12864_Printchar.@SCRATCH1
+027     PE12864_Write_data.byte_data
+027     PE12864_Printchar.@SCRATCH2
+028     PE12864_Gotoxy.x
+028     @MUL88.P1
+029     @MUL88.P1
+029     PE12864_Gotoxy.y
+02A     PE12864_Gotoxy.OffsetChr
+02B     PE12864_Gotoxy.@SCRATCH1
+02C     PE12864_Write_command.byte_command
+02C     PE12864_Gotoxy.@SCRATCH2
+02D     @DIV88.P1
+02D     PE12864_SerialOut.byteDC
+02E     PE12864_SerialOut.i
+02E     @DIV88.P1
+02F     PE12864_SerialOut.@SCRATCH1
+02F     @DIV88.@SCRATCH1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+0289  @delay_ms1
+0004  TEXT
+010A  TEXT2
+027F  PE12864_InitLcd
+01FF  PE12864_SerialOut
+0226  PE12864_Write_command
+0271  PE12864_Write_data
+030D  newLine
+02BF  clear_screen
+0243  PE12864_Gotoxy
+022E  @DIV88
+0309  PE12864_Printchar
+02E4  @MUL88
+0376  MAIN
+01EA  @const126
+0376  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\16F628A LCD PE12864LRF-004-H\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\16f628A.h
+    DriverPE12864LRF.c
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\16F628A LCD PE12864LRF-004-H\index (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX8:       index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

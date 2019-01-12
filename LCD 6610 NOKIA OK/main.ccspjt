@@ -1,0 +1,61 @@
+[PROJECT]
+Target=main.hex
+Processor_Text=PIC16F688
+CCSVerions=5.010
+Compiler=PCM
+CCSVersion=5.010
+Development_Mode=
+ToolSuite=CCS
+[Target Data]
+FileList=main.c
+BuildTool=C-COMPILER
+OptionString=+FM
+AdditionalOptionString=
+BuildRequired=1
+[Directories]
+Include=C:\Arquivos de programas\PICC\devices\;C:\Arquivos de programas\PICC\drivers\
+Library=
+LinkerScript=
+[F:\LCD 6610 NOKIA\main]
+Type=4
+[mru-list]
+1=main.c
+[Opened Files]
+1=main.c
+2=NOK6100.h
+3=PCF8833.h
+4=
+5=
+[main.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+[Units]
+Count=1
+1=main
+Link=0
+[defines]
+enabled=0
+chip=1
+D1=
+V1=
+[fileformats]
+forcecoff=1
+debug=4
+error=2
+object=0
+list=0
+scratch=0
+sta=1
+tre=1
+allerrors=1
+allwarnings=1
+stayupne=3
+stayupoe=0
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+[CompilerVersion]
+Fixed=

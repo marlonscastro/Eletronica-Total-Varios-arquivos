@@ -1,0 +1,249 @@
+CCS PCM C Compiler, Version 4.114, 93514889               16-fev-15 22:45
+
+               Filename: D:\SkyDrive\Eletronica\PROJETOS PIC CCS\TERMAL PRINTER\main.lst
+
+               ROM used: 143 words (2%)
+                         Largest free fragment is 2048
+               RAM used: 31 (8%) at main() level
+                         32 (9%) worst case
+               Stack:    2 worst case (1 in main + 1 for interrupts)
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   055
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  21
+0008:  MOVF   0A,W
+0009:  MOVWF  20
+000A:  CLRF   0A
+000B:  MOVF   04,W
+000C:  MOVWF  22
+000D:  MOVF   77,W
+000E:  MOVWF  23
+000F:  MOVF   78,W
+0010:  MOVWF  24
+0011:  MOVF   79,W
+0012:  MOVWF  25
+0013:  MOVF   7A,W
+0014:  MOVWF  26
+0015:  BCF    03.7
+0016:  BCF    03.5
+0017:  BTFSS  0B.5
+0018:  GOTO   01B
+0019:  BTFSC  0B.2
+001A:  GOTO   02C
+001B:  MOVF   22,W
+001C:  MOVWF  04
+001D:  MOVF   23,W
+001E:  MOVWF  77
+001F:  MOVF   24,W
+0020:  MOVWF  78
+0021:  MOVF   25,W
+0022:  MOVWF  79
+0023:  MOVF   26,W
+0024:  MOVWF  7A
+0025:  MOVF   20,W
+0026:  MOVWF  0A
+0027:  SWAPF  21,W
+0028:  MOVWF  03
+0029:  SWAPF  7F,F
+002A:  SWAPF  7F,W
+002B:  RETFIE
+002C:  BCF    0A.3
+002D:  BCF    0A.4
+002E:  GOTO   02F
+.................... #include <16F876.h> 
+.................... //////// Standard Header file for the PIC16F876 device //////////////// 
+.................... #device PIC16F876 
+.................... #list 
+....................  
+.................... #FUSES NOWDT, HS, NOPUT, NOBROWNOUT, NOLVP, NOCPD, NOWRT, NODEBUG, NOPROTECT 
+.................... #use delay(clock=16000000) 
+*
+003E:  MOVLW  3A
+003F:  MOVWF  04
+0040:  BCF    03.7
+0041:  MOVF   00,W
+0042:  BTFSC  03.2
+0043:  GOTO   052
+0044:  MOVLW  05
+0045:  MOVWF  78
+0046:  CLRF   77
+0047:  DECFSZ 77,F
+0048:  GOTO   047
+0049:  DECFSZ 78,F
+004A:  GOTO   046
+004B:  MOVLW  2E
+004C:  MOVWF  77
+004D:  DECFSZ 77,F
+004E:  GOTO   04D
+004F:  GOTO   050
+0050:  DECFSZ 00,F
+0051:  GOTO   044
+0052:  BCF    0A.3
+0053:  BCF    0A.4
+0054:  GOTO   08B (RETURN)
+.................... //#USE SPI (MASTER, CLK=PIN_B1, DI=PIN_C7, DO=PIN_B0, BAUD = 1000000, MODE=0, BITS=8, STREAM=SPI_1, MSB_FIRST) 
+....................  
+.................... #define LED_STATUS   pin_b7 
+....................  
+.................... /* 
+.................... #define STB_6        pin_b2 
+.................... #define LATCH        pin_b3 
+.................... #define CLK          pin_b1 
+.................... #define DATA         pin_b0*/ 
+....................  
+.................... #define MTA          pin_b3 
+.................... #define MTB          pin_b2 
+.................... #define MT_B         pin_b1 
+.................... #define MT_A         pin_b0 
+....................  
+.................... int tempo = 0; 
+....................  
+.................... #int_TIMER0 
+.................... void  TIMER0_isr(){ 
+....................    tempo++; 
+*
+002F:  INCF   27,F
+....................    if(tempo == 70){   //  46 * 21,8ms =~ 1002,8ms ou 1,002 segundos  
+0030:  MOVF   27,W
+0031:  SUBLW  46
+0032:  BTFSS  03.2
+0033:  GOTO   03A
+....................       tempo=0; 
+0034:  CLRF   27
+....................       output_toggle(LED_STATUS); 
+0035:  BSF    03.5
+0036:  BCF    06.7
+0037:  MOVLW  80
+0038:  BCF    03.5
+0039:  XORWF  06,F
+....................    } 
+....................    //output_toggle(pin_c4);    
+.................... } 
+003A:  BCF    0B.2
+003B:  BCF    0A.3
+003C:  BCF    0A.4
+003D:  GOTO   01B
+....................    char HalfStep6845[] = {8, 0b0111, 0b0110, 0b1111, 0b1001, 0b1011, 0b0010, 0b0011, 0b0001};   
+*
+0060:  MOVLW  08
+0061:  BCF    03.5
+0062:  MOVWF  28
+0063:  MOVLW  07
+0064:  MOVWF  29
+0065:  MOVLW  06
+0066:  MOVWF  2A
+0067:  MOVLW  0F
+0068:  MOVWF  2B
+0069:  MOVLW  09
+006A:  MOVWF  2C
+006B:  MOVLW  0B
+006C:  MOVWF  2D
+006D:  MOVLW  02
+006E:  MOVWF  2E
+006F:  MOVLW  03
+0070:  MOVWF  2F
+0071:  MOVLW  01
+0072:  MOVWF  30
+....................    unsigned int delay = 0; 
+....................    char *type; 
+....................    #define LEFT 0 
+....................    #define RIGHT 1    
+....................    void Stepper_setSequence(char *type_){ 
+....................       type = type_; 
+....................    } 
+.................... void main(void){ 
+*
+0055:  CLRF   04
+0056:  BCF    03.7
+0057:  MOVLW  1F
+0058:  ANDWF  03,F
+0059:  CLRF   27
+005A:  CLRF   31
+005B:  BSF    03.5
+005C:  BSF    1F.0
+005D:  BSF    1F.1
+005E:  BSF    1F.2
+005F:  BCF    1F.3
+*
+0073:  CLRF   38
+0074:  CLRF   37
+0075:  CLRF   36
+0076:  MOVLW  0F
+0077:  MOVWF  35
+....................    int i; 
+....................    int32 dado = 0x0000000f; 
+....................    setup_timer_0(RTCC_INTERNAL|RTCC_DIV_32|RTCC_8_bit);  //RTCC_DIV_256    //21.8 ms overflow 
+0078:  BSF    03.5
+0079:  MOVF   01,W
+007A:  ANDLW  C0
+007B:  IORLW  04
+007C:  MOVWF  01
+....................    setup_adc_ports(NO_ANALOGS); 
+007D:  BSF    1F.0
+007E:  BSF    1F.1
+007F:  BSF    1F.2
+0080:  BCF    1F.3
+....................    setup_adc(ADC_OFF); 
+0081:  BCF    03.5
+0082:  BCF    1F.0
+....................    enable_interrupts(INT_TIMER0); 
+0083:  BSF    0B.5
+....................    enable_interrupts(GLOBAL);    
+0084:  MOVLW  C0
+0085:  IORWF  0B,F
+....................  
+....................    delay_ms(2000); 
+0086:  MOVLW  08
+0087:  MOVWF  39
+0088:  MOVLW  FA
+0089:  MOVWF  3A
+008A:  GOTO   03E
+008B:  DECFSZ 39,F
+008C:  GOTO   088
+....................   /* for(i=0;i<8;i++){ 
+....................    // INICIALIZAÇÃO  
+....................    output_high(LATCH);     
+....................    output_low(STB_6);       
+....................  
+....................  //  spi_xfer(SPI_1, 0xf1); 
+....................   
+....................    for (i=32; i>0; i--) { 
+....................     output_low(CLK); 
+....................     if ((dado&0x80)==0) 
+....................       output_low(DATA); 
+....................     else 
+....................       output_high(DATA); 
+....................     output_high(CLK); 
+....................     dado<<=0x01; 
+....................    } 
+....................    output_high(STB_6);  
+....................    output_low(LATCH); 
+....................    delay_ms(1); 
+....................    output_high(LATCH);     
+....................    output_low(STB_6);      
+....................     
+....................    //for(i=0;i<20;i++) 
+....................       oneStep(); 
+....................       dado <<= 0x01; 
+....................       delay_ms(100); 
+....................       }*/ 
+....................        
+....................    //Stepper_setSequence(HalfStep6845); 
+....................    while(true){ 
+....................       //Stepper_Step(RIGHT); 
+....................    } 
+008D:  GOTO   08D
+.................... } 
+....................  
+.................... //--------------------------------------------------------------------------------- 
+....................  
+008E:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3D3A   HS NOWDT NOPUT NOBROWNOUT NOLVP NOCPD NOWRT NODEBUG NOPROTECT

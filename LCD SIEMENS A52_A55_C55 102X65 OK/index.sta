@@ -1,0 +1,48 @@
+
+ROM used: 378 (1%)
+          378 (1%) including unused fragments
+
+          1 Average locations per line
+          9 Average locations per statement
+
+RAM used: 4 (0%) at main() level
+          10 (0%) worst case
+
+Stack used: 3 worst case (out of 31 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   23    13  30  index.c
+  461     0   0  C:\Arquivos de programas\PICC\devices\18F4550.h
+  175    30  70  driverA52.c
+----- -----
+  659    43 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     40   5   1             @delay_ms1
+0     54   7   2   178  3.6  Lcd_Clear
+0    100  13   1   386  1.9  Lcd_Init
+0     62   8   3   331  5.6  Lcd_Write
+0     26   3   3   104  2.3  Gotoxy
+0     92  12   0   288  2.3  MAIN
+
+Program metrics:
+    Functions               5
+    Statements              43
+    Comments                214
+    Volume (V)              1854
+    Difficilty (D)          15.7
+    Effort to implement (E) 29095
+    Time to implement (T)   27 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   3
+    Maintainability (MI)    73
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00002     4  0  
+00004-07FFE   374  32390  
+
+
+

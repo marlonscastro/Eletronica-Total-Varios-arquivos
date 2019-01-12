@@ -1,0 +1,79 @@
+CCS PCB C Compiler, Version 4.074, 10898               11-mar-10 15:25
+
+               Filename: pisca_led.lst
+
+               ROM used: 39 words (8%)
+                         Largest free fragment is 473
+               RAM used: 4 (16%) at main() level
+                         5 (20%) worst case
+               Stack:    1 locations
+
+*
+0000:  GOTO   014
+0001:  GOTO   002
+.................... // primeiro exemplo 
+....................  
+.................... #include <12C508A.h> 
+.................... //////// Standard Header file for the PIC12C508A device //////////////// 
+.................... #device PIC12C508A 
+.................... #list 
+....................  
+.................... #use delay(clock=4000000) 
+*
+0002:  MOVF   0B,W
+0003:  BTFSC  03.2
+0004:  GOTO   013
+0005:  MOVLW  01
+0006:  MOVWF  08
+0007:  CLRF   07
+0008:  DECFSZ 07,F
+0009:  GOTO   008
+000A:  DECFSZ 08,F
+000B:  GOTO   007
+000C:  MOVLW  4A
+000D:  MOVWF  07
+000E:  DECFSZ 07,F
+000F:  GOTO   00E
+0010:  GOTO   011
+0011:  DECFSZ 0B,F
+0012:  GOTO   005
+0013:  RETLW  00
+....................  
+.................... //#use rs232(baud=19200, xmit=PIN_B2, rcv=PIN_B1) 
+.................... #FUSES WDT, XT                    
+....................  
+.................... void main() 
+.................... { 
+0014:  CLRF   04
+....................    int tempo; 
+....................    tempo = 200; 
+*
+0017:  MOVLW  C8
+0018:  MOVWF  0A
+....................    while (true){ 
+....................       output_high(pin_B0); 
+0019:  BCF    09.0
+001A:  MOVF   09,W
+001B:  TRIS   6
+001C:  BSF    06.0
+....................       delay_ms(tempo); 
+001D:  MOVF   0A,W
+001E:  MOVWF  0B
+001F:  CALL   002
+....................       output_low(pin_B0); 
+0020:  BCF    09.0
+0021:  MOVF   09,W
+0022:  TRIS   6
+0023:  BCF    06.0
+....................       delay_ms(tempo); 
+0024:  MOVF   0A,W
+0025:  MOVWF  0B
+0026:  CALL   002
+....................    } 
+0027:  GOTO   019
+.................... } 
+....................  
+0028:  SLEEP
+
+Configuration Fuses:
+   Word  1: 0FFD   XT WDT NOPROTECT MCLR

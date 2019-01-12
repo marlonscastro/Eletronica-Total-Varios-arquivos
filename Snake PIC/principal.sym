@@ -1,0 +1,69 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1_LOW
+015-016 CCP_1
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020     comando
+021     tam
+022     sem
+023     tempo
+024-03B col
+03C-053 lin
+054-055 comida
+056-05D mat
+05E     MAIN.x
+05F-060 MAIN.cont
+061-062 mover_auto.col
+061     @delay_ms1.P1
+061     MAIN.@SCRATCH1
+062     MAIN.@SCRATCH2
+063-064 mover_auto.lin
+065     mover_auto.i
+066     mover_auto.x
+067     mover_auto.tmp
+068     mover_auto.@SCRATCH1
+069     mover_auto.@SCRATCH2
+06A     mover_auto.@SCRATCH3
+06B     mover_auto.@SCRATCH4
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+10D-10E @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+0004  @delay_ms1
+0019  mover_auto
+0211  MAIN
+0211  @cinit
+
+Project Directory:
+    D:\DVD_BACKUP9\ELETRONICA\Gravador de PIC\Ic-Prog\PROJETOS PIC\Jogo_Cobrinha\
+
+Project Files:
+    principal.c
+    C:\Arquivos de programas\PICC\devices\16F628A.h
+
+Units:
+    principal.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      principal.err
+    Ext Symbols: principal.esym
+    INHX8:       principal.hex
+    Symbols:     principal.sym
+    List:        principal.lst
+    Debug/COFF:  principal.cof
+    Project:     principal.PJT
+    Call Tree:   principal.tre
+    Statistics:  principal.sta

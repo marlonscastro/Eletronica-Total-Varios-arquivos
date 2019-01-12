@@ -1,0 +1,157 @@
+004     @WRITE_PROGRAM_MEMORY8.P1
+004-005 @READ_PROGRAM_MEMORY8.P2
+008     PSP_DATA
+015     CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B     CCP_2
+01C     CCP_2_HIGH
+020     CurrentLine
+021     QuantChrLine
+022     OffsetX
+023-024 strtok.save
+025-028 _Randseed
+029-02C atan2.y
+029     MAIN.i
+02A     @delay_ms1.P1
+02A     ST7565S_circle.x
+02A     ST7565S_clear_screen.p
+02A     ST7565S_rect.x1
+02A     @PSTRINGC7_84.@SCRATCH1
+02B     ST7565S_rect.y1
+02B     ST7565S_circle.y
+02B     ST7565S_clear_screen.c
+02B     @PSTRINGC7_84.@SCRATCH2
+02C     ST7565S_circle.radius
+02C     ST7565S_rect.x2
+02C     @PSTRINGC7_84.@SCRATCH3
+02D     ST7565S_rect.y2
+02D     ST7565S_Printchar.cvar
+02D     ST7565S_circle.fill
+02D-030 atan2.x
+02E     ST7565S_circle.COLOR
+02E     ST7565S_Printchar.i
+02E     ST7565S_rect.fill
+02F     ST7565S_circle.a
+02F     ST7565S_rect.COLOR
+02F     ST7565S_newLine.@SCRATCH1
+02F     ST7565S_Printchar.@SCRATCH1
+030     y
+030     ST7565S_circle.b
+030     ST7565S_Printchar.@SCRATCH2
+031-034 atan2.z
+031     ymax
+031     ST7565S_circle.p
+032     ST7565S_circle.@SCRATCH1
+033     ST7565S_circle.@SCRATCH2
+034     ST7565S_circle.@SCRATCH3
+035.0   atan2.sign
+035     ST7565S_circle.@SCRATCH4
+036     atan2.quad
+036     ST7565S_line.x1
+037     ST7565S_line.y1
+038     ST7565S_line.x2
+039     ST7565S_line.y2
+03A     ST7565S_line.COLOR
+03B     ST7565S_line.x
+03C     ST7565S_line.y
+03D     ST7565S_line.addx
+03E     ST7565S_line.addy
+03F     ST7565S_line.dx
+040     ST7565S_line.dy
+041-042 ST7565S_line.p
+043     ST7565S_line.i
+044     ST7565S_PutPixel.x
+044     ST7565S_line.@SCRATCH1
+045     ST7565S_PutPixel.y
+045     @MUL88.P1
+046     ST7565S_PutPixel.COLOR
+046     @MUL88.P1
+047     ST7565S_PutPixel.BytePlot
+048     ST7565S_PutPixel.tempByte
+049     ST7565S_Write_data.byte_data
+049     ST7565S_PutPixel.@SCRATCH1
+04A     ST7565S_Gotoxy.x
+04B     ST7565S_Gotoxy.y
+04C     ST7565S_Gotoxy.OffsetChr
+04D     ST7565S_Gotoxy.@SCRATCH1
+04E     ST7565S_Write_command.byte_command
+04E     ST7565S_Gotoxy.@SCRATCH2
+04F     ST7565S_OutPort.byteDC
+04F     @DIV88.P1
+050     @DIV88.P1
+051     @DIV88.@SCRATCH1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+09C.6   C1OUT
+09C.7   C2OUT
+10D-10E @WRITE_PROGRAM_MEMORY8.P1
+10D-10E @READ_PROGRAM_MEMORY8.P2
+
+ROM Allocation:
+027C  @delay_ms1
+0004  TEXT
+010A  TEXT2
+0290  ST7565S_InitLcd
+01FD  ST7565S_OutPort
+0213  ST7565S_Write_command
+0266  ST7565S_Write_data
+03EC  ST7565S_Read_data
+031C  ST7565S_newLine
+02D5  ST7565S_clear_screen
+0238  ST7565S_Gotoxy
+0223  @DIV88
+0318  ST7565S_Printchar
+02F3  @MUL88
+03CB  ST7565S_PutPixel
+0549  ST7565S_circle
+04FA  ST7565S_rect
+042C  ST7565S_line
+063F  MAIN
+01EA  @const532
+0385  @PSTRINGC7_84
+01F2  @const534
+063F  @cinit
+0136  StrtoulGO
+0136  StrtolGO
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD PE12864LRF-004-H Paralelo\
+
+Project Files:
+    TEST_GLCD_ST7565_S.c
+    C:\Program Files\PICC\devices\16f877a.h
+    DRIVE_GLCD_ST7565_S.c
+    C:\Program Files\PICC\drivers\math.h
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+    C:\Program Files\PICC\drivers\stdlib.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD PE12864LRF-004-H Paralelo\TEST_GLCD_ST7565_S (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      TEST_GLCD_ST7565_S.err
+    Ext Symbols: TEST_GLCD_ST7565_S.esym
+    INHX8:       TEST_GLCD_ST7565_S.hex
+    Symbols:     TEST_GLCD_ST7565_S.sym
+    List:        TEST_GLCD_ST7565_S.lst
+    Project:     TEST_GLCD_ST7565_S.PJT

@@ -1,0 +1,21 @@
+*** Error 12 "index.c" Line 80(13,14): Undefined identifier  -- i2c_start
+*** Error 12 "index.c" Line 81(14,15): Undefined identifier  -- i2c_write
+*** Error 12 "index.c" Line 82(20,31): Undefined identifier   ADDR_LEN_16
+*** Error 12 "index.c" Line 83(16,17): Undefined identifier  -- i2c_write
+*** Error 12 "index.c" Line 84(16,17): Undefined identifier  -- i2c_write
+*** Error 51 "index.c" Line 86(4,8): A numeric expression must appear here
+*** Error 12 "index.c" Line 88(13,14): Undefined identifier  -- i2c_start
+*** Error 12 "index.c" Line 89(14,15): Undefined identifier  -- i2c_write
+*** Error 12 "index.c" Line 90(17,18): Undefined identifier  -- i2c_read
+*** Error 12 "index.c" Line 91(12,13): Undefined identifier  -- i2c_stop
+*** Error 12 "index.c" Line 100(13,14): Undefined identifier  -- i2c_start
+*** Error 12 "index.c" Line 101(14,15): Undefined identifier  -- i2c_write
+*** Error 12 "index.c" Line 102(17,28): Undefined identifier   ADDR_LEN_16
+*** Error 12 "index.c" Line 103(16,17): Undefined identifier  -- i2c_write
+*** Error 12 "index.c" Line 104(16,17): Undefined identifier  -- i2c_write
+*** Error 51 "index.c" Line 106(4,8): A numeric expression must appear here
+*** Error 12 "index.c" Line 108(13,14): Undefined identifier  -- i2c_write
+*** Error 12 "index.c" Line 109(12,13): Undefined identifier  -- i2c_stop
+*** Error 12 "index.c" Line 110(17,28): Undefined identifier   ADDR_LEN_16
+*** Error 51 "index.c" Line 112(4,8): A numeric expression must appear here
+      20 Errors,  0 Warnings.

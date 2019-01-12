@@ -1,0 +1,33 @@
+void split(char caracter, int ind, char *retorno, char *str){
+   int tam, i, x, cont, p;
+   tam = strlen(str);
+   x = cont = 0;
+   for (i = 0; i < tam; i++){
+      if(ind == 0){
+         if(caracter != str[i]){
+            retorno[x] = str[i];
+            x++;
+         }
+         else break;
+      }
+      else{
+         if (caracter == str[i]){
+            cont++;
+            if(cont == ind){
+               p = i + 1;
+               while(true){
+                  if(str[p] != caracter){
+                     retorno[x] = str[p];
+                     p++;
+                     x++;
+                  }
+                  else
+                     break;
+               }
+            }
+            if(cont > ind)
+               break;
+         }
+      }
+   }
+}

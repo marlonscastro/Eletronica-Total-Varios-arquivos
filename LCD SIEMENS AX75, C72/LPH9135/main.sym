@@ -1,0 +1,117 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004     @WRITE_PROGRAM_MEMORY8.P2
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B     CCP_2
+01C     CCP_2_HIGH
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028.0   RS_old
+029     @TRIS_C
+02A     tempo
+02B-048 text
+049     MAIN.i
+04A-04B LCD_FillScreen.color
+04A     MAIN.@SCRATCH1
+04B     @delay_ms1.P1
+04C-04D LCD_FillScreen.x
+04E     SetArea.x1
+04E     LCD_FillScreen.@SCRATCH1
+04F     SetArea.x2
+04F     LCD_FillScreen.@SCRATCH2
+050     SetArea.y1
+051     SetArea.y2
+052     Send_to_lcd.RS
+053     Send_to_lcd.data
+054     Send_to_lcd.@SCRATCH1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+07F     @INTERRUPT_AREA
+0FF     @INTERRUPT_AREA
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+17F     @INTERRUPT_AREA
+1FF     @INTERRUPT_AREA
+27F     @INTERRUPT_AREA
+2FF     @INTERRUPT_AREA
+37F     @INTERRUPT_AREA
+3FF     @INTERRUPT_AREA
+47F     @INTERRUPT_AREA
+4FF     @INTERRUPT_AREA
+57F     @INTERRUPT_AREA
+5FF     @INTERRUPT_AREA
+67F     @INTERRUPT_AREA
+6FF     @INTERRUPT_AREA
+77F     @INTERRUPT_AREA
+7FF     @INTERRUPT_AREA
+87F     @INTERRUPT_AREA
+8FF     @INTERRUPT_AREA
+97F     @INTERRUPT_AREA
+9FF     @INTERRUPT_AREA
+A7F     @INTERRUPT_AREA
+AFF     @INTERRUPT_AREA
+B7F     @INTERRUPT_AREA
+BFF     @INTERRUPT_AREA
+C7F     @INTERRUPT_AREA
+CFF     @INTERRUPT_AREA
+D7F     @INTERRUPT_AREA
+DFF     @INTERRUPT_AREA
+E7F     @INTERRUPT_AREA
+EFF     @INTERRUPT_AREA
+F7F     @INTERRUPT_AREA
+FFF     @INTERRUPT_AREA
+
+ROM Allocation:
+0049  @delay_ms1
+005E  Send_to_lcd
+0135  LCD_FillScreen
+0095  LCD_init
+013A  SetArea
+0033  TIMER0_isr
+0176  MAIN
+0176  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD SIEMENS AX75, C72\LPH9135\
+
+Project Files:
+    main.c
+    C:\Program Files (x86)\PICC\devices\16F876.h
+    LPH9135.h
+    Symbols.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD SIEMENS AX75, C72\LPH9135\main (main)
+
+Compiler Settings:
+    Processor:      PIC16F876
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Project:     main.PJT

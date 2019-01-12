@@ -1,0 +1,3 @@
+>>> Warning 202 "index.c" Line 36(9,12): Variable never used:   vet
+      Memory usage:   ROM=14%      RAM=42% - 42%
+      0 Errors,  1 Warnings.

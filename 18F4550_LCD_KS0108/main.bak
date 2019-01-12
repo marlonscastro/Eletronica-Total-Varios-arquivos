@@ -1,0 +1,52 @@
+#include <18F4550.h>
+#use delay(clock=48000000)
+#fuses HSPLL, PLL4, CPUDIV1, PUT, NOWDT, NOBROWNOUT, NOLVP
+//#use rs232(baud=9600,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8)
+
+#include <Extended_GLCD.c>
+
+void main(){  
+   int i;
+   glcd_init(ON);
+   KS0108_Gotoxy(0 0);  
+   printf(KS0108_Printchar, "Linha 1");
+   KS0108_Gotoxy(0 1);    
+   printf(KS0108_Printchar, "Linha 2");   
+   KS0108_Gotoxy(0 2); 
+   printf(KS0108_Printchar, "Linha 3");
+   output_low(GLCD_DI);
+   glcd_writeByte(GLCD_CS1, 0x40);
+   glcd_writeByte(GLCD_CS2, 0x40);
+   glcd_writeByte(GLCD_CS1, 0xBA);
+   glcd_writeByte(GLCD_CS2, 0xBA);   
+   output_high(GLCD_DI);    
+   printf(KS0108_Printchar, "Linha 4");
+   output_low(GLCD_DI);
+   glcd_writeByte(GLCD_CS1, 0x40);
+   glcd_writeByte(GLCD_CS2, 0x40);
+   glcd_writeByte(GLCD_CS1, 0xBB);
+   glcd_writeByte(GLCD_CS2, 0xBB);   
+   output_high(GLCD_DI);    
+   printf(KS0108_Printchar, "Linha 5");
+   output_low(GLCD_DI);
+   glcd_writeByte(GLCD_CS1, 0x40);
+   glcd_writeByte(GLCD_CS2, 0x40);
+   glcd_writeByte(GLCD_CS1, 0xBC);
+   glcd_writeByte(GLCD_CS2, 0xBC);   
+   output_high(GLCD_DI);    
+   printf(KS0108_Printchar, "Linha 6");   
+   output_low(GLCD_DI);
+   glcd_writeByte(GLCD_CS1, 0x40);
+   glcd_writeByte(GLCD_CS2, 0x40);
+   glcd_writeByte(GLCD_CS1, 0xBD);
+   glcd_writeByte(GLCD_CS2, 0xBD);   
+   output_high(GLCD_DI);    
+   printf(KS0108_Printchar, "Linha 7");   
+   output_low(GLCD_DI);
+   glcd_writeByte(GLCD_CS1, 0x40);
+   glcd_writeByte(GLCD_CS2, 0x40);
+   glcd_writeByte(GLCD_CS1, 0xBE);
+   glcd_writeByte(GLCD_CS2, 0xBE);   
+   output_high(GLCD_DI);    
+   printf(KS0108_Printchar, "Linha 8");      
+}

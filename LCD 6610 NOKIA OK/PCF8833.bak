@@ -1,0 +1,967 @@
+//pcf8833.c
+////////////////////////////////////////////////////////////////////////////////
+////      GFX driver for Nokia 6100 color LCD screen                        ////
+////      Graphic Controler =  Philips PCF8833                              ////
+////      Res : 132 x 132 x 65K colors (real is 4k colors)                  ////
+///       In this driver i use only 256 couleur , it's alot faster          ////
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+////  Enter here the Pin's you want use for control the screen              ////
+////////////////////////////////////////////////////////////////////////////////
+
+#define  glcd_res            PIN_C0
+#define  glcd_sdata          PIN_C1
+#define  glcd_sclk           PIN_C2
+#define  glcd_cs             PIN_C3
+
+////////////////////////////////////////////////////////////////////////////////
+////  Enter here the delay for init ,write_data and write command           ////
+////  att1 : Delay in  µSec for the Init routine                            ////
+////  att2 : Delay in   nanoseconde / 100 for the glcd_write_command,       ////
+////                     glcd_write_data et glcd_write_dorc routines        ////
+////         At 40Mhz att2 = 10 represent 1µSec                             ////
+////////////////////////////////////////////////////////////////////////////////
+
+#define  att1           1
+#define  att2           8
+
+////////////////////////////////////////////////////////////////////////////////
+
+#define  SCREEN_COLOR   BLACK
+#define  USE_GRFCN
+
+////////////////////////////////////////////////////////////////////////////////
+////  Screen limit                                                          ////
+////////////////////////////////////////////////////////////////////////////////
+#define  GCLCDX         131
+#define  GCLCDY         131
+#define  X_START        0
+#define  Y_START        0
+#define  X_END          GCLCDX
+#define  Y_END          GCLCDY
+
+////////////////////////////////////////////////////////////////////////////////
+////  The PCF8833 Commands                                                  ////
+////////////////////////////////////////////////////////////////////////////////
+
+#define  LCD_NOP        0x00
+#define  SOFT_RESET     0x01
+#define  COLOR_8_BIT    0x02
+#define  COLOR_16_BIT   0x05
+#define  BOOSTER_ON     0x03
+#define  BOOSTER_OFF    0x02
+#define  SLEEP_OUT      0x11
+#define  SLEEP_IN       0x10
+#define  DISPLAY_ON     0x29
+#define  DISPLAY_OFF    0x28
+#define  PIXELS_OFF     0x22
+#define  MEM_CONTROL    0x36
+#define  COLMOD         0x3A
+#define  SETCON         0x25
+#define  ADDRX          0x2A
+#define  ADDRY          0x2B
+#define  MEMWRITE       0x2C
+#define  RGBSET         0x2D
+#define  NORMAL         0x20
+#define  INVERT         0x21
+
+#define  MEM_RGB        0x08 // 00001000    "0": is RGB, "1": is for BGR
+#define  MEM_LAO        0x10 // 00010000    "0":up to down, "1":down to up
+#define  MEM_VW         0x20 // 00100000    "0":write in X direction
+                             //             "1":write in Y direction
+#define  MEM_MX         0x40 // 01000000    "0":normal, "1":miroir in X
+#define  MEM_MY         0x80 // 10000000    "0":normal, "1":miroir in Y
+                             // Valeur utilisé ici = 0b11000000
+                             //   for   RGB            ----0---
+                             //   up to down           ---0----
+                             //   X direction          --0-----
+                             //   Mirror X             -1------
+                             //   Mirror Y             1-------
+
+#ifndef  ON
+#define  ON           1
+#endif
+
+#ifndef  OFF
+#define  OFF          0
+#endif
+
+#ifndef  YES
+#define  YES          1
+#endif
+
+#ifndef  NO
+#define  NO           0
+#endif
+
+
+#define  RGB(r,g,b)     ((r & 0xE0) | ((g & 0xE0) >> 3) | (b >> 6))
+#define  NONE           RGB(0x00, 0x20, 0x00)  // == transparent, one green less
+
+
+#define BLUE        0x03
+#define YELLOW      0xFC
+#define RED         0XE0
+#define GREEN       0X1C
+#define BLACK       0X00
+#define WHITE       0XFF
+#define BRIGHTGREEN 0X3D
+#define DARKGREEN   0X14
+#define DARKRED     0XA0
+#define DARKBLUE    0X02
+#define BRIGHTBLUE  0X1F
+#define ORANGE      0XF8
+
+#byte    SSPCON1  =     0xFC6
+#bit     SSPEN    =     SSPCON1.5
+
+
+////////////////////////////////////////////////////////////////////////////////
+////                                                                        ////
+////                           The Functions                                ////
+////                                                                        ////
+////////////////////////////////////////////////////////////////////////////////
+
+void glcd_init(char contrast);
+void glcd_off(void);
+void glcd_write_command(char byteforglcd_command);
+void glcd_write_data(char byteforglcd_data);
+void glcd_write_dorc(char byteforglcd);
+void glcd_cls(char color);
+void glcd_setarea(char startx, char endx, char starty, char endy);
+void glcd_contrast(char contrast);
+void glcd_img(char x, char y);
+void glcd_anim(char x, char y, int8 frame, int16 wait);
+void glcd_font(void);
+//int glcd_putc(int16 c);
+void glcd_newline(void);
+void glcd_gotoxy(char x, char y);
+void glcd_fillscreen(char x1, char y1, char x2, char y2,char color);
+void glcd_pixel(char x, char y, char color);
+void glcd_line(char x1, char y1, char x2, char y2, char couleur);
+void glcd_bar(char x1, char y1, char x2, char y2, char width, char color);
+void glcd_rect(char x1, char y1, char x2, char y2, char width, int1 fill, char color);
+void glcd_circle(char x, char y, char radius, int1 fill, char color);
+void glcd_text57(char x, char y, char* textptr, char , char color, char bkcolor);
+void glcd_text812(char x, char y, char* textptr, char color, char bkcolor);
+void glcd_color(char newColor);
+
+////////////////////////////////////////////////////////////////////////////////
+////                                                                        ////
+////                 Fonts and Images Library                               ////
+////                                                                        ////
+////////////////////////////////////////////////////////////////////////////////
+
+#include <FONT.c>
+/*#include <FONT812.c>
+#include <image.c>
+*/
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Init the screen                                                     //
+//                                                                            //
+//        Param : contraste                                                   //
+//        Modifier ici le set_tris_xxx du port a utiliser                     //
+////////////////////////////////////////////////////////////////////////////////
+
+
+unsigned int32 i;
+char color;
+
+
+void glcd_init(char contrast)
+{
+   set_tris_c(0x00);
+   output_c(0x00);
+
+   delay_ms(65);
+
+   output_bit(glcd_cs,TRUE);  // Controler not selected (CE = "1")
+   delay_us(att1);
+   output_bit(glcd_res,TRUE); // and no reset (RST = "1")
+   delay_ms(500);             // 0.5 second Delay
+   output_bit(glcd_res,FALSE);// Controler Reset (RST = "0")
+   delay_ms(500);             // 0.5 second Delay
+   output_bit(glcd_res,TRUE); // Reset Stop (RST = "1")
+   delay_us(att1);
+   output_bit(glcd_cs,FALSE);// Sélect the controler (CE = "0")
+   delay_us(att1);
+   glcd_write_command(SOFT_RESET); // Software Reset
+   delay_us(att1);
+   glcd_write_command(SLEEP_OUT);  // Sleep Out
+   delay_us(att1);
+   glcd_write_command(BOOSTER_ON); // Booster ON
+   delay_ms(10);
+   glcd_write_command(DISPLAY_ON); // Display ON
+   delay_us(att1);
+   glcd_write_command(NORMAL);     // NORMAL Mode
+   delay_us(att1);
+   glcd_write_command(COLMOD);     // Color Mode Command
+   delay_us(att1);
+   glcd_write_data(COLOR_8_BIT);   // 256 coulors mode
+   delay_us(att1);
+   glcd_write_command(RGBSET);     // Color palette definition command
+                                   // de couleurs
+   delay_us(att1);
+
+   // Send the datas for the 256 colors palette
+   // RED
+   glcd_write_data(0);
+   delay_us(att1);
+   glcd_write_data(2);
+   delay_us(att1);
+   glcd_write_data(4);
+   delay_us(att1);
+   glcd_write_data(6);
+   delay_us(att1);
+   glcd_write_data(8);
+   delay_us(att1);
+   glcd_write_data(10);
+   delay_us(att1);
+   glcd_write_data(12);
+   delay_us(att1);
+   glcd_write_data(15);
+   delay_us(att1);
+   // GREEN
+   glcd_write_data(0);
+   delay_us(att1);
+   glcd_write_data(2);
+   delay_us(att1);
+   glcd_write_data(4);
+   delay_us(att1);
+   glcd_write_data(6);
+   delay_us(att1);
+   glcd_write_data(8);
+   delay_us(att1);
+   glcd_write_data(10);
+   delay_us(att1);
+   glcd_write_data(12);
+   delay_us(att1);
+   glcd_write_data(15);
+   delay_us(att1);
+   // BLUE
+   glcd_write_data(0);
+   delay_us(att1);
+   glcd_write_data(4);
+   delay_us(att1);
+   glcd_write_data(9);
+   delay_us(att1);
+   glcd_write_data(15);
+   delay_us(att1);
+
+   glcd_write_command(LCD_NOP);
+   delay_us(att1);
+
+   glcd_write_command(MEM_CONTROL);
+   delay_us(att1);
+   glcd_write_data(0b11000000);
+   delay_us(att1);
+
+   glcd_contrast(contrast);      // Ajdust the contrast ( 65 is a good value )
+   delay_us(att1);
+
+   glcd_cls(WHITE);              // erase screen
+   delay_us(att1);
+
+}
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        shut down the screen                                                //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_off(void)
+{
+   glcd_write_command(PIXELS_OFF);    // All pixels Off
+   glcd_write_command(DISPLAY_OFF);   // Display Off
+   glcd_write_command(BOOSTER_OFF);   // Booster Off
+   glcd_write_command(SLEEP_IN);      // Sleep In
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Send a command                                                      //
+//                                                                            //
+//        Param : Command                                                    //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_write_command(char byteforglcd_command)
+{
+   output_bit(glcd_sclk,FALSE);
+   delay_cycles(att2);
+   output_bit(glcd_cs,FALSE);
+   delay_cycles(att2);
+
+   output_bit(glcd_sdata,FALSE);
+   delay_cycles(att2);
+   output_bit(glcd_sclk,TRUE);
+   delay_cycles(att2);
+
+   glcd_write_dorc(byteforglcd_command);
+
+   output_bit(glcd_sclk,FALSE);
+   delay_cycles(att2);
+   output_bit(glcd_cs,TRUE);
+   delay_cycles(att2);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Send Data                                                           //
+//                                                                            //
+//        Param : 8 bits data                                                 //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_write_data(char byteforglcd_data)
+{
+   output_bit(glcd_sclk,FALSE);
+   delay_cycles(att2);
+   output_bit(glcd_cs,FALSE);
+   delay_cycles(att2);
+
+   output_bit(glcd_sdata,TRUE);
+   delay_cycles(att2);
+   output_bit(glcd_sclk,TRUE);
+   delay_cycles(att2);
+
+   glcd_write_dorc(byteforglcd_data);
+
+   output_bit(glcd_sclk,FALSE);
+   delay_cycles(att2);
+   output_bit(glcd_cs,TRUE);
+   delay_cycles(att2);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Send one byte in serial mode                                        //
+//                                                                            //
+//        Param : byte (char)                                                       //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_write_dorc(char byteforglcd)
+{
+      output_low(glcd_sclk);
+      delay_cycles(att2);
+      output_bit(glcd_sdata,byteforglcd&0x80);
+      delay_cycles(att2);
+      output_high(glcd_sclk);
+      delay_cycles(att2);
+      output_low(glcd_sclk);
+      delay_cycles(att2);
+      output_bit(glcd_sdata,byteforglcd&0x40);
+      delay_cycles(att2);
+      output_high(glcd_sclk);
+      delay_cycles(att2);
+      output_low(glcd_sclk);
+      delay_cycles(att2);
+      output_bit(glcd_sdata,byteforglcd&0x20);
+      delay_cycles(att2);
+      output_high(glcd_sclk);
+      delay_cycles(att2);
+      output_low(glcd_sclk);
+      delay_cycles(att2);
+      output_bit(glcd_sdata,byteforglcd&0x10);
+      delay_cycles(att2);
+      output_high(glcd_sclk);
+      delay_cycles(att2);
+      output_low(glcd_sclk);
+      delay_cycles(att2);
+      output_bit(glcd_sdata,byteforglcd&0x08);
+      delay_cycles(att2);
+      output_high(glcd_sclk);
+      delay_cycles(att2);
+      output_low(glcd_sclk);
+      delay_cycles(att2);
+      output_bit(glcd_sdata,byteforglcd&0x04);
+      delay_cycles(att2);
+      output_high(glcd_sclk);
+      delay_cycles(att2);
+      output_low(glcd_sclk);
+      delay_cycles(att2);
+      output_bit(glcd_sdata,byteforglcd&0x02);
+      delay_cycles(att2);
+      output_high(glcd_sclk);
+      delay_cycles(att2);
+      output_low(glcd_sclk);
+      delay_cycles(att2);
+      output_bit(glcd_sdata,byteforglcd&0x01);
+      delay_cycles(att2);
+      output_high(glcd_sclk);
+      delay_cycles(att2);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Erase screen                                                        //
+//                                                                            //
+//        Param : coulor 00 - FF                                             //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_cls(char color)
+{
+   unsigned int16 i,n;
+
+   //glcd_write_command(DISPLAY_OFF);
+   n = X_END*Y_END;
+   glcd_setarea(X_START, X_END, Y_START, Y_END);
+   glcd_write_command(MEMWRITE);
+   for(i=n; i>0; i--)
+   {
+      glcd_write_data(color);
+   }
+   //glcd_write_command(DISPLAY_ON);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Set the write limit for the screen                                  //
+//                                                                            //
+//        Param : startx, endx, starty, endy                                  //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_setarea(char startx, char endx, char starty, char endy)
+{
+   glcd_write_command(ADDRX);
+   glcd_write_data(startx);
+   glcd_write_data(endx);
+   glcd_write_command(ADDRY);
+   glcd_write_data(starty);
+   glcd_write_data(endy);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Défine the screen contrast                                          //
+//                                                                            //
+//        Param : contrast  (65 = standard level)                             //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_contrast(char contrast)
+{
+   output_bit(glcd_cs,FALSE);
+   delay_cycles(att2);
+   glcd_write_command(SETCON);
+   glcd_write_data(contrast);
+   output_bit(glcd_cs,TRUE);
+   delay_cycles(att2);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        show one pixel                                                      //
+//                                                                            //
+//        Param : x                                                           //
+//                y                                                           //
+//                color - 00 - FF                                             //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_pixel(char x, char y, char color)
+{
+   glcd_setarea(x, x, y, y);
+   glcd_write_command(MEMWRITE);
+   glcd_write_data(color);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Send a Picture to the screen                                        //
+//                                                                            //
+//        Param : x                                                           //
+//                y                                                           //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+/*void glcd_img(char x, char y)
+{
+   unsigned int16 i,n;
+   char IMGENDX, IMGENDY;
+
+   IMGENDX = img[0];
+   IMGENDY = img[1];
+
+   glcd_setarea(x,IMGENDX-1+x,y,IMGENDY-1+y);
+   n = (IMGENDX*IMGENDY)+2;
+   glcd_write_command(MEMWRITE);
+   for(i=2; i<n; i++)
+   {
+      glcd_write_data(img[i]);
+   }
+}
+*/
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Send a Picture sequence to the screen                               //
+//                                                                            //
+//        Param : x                                                           //
+//                y                                                           //
+//                frame - number of images to send                            //
+//                wait - time betwen the images in ms                         //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+/*void glcd_anim(char x, char y, int8 frame, int16 wait)
+{
+   unsigned int16 i,j,n;
+   char IMGENDX, IMGENDY;
+
+   IMGENDX = img_a[0];
+   IMGENDY = img_a[1];
+
+   glcd_setarea(x,IMGENDX-1+x,y,IMGENDY-1+y);
+   n = IMGENDX*IMGENDY;
+   glcd_write_command(MEMWRITE);
+   for (j=0;j<frame;j++)
+   {
+     for(i=2; i<n+2; i++)
+     {
+         glcd_write_data(img_a[(j*n)+i]);
+     }
+     delay_ms(wait);
+   }
+}*/
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Set the cursor position                                             //
+//                                                                            //
+//        Param : x                                                           //
+//                y                                                           //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_gotoxy(char x, char y)
+{
+   glcd_setarea(x, x, y, y);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Set a new current color                                             //
+//                                                                            //
+//        Param : newColor 00 - FF                                            //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_color(char newColor)
+{
+   color = newColor;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Fill a part of the screen with a color                              //
+//                                                                            //
+//        Param : startx, endx, starty, endy                                  //
+//                Pixel color : 00 - FF                                       //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_fillscreen(char x1, char y1, char x2, char y2,char color)
+{
+   int16 dx,dy;
+   int16 i,n;
+
+   glcd_setarea(x1,x2,y1,y2);
+   dx = (int16)abs((signed int16)(x2 - x1))+1;
+   dy = (int16)abs((signed int16)(y2 - y1))+1;
+   n = dx*dy;
+   glcd_write_command(MEMWRITE);
+   for(i=n; i>0; i--)
+   {
+      glcd_write_data(color);
+   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        draw a line                                                         //
+//                                                                            //
+//        Param : x1,y1 - start coord                                         //
+//                x2,y2 - end coord                                           //
+//                color - 00 - FF                                             //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_line(char x1, char y1, char x2, char y2, char couleur)
+{
+   int16        dy, dx;
+   signed int8  addx=1, addy=1;
+   signed int16 P, diff;
+
+   int8 i=0;
+   dx = abs((signed int8)(x2 - x1));
+   dy = abs((signed int8)(y2 - y1));
+
+   if(x1 > x2)
+      addx = -1;
+   if(y1 > y2)
+      addy = -1;
+
+   if(dx >= dy)
+   {
+      dy *= 2;
+      P = dy - dx;
+      diff = P - dx;
+
+      for(; i<=dx; ++i)
+      {
+         glcd_pixel(x1, y1, couleur);
+
+         if(P < 0)
+         {
+            P  += dy;
+            x1 += addx;
+         }
+         else
+         {
+            P  += diff;
+            x1 += addx;
+            y1 += addy;
+         }
+      }
+   }
+   else
+   {
+      dx *= 2;
+      P = dx - dy;
+      diff = P - dy;
+
+      for(; i<=dy; ++i)
+      {
+         glcd_pixel(x1, y1, couleur);
+
+         if(P < 0)
+         {
+            P  += dx;
+            y1 += addy;
+         }
+         else
+         {
+            P  += diff;
+            x1 += addx;
+            y1 += addy;
+         }
+      }
+   }
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        draw a bar                                                          //
+//                                                                            //
+//        Param : x1,y1 - start                                               //
+//                x2,y2 - end                                                 //
+//                width - width of the bar                                    //
+//                color - 00 - FF                                             //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_bar(char x1, char y1, char x2, char y2, char width, char color)
+{
+   signed int  x, y, addx, addy, j;
+   signed long P, dx, dy, c1, c2;
+   int i;
+
+   dx = abs((signed int)(x2 - x1));
+   dy = abs((signed int)(y2 - y1));
+   x = x1;
+   y = y1;
+   c1 = -dx*x1 - dy*y1;
+   c2 = -dx*x2 - dy*y2;
+
+   if(x1 > x2)
+   {
+      addx = -1;
+      c1 = -dx*x2 - dy*y2;
+      c2 = -dx*x1 - dy*y1;
+   }
+   else
+      addx = 1;
+   if(y1 > y2)
+   {
+      addy = -1;
+      c1 = -dx*x2 - dy*y2;
+      c2 = -dx*x1 - dy*y1;
+   }
+   else
+      addy = 1;
+
+   if(dx >= dy)
+   {
+      P = 2*dy - dx;
+
+      for(i=0; i<=dx; ++i)
+      {
+         for(j=-(width/2); j<width/2+width%2; ++j)
+         {
+            if(dx*x+dy*(y+j)+c1 >= 0 && dx*x+dy*(y+j)+c2 <=0)
+               glcd_pixel((char)x, (char)(y+j), color);
+         }
+         if(P < 0)
+         {
+            P += 2*dy;
+            x += addx;
+         }
+         else
+         {
+            P += 2*dy - 2*dx;
+            x += addx;
+            y += addy;
+         }
+      }
+   }
+   else
+   {
+      P = 2*dx - dy;
+
+      for(i=0; i<=dy; ++i)
+      {
+         if(P < 0)
+         {
+            P += 2*dx;
+            y += addy;
+         }
+         else
+         {
+            P += 2*dx - 2*dy;
+            x += addx;
+            y += addy;
+         }
+         for(j=-(width/2); j<width/2+width%2; ++j)
+         {
+            if(dx*x+dy*(y+j)+c1 >= 0 && dx*x+dy*(y+j)+c2 <=0)
+               glcd_pixel((char)(x+j), (char)y, color);
+         }
+      }
+   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        draw a rectangle                                                    //
+//                                                                            //
+//        Param : x1,y1 - start                                               //
+//                x2,y2 - end                                                 //
+//                width - width of the drawing                                //
+//                fill  - Full YES or NO  (fill or not the rectangle)         //
+//                color - 00 - FF                                             //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_rect(char x1, char y1, char x2, char y2, char width, int1 fill, char color)
+{
+   if(fill)
+   {
+      int y, ymax;                          // Find the y min and max
+      if(y1 < y2)
+      {
+         y = y1;
+         ymax = y2;
+      }
+      else
+      {
+         y = y2;
+         ymax = y1;
+      }
+
+      glcd_fillscreen(x1,y,x2,ymax,color);  // Draw box to fill the rectangle
+   }
+   else
+   {
+      if(width)
+      {
+         glcd_bar(x1, y1, x2, y1, width, color);      // Draw the 4 sides
+         glcd_bar(x1, y2, x2, y2, width, color);
+         glcd_bar(x1, y1, x1, y2, width, color);
+         glcd_bar(x2, y1, x2, y2, width, color);
+      }
+      else
+      {
+         glcd_line(x1, y1, x2, y1, color);
+         glcd_line(x1, y2, x2, y2, color);
+         glcd_line(x1, y1, x1, y2, color);
+         glcd_line(x2, y1, x2, y2, color);
+      }
+   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        draw a circle                                                       //
+//                                                                            //
+//        Param : x,y - center from circle                                    //
+//                radius - radius from the circle                             //
+//                fill  - Full YES or NO  (fill or not the circle)            //
+//                color - 00 - FF                                             //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_circle(char x, char y, char radius, int1 fill, char color)
+{
+   signed int a, b, P;
+   a = 0;
+   b = radius;
+   P = 1 - radius;
+
+   do
+   {
+      if(fill)
+      {
+         glcd_line(x-a, y+b, x+a, y+b, color);
+         glcd_line(x-a, y-b, x+a, y-b, color);
+         glcd_line(x-b, y+a, x+b, y+a, color);
+         glcd_line(x-b, y-a, x+b, y-a, color);
+      }
+      else
+      {
+         glcd_pixel(a+x, b+y, color);
+         glcd_pixel(b+x, a+y, color);
+         glcd_pixel(x-a, b+y, color);
+         glcd_pixel(x-b, a+y, color);
+         glcd_pixel(b+x, y-a, color);
+         glcd_pixel(a+x, y-b, color);
+         glcd_pixel(x-a, y-b, color);
+         glcd_pixel(x-b, y-a, color);
+      }
+
+      if(P < 0)
+         P+= 3 + 2*a++;
+      else
+         P+= 5 + 2*(a++ - b--);
+    } while(a <= b);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Write a text with the 5 x 7 pixels font                             //
+//                                                                            //
+//        Param : x,y - coord from the 1st char                               //
+//                textptr _ pointer to a char array                           //
+//                size - text size : 1 = 5x7, 2 = 10x14                       //
+//                color - 00 - FF                                             //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+void glcd_text57(char x, char y, char* textptr, char size, char color, char bkcolor)
+{
+   int8 j, k, l, m;                       // Loop counters
+   int8 pixelData[5];                     // Stores character data
+
+   for(; *textptr != '\0'; ++textptr, ++x)// Loop through the passed string
+   {
+      if(*textptr < 'S') // Checks if the letter is in the first font array
+         memcpy(pixelData, FONT[*textptr - ' '], 5);
+      else if(*textptr <= '~') // Check if the letter is in the second font array
+         memcpy(pixelData, FONT2[*textptr - 'S'], 5);
+      else
+         memcpy(pixelData, FONT[0], 5);   // Default to space
+
+       // Handles newline and carriage returns
+      switch(*textptr)
+      {
+         case '\n':
+            y += 7*size + 1;
+            continue;
+         case '\r':
+            x = 0;
+            continue;
+      }
+
+      if(x+5*size > X_END)                // Performs character wrapping
+      {
+         x = 0;                           // Set x at far left position
+         y += 7*size + 1;                 // Set y at next position down
+      }
+      for(j=0; j<5; ++j, x+=size)         // Loop through character byte data
+      {
+         for(k=0; k < 7; ++k)             // Loop through the vertical pixels
+         {
+            if(bit_test(pixelData[j], k)) // Check if the pixel should be set
+            {
+               for(l=0; l < size; ++l)    // These two loops change the
+               {                          // character's size
+                  for(m=0; m < size; ++m)
+                  {
+                     glcd_pixel(x+m, y+k*size+l, color); // Draws the pixel
+                  }
+
+
+               }
+            }
+            else if (bkcolor != NONE)
+               {
+                  for(l=0; l < size; ++l)    // These two loops change the
+                  {                          // character's size
+                     for(m=0; m < size; ++m)
+                     {
+                        glcd_pixel(x+m, y+k*size+l, bkcolor); // Draws the pixel
+                     }
+                  }
+               }
+         }
+      }
+   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//        Write a text with the 8 x 12 pixels font                            //
+//                                                                            //
+//        Param : x,y - coord from the 1st char                               //
+//                textptr _ pointer to a char array                           //
+//                color - 00 - FF - NONE                                      //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+/*void glcd_text812(char x, char y, char* textptr, char color, char bkcolor)
+{
+   int8 j, k;                              // Loop counters
+   int8 pixelData[16];                     // Stores character data
+
+   for(; *textptr != '\0'; ++textptr)// Loop through the passed string
+   {
+      if(*textptr <= '~') //
+         memcpy(pixelData, FONT812[*textptr - ' '], 16);
+      else
+         memcpy(pixelData, FONT812[0], 16);   // Default to space
+
+       // Handles newline and carriage returns
+      switch(*textptr)
+      {
+         case '\n':
+            y += 12 + 1;
+            continue;
+         case '\r':
+            x = 0;
+            continue;
+      }
+
+      if(x+8 > X_END)          // Performs character wrapping
+      {
+         x = 0;                           // Set x at far left position
+         y += 12 + 1;                 // Set y at next position down
+      }
+      for(j=0; j<8; j++, ++x)         // Loop through character byte data
+      {
+         for(k=0; k < 8; ++k)             // Loop through the vertical pixels
+         {
+            if(bit_test(pixelData[j], k)) // Check if the pixel should be set
+            {
+               glcd_pixel(x, y+k, color); // Draws the pixel
+            }
+            else if (bkcolor != NONE)
+            {
+               glcd_pixel(x, y+k, bkcolor); // Draws the pixel
+            }
+
+         }
+         for(k=0; k < 4; ++k)             // Loop through the vertical pixels
+         {
+            if(bit_test(pixelData[j+8], k)) // Check if the pixel should be set
+            {
+               glcd_pixel(x, y+(k+8), color); // Draws the pixel
+            }
+              else if (bkcolor != NONE)
+            {
+               glcd_pixel(x, y+(k+8), bkcolor); // Draws the pixel
+            }
+
+         }
+
+      }
+      ++x;
+   }
+}*/

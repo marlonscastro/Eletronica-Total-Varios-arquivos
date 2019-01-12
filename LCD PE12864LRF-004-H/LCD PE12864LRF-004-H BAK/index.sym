@@ -1,0 +1,306 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     CurrentLine
+005     QuantChrLine
+006     OffsetX
+007-406 Buffer
+407-408 strtok.save
+409-40C _Randseed
+40D-40E @sprintf_string
+40F-412 circulo.aC
+40F-412 atan2.y
+40F-412 circuloPonteiro.aC
+40F     clear_screen.p
+40F-412 circuloMenor.aC
+410     clear_screen.c
+411     clear_screen.@SCRATCH1
+412     clear_screen.@SCRATCH2
+413-416 atan2.x
+413-416 circulo.bC
+413-416 circuloPonteiro.bC
+413-416 circuloMenor.bC
+417-41A circulo.r
+417-41A circuloPonteiro.r
+417-41A circuloMenor.r
+417-41A atan2.z
+41B-41C circuloPonteiro.i
+41B-41C circulo.i
+41B-41C circuloMenor.i
+41B.0   atan2.sign
+41C     atan2.quad
+41D-41E circuloPonteiro.mS
+41D-420 circulo.y
+41D-420 circuloMenor.y
+41F     circuloPonteiro.H
+420     circuloPonteiro.m
+421-424 circuloMenor.x
+421-424 circulo.x
+421     circuloPonteiro.s
+422     circuloPonteiro.test
+423-426 circuloPonteiro.y
+425     circulo.@SCRATCH1
+425     circuloMenor.@SCRATCH1
+426     circulo.@SCRATCH2
+426     circuloMenor.@SCRATCH2
+427-42A circuloPonteiro.x
+427     circulo.@SCRATCH3
+427     circuloMenor.@SCRATCH3
+428     circulo.@SCRATCH4
+428     circuloMenor.@SCRATCH4
+429     circulo.@SCRATCH5
+429     circuloMenor.@SCRATCH5
+42A     circulo.@SCRATCH6
+42A     circuloMenor.@SCRATCH6
+42B     @delay_ms1.P1
+42B-42E circuloNumerico.aC
+42B     circulo.@SCRATCH7
+42B     circuloMenor.@SCRATCH7
+42B     circuloPonteiro.@SCRATCH1
+42C-42F floor.x
+42C     circuloPonteiro.@SCRATCH2
+42D     circuloPonteiro.@SCRATCH3
+42E     circuloPonteiro.@SCRATCH4
+42F-432 circuloNumerico.bC
+42F     circuloPonteiro.@SCRATCH5
+430-433 CEIL_FLOOR.x
+430     circuloPonteiro.@SCRATCH6
+431     circuloPonteiro.@SCRATCH7
+432     circuloPonteiro.@SCRATCH8
+433-436 circuloNumerico.r
+433     circuloPonteiro.@SCRATCH9
+434     CEIL_FLOOR.n
+434     circuloPonteiro.@SCRATCH10
+435-438 CEIL_FLOOR.y
+435     circuloPonteiro.@SCRATCH11
+436     circuloPonteiro.@SCRATCH12
+437-438 circuloNumerico.i
+437     circuloPonteiro.@SCRATCH13
+438     circuloPonteiro.@SCRATCH14
+439     PE12864_line.x1
+439-43A circuloNumerico.val
+439-43C CEIL_FLOOR.res
+43A     PE12864_line.y1
+43B-43F circuloNumerico.chr
+43B     PE12864_line.x2
+43C     PE12864_line.y2
+43D     PE12864_line.COLOR
+43D-43E CEIL_FLOOR.l
+43E     PE12864_line.x
+43F     PE12864_line.y
+43F.0   CEIL_FLOOR.s
+440-443 circuloNumerico.y
+440     PE12864_line.addx
+440     CEIL_FLOOR.@SCRATCH1
+441     PE12864_line.addy
+441     CEIL_FLOOR.@SCRATCH2
+442     PE12864_line.dx
+442     CEIL_FLOOR.@SCRATCH3
+443     PE12864_line.dy
+443     CEIL_FLOOR.@SCRATCH4
+444-447 circuloNumerico.x
+444-445 PE12864_line.p
+446     PE12864_line.i
+447     PE12864_PutPixel.x
+447     PE12864_line.@SCRATCH1
+448     @MUL88.P1
+448-449 @PRINTF_LU_563.P2
+448     PE12864_PutPixel.y
+448-449 @DIV1616.P1
+448     circuloNumerico.@SCRATCH1
+449     PE12864_PutPixel.COLOR
+449     @MUL88.P1
+449     circuloNumerico.@SCRATCH2
+44A     PE12864_TextXy.x
+44A     PE12864_PutPixel.BytePlot
+44A-44B @DIV1616.P1
+44A     circuloNumerico.@SCRATCH3
+44A     @PRINTF_LU_563.@SCRATCH1
+44B     PE12864_TextXy.y
+44B     PE12864_PutPixel.tempByte
+44B     circuloNumerico.@SCRATCH4
+44B     @PRINTF_LU_563.@SCRATCH2
+44C-44F @DIVFF.P1
+44C-44D PE12864_TextXy.cvar
+44C-44F sin.x
+44C     PE12864_PutPixel.@SCRATCH1
+44C     @DIV1616.@SCRATCH1
+44C     circuloNumerico.@SCRATCH5
+44C     @PRINTF_LU_563.@SCRATCH3
+44D     PE12864_PutPixel.@SCRATCH2
+44D     circuloNumerico.@SCRATCH6
+44D     @PRINTF_LU_563.@SCRATCH4
+44E     PE12864_TextXy.i
+44E     PE12864_PutPixel.@SCRATCH3
+44E     @PRINTF_LU_563.@SCRATCH5
+44F     PE12864_TextXy.loop
+44F     @PRINTF_LU_563.@SCRATCH6
+450-453 @DIVFF.P1
+450     PE12864_TextXy.c1
+450     sin.@SCRATCH1
+450     @PRINTF_LU_563.@SCRATCH7
+451     @SPRINTF.P1
+451     PE12864_TextXy.c2
+451     sin.@SCRATCH2
+452     PE12864_TextXy.chr
+452     sin.@SCRATCH3
+453     PE12864_Write_data.byte_data
+453-454 strlen.s
+453     sin.@SCRATCH4
+453     PE12864_TextXy.@SCRATCH1
+454     PE12864_Gotoxy.x
+454-455 @MUL1616.P1
+454-457 cos.x
+454     PE12864_Write_data.@SCRATCH1
+454     @DIVFF.@SCRATCH1
+454     PE12864_TextXy.@SCRATCH2
+455     PE12864_Gotoxy.y
+455-456 strlen.sc
+455     PE12864_Write_data.@SCRATCH2
+455     @DIVFF.@SCRATCH2
+455     PE12864_TextXy.@SCRATCH3
+456     PE12864_Gotoxy.OffsetChr
+456-457 @MUL1616.P1
+456     @DIVFF.@SCRATCH3
+457     PE12864_Gotoxy.@SCRATCH1
+457     @DIVFF.@SCRATCH4
+457     strlen.@SCRATCH1
+458-45B cos.y
+458     PE12864_Write_command.byte_command
+458     @MUL1616.@SCRATCH1
+458     PE12864_Gotoxy.@SCRATCH2
+458     @DIVFF.@SCRATCH5
+459     @DIV88.P1
+459     PE12864_SerialOut.byteDC
+459     @DIVFF.@SCRATCH6
+45A     @DIV88.P1
+45A     PE12864_SerialOut.i
+45B     PE12864_SerialOut.@SCRATCH1
+45B     @DIV88.@SCRATCH1
+45C-45F cos.t
+460-463 cos.t2
+464     cos.quad
+465     cos.i
+466-469 cos.frac
+46A-481 cos.p
+482-485 @FLT.P1
+482-485 @SFTOI.P2
+482     cos.@SCRATCH1
+483     cos.@SCRATCH2
+484     cos.@SCRATCH3
+485     cos.@SCRATCH4
+486-489 @MULFF.P1
+486-487 @ITOF.P2
+486-489 @FLT.P3
+486-489 @ADDFF.P4
+48A-48D @MULFF.P1
+48A-48D @ADDFF.P2
+48A     @FLT.@SCRATCH1
+48B     @FLT.@SCRATCH2
+48E     @MULFF.@SCRATCH1
+48E     @ADDFF.@SCRATCH1
+48F     @MULFF.@SCRATCH2
+48F     @ADDFF.@SCRATCH2
+490     @MULFF.@SCRATCH3
+490     @ADDFF.@SCRATCH3
+491     @ADDFF.@SCRATCH4
+492     @ADDFF.@SCRATCH5
+493     @ADDFF.@SCRATCH6
+494     @ADDFF.@SCRATCH7
+495     @ADDFF.@SCRATCH8
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE1-FE2 @READ_PACKED_MEMORY.P1
+FE1-FE2 @WRITE_PACKED_MEMORY.P2
+FE9-FEA @READ_PACKED_MEMORY.P1
+FE9-FEA @WRITE_PROGRAM_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P3
+FE9-FEA @WRITE_PACKED_MEMORY.P4
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P1
+FF6-FF8 @READ_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0200  @delay_ms1
+0004  TEXT
+0114  TEXT2
+03E8  PE12864_InitLcd
+022A  PE12864_SerialOut
+0260  PE12864_Write_command
+032E  PE12864_Write_data
+030C  @MUL1616
+037C  clear_screen
+0298  PE12864_Gotoxy
+026C  @DIV88
+11AA  PE12864_PutPixel
+2018  @MUL88
+2066  PE12864_line
+0E2A  CEIL_FLOOR
+0992  @FLT
+0A0C  @SFTOI
+0490  @ITOF
+04C6  @MULFF
+071A  @ADDFF
+1190  floor
+05BC  @DIVFF
+0A48  cos
+0DDE  sin
+1970  strlen
+1848  @DIV1616
+1248  circulo
+1546  circuloMenor
+2212  circuloPonteiro
+1BC2  circuloNumerico
+1890  @SPRINTF
+18B2  @PRINTF_LU_563
+19AC  PE12864_TextXy
+2DE2  relogioAnalogico
+2E86  MAIN
+2E86  @cinit
+0136  StrtoulGO
+0136  StrtolGO
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\ELETRONICA\PROJETOS PIC CCS\LCD PE12864LRF-004-H\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\18F4550.h
+    DriverPE12864LRF.c
+    C:\Program Files\PICC\drivers\math.h
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+    C:\Program Files\PICC\drivers\stdlib.h
+
+Units:
+    D:\ELETRONICA\PROJETOS PIC CCS\LCD PE12864LRF-004-H\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

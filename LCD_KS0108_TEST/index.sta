@@ -1,0 +1,46 @@
+
+ROM used: 123 (6%)
+          123 (6%) including unused fragments
+
+          0 Average locations per line
+          2 Average locations per statement
+
+RAM used: 5 (2%) at main() level
+          11 (5%) worst case
+
+Stack used: 2 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   12     4   6  index.c
+  224     0   0  C:\Program Files\PICC\devices\16f628A.h
+  324    63  94  KS0108.c
+----- -----
+  560    67 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     70  57   1   280  2.8  KS0108_init
+ Inline        4   313  4.2  KS0108_fill
+0     35  28   1   186  1.4  KS0108_write
+0     14  11   0    54  1.5  MAIN
+
+Program metrics:
+    Functions               4
+    Statements              67
+    Comments                208
+    Volume (V)              1148
+    Difficilty (D)          10.0
+    Effort to implement (E) 11457
+    Time to implement (T)   11 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   3
+    Maintainability (MI)    47
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-007FF   119  1925  
+
+
+

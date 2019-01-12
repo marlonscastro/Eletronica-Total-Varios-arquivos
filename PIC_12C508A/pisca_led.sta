@@ -1,0 +1,42 @@
+
+ROM used: 39 (8%)
+          39 (8%) including unused fragments
+
+          0 Average locations per line
+          6 Average locations per statement
+
+RAM used: 4 (16%) at main() level
+          5 (20%) worst case
+
+Stack used: 1 worst case (out of 2 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   21     7 100  pisca_led.c
+   99     0   0  C:\Arquivos de programas\PICC\devices\12C508A.h
+----- -----
+  120     7 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     18  46   1             @delay_ms1
+0     21  54   1   125  2.2  main
+
+Program metrics:
+    Functions               1
+    Statements              7
+    Comments                33
+    Volume (V)              127
+    Difficilty (D)          2.0
+    Effort to implement (E) 259
+    Time to implement (T)   0 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   1
+    Maintainability (MI)    139
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-001FF    39  471  
+
+
+

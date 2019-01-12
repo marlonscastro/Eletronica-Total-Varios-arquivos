@@ -1,0 +1,90 @@
+CCS PCM C Compiler, Version 4.074, 10898               22-abr-10 00:58
+
+               Filename: programa.lst
+
+               ROM used: 53 words (1%)
+                         Largest free fragment is 2048
+               RAM used: 7 (2%) at main() level
+                         8 (2%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   019
+0003:  NOP
+.................... // primeiro exemplo 
+....................  
+.................... #include <16F876.h> 
+.................... //////// Standard Header file for the PIC16F876 device //////////////// 
+.................... #device PIC16F876 
+.................... #list 
+....................  
+.................... #use delay(clock=4000000) 
+0004:  MOVLW  22
+0005:  MOVWF  04
+0006:  BCF    03.7
+0007:  MOVF   00,W
+0008:  BTFSC  03.2
+0009:  GOTO   018
+000A:  MOVLW  01
+000B:  MOVWF  78
+000C:  CLRF   77
+000D:  DECFSZ 77,F
+000E:  GOTO   00D
+000F:  DECFSZ 78,F
+0010:  GOTO   00C
+0011:  MOVLW  4A
+0012:  MOVWF  77
+0013:  DECFSZ 77,F
+0014:  GOTO   013
+0015:  GOTO   016
+0016:  DECFSZ 00,F
+0017:  GOTO   00A
+0018:  RETLW  00
+....................  
+.................... //#use rs232(baud=19200, xmit=PIN_B2, rcv=PIN_B1) 
+.................... #FUSES NOWDT, PUT, XT                    
+....................  
+.................... void main() 
+.................... { 
+0019:  CLRF   04
+001A:  BCF    03.7
+001B:  MOVLW  1F
+001C:  ANDWF  03,F
+001D:  BSF    03.5
+001E:  BSF    1F.0
+001F:  BSF    1F.1
+0020:  BSF    1F.2
+0021:  BCF    1F.3
+....................    int tempo; 
+....................    tempo = 200; 
+0022:  MOVLW  C8
+0023:  BCF    03.5
+0024:  MOVWF  21
+....................    while (true){ 
+....................       output_high(pin_B5); 
+0025:  BSF    03.5
+0026:  BCF    06.5
+0027:  BCF    03.5
+0028:  BSF    06.5
+....................       delay_ms(tempo); 
+0029:  MOVF   21,W
+002A:  MOVWF  22
+002B:  CALL   004
+....................       output_low(pin_B5); 
+002C:  BSF    03.5
+002D:  BCF    06.5
+002E:  BCF    03.5
+002F:  BCF    06.5
+....................       delay_ms(tempo); 
+0030:  MOVF   21,W
+0031:  MOVWF  22
+0032:  CALL   004
+....................    } 
+0033:  GOTO   025
+.................... } 
+0034:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F71   XT NOWDT PUT NOPROTECT BROWNOUT NOLVP NOCPD NOWRT NODEBUG

@@ -1,0 +1,478 @@
+CCS PCM C Compiler, Version 4.114, 93478236               28-mar-14 11:19
+
+               Filename: F:\12F683 93C56\main.lst
+
+               ROM used: 332 words (16%)
+                         Largest free fragment is 1716
+               RAM used: 6 (5%) at main() level
+                         12 (9%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  01
+0001:  MOVWF  0A
+0002:  GOTO   102
+0003:  NOP
+.................... #include <12F683.h> 
+.................... //////// Standard Header file for the PIC12F683 device //////////////// 
+.................... #device PIC12F683 
+.................... #list 
+....................  
+.................... #FUSES NOWDT, INTRC_IO, NOPUT, NOMCLR, NOPROTECT, NOCPD, NOBROWNOUT, IESO, FCMEN 
+.................... #use delay(clock=4000000) 
+*
+00AB:  MOVLW  2C
+00AC:  MOVWF  04
+00AD:  MOVF   00,W
+00AE:  BTFSC  03.2
+00AF:  GOTO   0BE
+00B0:  MOVLW  01
+00B1:  MOVWF  21
+00B2:  CLRF   20
+00B3:  DECFSZ 20,F
+00B4:  GOTO   0B3
+00B5:  DECFSZ 21,F
+00B6:  GOTO   0B2
+00B7:  MOVLW  4A
+00B8:  MOVWF  20
+00B9:  DECFSZ 20,F
+00BA:  GOTO   0B9
+00BB:  GOTO   0BC
+00BC:  DECFSZ 00,F
+00BD:  GOTO   0B0
+.................... #use rs232(baud=9600,parity=N,xmit=PIN_A2,rcv=PIN_A3,bits=8,stream=PORT1) 
+*
+004F:  BSF    03.5
+0050:  BCF    05.2
+0051:  BCF    03.5
+0052:  BCF    05.2
+0053:  MOVLW  08
+0054:  MOVWF  21
+0055:  GOTO   056
+0056:  NOP
+0057:  BSF    21.7
+0058:  GOTO   067
+0059:  BCF    21.7
+005A:  RRF    27,F
+005B:  BTFSC  03.0
+005C:  BSF    05.2
+005D:  BTFSS  03.0
+005E:  BCF    05.2
+005F:  BSF    21.6
+0060:  GOTO   067
+0061:  BCF    21.6
+0062:  DECFSZ 21,F
+0063:  GOTO   05A
+0064:  GOTO   065
+0065:  NOP
+0066:  BSF    05.2
+0067:  MOVLW  1C
+0068:  MOVWF  04
+0069:  DECFSZ 04,F
+006A:  GOTO   069
+006B:  GOTO   06C
+006C:  BTFSC  21.7
+006D:  GOTO   059
+006E:  BTFSC  21.6
+006F:  GOTO   061
+0070:  RETURN
+....................  
+....................  
+.................... #include "9356.c" 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////   Library for a MicroChip 93C56 configured for a x8 org           //// 
+.................... ////                                                                   //// 
+.................... ////   init_ext_eeprom();    Call before the other functions are used  //// 
+.................... ////                                                                   //// 
+.................... ////   write_ext_eeprom(a, d);  Write the byte d to the address a      //// 
+.................... ////                                                                   //// 
+.................... ////   d = read_ext_eeprom(a);   Read the byte d from the address a    //// 
+.................... ////                                                                   //// 
+.................... ////   The main program may define eeprom_select, eeprom_di, eeprom_do //// 
+.................... ////   and eeprom_clk to override the defaults below.                  //// 
+.................... ////                                                                   //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////        (C) Copyright 1996,2003 Custom Computer Services           //// 
+.................... //// This source code may only be used by licensed users of the CCS C  //// 
+.................... //// compiler.  This source code may only be distributed to other      //// 
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
+.................... //// or distribution is permitted without written permission.          //// 
+.................... //// Derivative programs created using this software in object code    //// 
+.................... //// form are not restricted in any way.                               //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... #ifndef EEPROM_SELECT 
+....................  
+.................... //#if defined(__PCD__) 
+.................... #define EEPROM_SELECT PIN_A1 
+.................... #define EEPROM_CLK    PIN_A2 
+.................... #define EEPROM_DI     PIN_A4 
+.................... #define EEPROM_DO     PIN_A5 
+.................... /*#else 
+.................... #define EEPROM_SELECT PIN_B4 
+.................... #define EEPROM_CLK    PIN_B2 
+.................... #define EEPROM_DI     PIN_B1 
+.................... #define EEPROM_DO     PIN_B0 
+.................... #endif*/ 
+.................... #endif 
+....................  
+.................... #define EEPROM_ADDRESS BYTE 
+.................... #define EEPROM_SIZE    256 
+....................  
+.................... void init_ext_eeprom() { 
+....................    BYTE cmd[2]; 
+....................    BYTE i; 
+....................  
+....................    output_low(EEPROM_DI); 
+*
+000E:  BSF    03.5
+000F:  BCF    05.4
+0010:  BCF    03.5
+0011:  BCF    05.4
+....................    output_low(EEPROM_CLK); 
+0012:  BSF    03.5
+0013:  BCF    05.2
+0014:  BCF    03.5
+0015:  BCF    05.2
+....................    output_low(EEPROM_SELECT); 
+0016:  BSF    03.5
+0017:  BCF    05.1
+0018:  BCF    03.5
+0019:  BCF    05.1
+....................  
+....................    cmd[0]=0x80; 
+001A:  MOVLW  80
+001B:  MOVWF  26
+....................    cmd[1]=0x9; 
+001C:  MOVLW  09
+001D:  MOVWF  27
+....................  
+....................    for(i=1;i<=4;++i) 
+001E:  MOVLW  01
+001F:  MOVWF  28
+0020:  MOVF   28,W
+0021:  SUBLW  04
+0022:  BTFSS  03.0
+0023:  GOTO   029
+....................       shift_left(cmd,2,0); 
+0024:  BCF    03.0
+0025:  RLF    26,F
+0026:  RLF    27,F
+0027:  INCF   28,F
+0028:  GOTO   020
+....................    output_high(EEPROM_SELECT); 
+0029:  BSF    03.5
+002A:  BCF    05.1
+002B:  BCF    03.5
+002C:  BSF    05.1
+....................    for(i=1;i<=12;++i) { 
+002D:  MOVLW  01
+002E:  MOVWF  28
+002F:  MOVF   28,W
+0030:  SUBLW  0C
+0031:  BTFSS  03.0
+0032:  GOTO   046
+....................       output_bit(EEPROM_DI, shift_left(cmd,2,0)); 
+0033:  BCF    03.0
+0034:  RLF    26,F
+0035:  RLF    27,F
+0036:  BTFSC  03.0
+0037:  GOTO   03A
+0038:  BCF    05.4
+0039:  GOTO   03B
+003A:  BSF    05.4
+003B:  BSF    03.5
+003C:  BCF    05.4
+....................       output_high(EEPROM_CLK); 
+003D:  BCF    05.2
+003E:  BCF    03.5
+003F:  BSF    05.2
+....................       output_low(EEPROM_CLK); 
+0040:  BSF    03.5
+0041:  BCF    05.2
+0042:  BCF    03.5
+0043:  BCF    05.2
+....................    } 
+0044:  INCF   28,F
+0045:  GOTO   02F
+....................    output_low(EEPROM_DI); 
+0046:  BSF    03.5
+0047:  BCF    05.4
+0048:  BCF    03.5
+0049:  BCF    05.4
+....................    output_low(EEPROM_SELECT); 
+004A:  BSF    03.5
+004B:  BCF    05.1
+004C:  BCF    03.5
+004D:  BCF    05.1
+.................... } 
+004E:  GOTO   12D (RETURN)
+....................  
+....................  
+.................... void write_ext_eeprom(EEPROM_ADDRESS address, BYTE data) { 
+....................    BYTE cmd[3]; 
+....................    BYTE i; 
+....................  
+....................    cmd[0]=data; 
+*
+0071:  MOVF   27,W
+0072:  MOVWF  28
+....................    cmd[1]=address; 
+0073:  MOVF   26,W
+0074:  MOVWF  29
+....................    cmd[2]=0xa; 
+0075:  MOVLW  0A
+0076:  MOVWF  2A
+....................  
+....................    for(i=1;i<=4;++i) 
+0077:  MOVLW  01
+0078:  MOVWF  2B
+0079:  MOVF   2B,W
+007A:  SUBLW  04
+007B:  BTFSS  03.0
+007C:  GOTO   083
+....................       shift_left(cmd,3,0); 
+007D:  BCF    03.0
+007E:  RLF    28,F
+007F:  RLF    29,F
+0080:  RLF    2A,F
+0081:  INCF   2B,F
+0082:  GOTO   079
+....................    output_high(EEPROM_SELECT); 
+0083:  BSF    03.5
+0084:  BCF    05.1
+0085:  BCF    03.5
+0086:  BSF    05.1
+....................    for(i=1;i<=20;++i) { 
+0087:  MOVLW  01
+0088:  MOVWF  2B
+0089:  MOVF   2B,W
+008A:  SUBLW  14
+008B:  BTFSS  03.0
+008C:  GOTO   0A1
+....................       output_bit(EEPROM_DI, shift_left(cmd,3,0)); 
+008D:  BCF    03.0
+008E:  RLF    28,F
+008F:  RLF    29,F
+0090:  RLF    2A,F
+0091:  BTFSC  03.0
+0092:  GOTO   095
+0093:  BCF    05.4
+0094:  GOTO   096
+0095:  BSF    05.4
+0096:  BSF    03.5
+0097:  BCF    05.4
+....................       output_high(EEPROM_CLK); 
+0098:  BCF    05.2
+0099:  BCF    03.5
+009A:  BSF    05.2
+....................       output_low(EEPROM_CLK); 
+009B:  BSF    03.5
+009C:  BCF    05.2
+009D:  BCF    03.5
+009E:  BCF    05.2
+....................  
+....................    } 
+009F:  INCF   2B,F
+00A0:  GOTO   089
+....................    output_low(EEPROM_DI); 
+00A1:  BSF    03.5
+00A2:  BCF    05.4
+00A3:  BCF    03.5
+00A4:  BCF    05.4
+....................    output_low(EEPROM_SELECT); 
+00A5:  BSF    03.5
+00A6:  BCF    05.1
+00A7:  BCF    03.5
+00A8:  BCF    05.1
+....................    delay_ms(11); 
+00A9:  MOVLW  0B
+00AA:  MOVWF  2C
+.................... } 
+*
+00BE:  GOTO   13D (RETURN)
+....................  
+....................  
+.................... BYTE read_ext_eeprom(EEPROM_ADDRESS address) { 
+....................    BYTE cmd[3]; 
+....................    BYTE i,data; 
+....................  
+....................    cmd[0]=0; 
+00BF:  CLRF   27
+....................    cmd[1]=address; 
+00C0:  MOVF   26,W
+00C1:  MOVWF  28
+....................    cmd[2]=0xc; 
+00C2:  MOVLW  0C
+00C3:  MOVWF  29
+....................  
+....................    for(i=1;i<=4;++i) 
+00C4:  MOVLW  01
+00C5:  MOVWF  2A
+00C6:  MOVF   2A,W
+00C7:  SUBLW  04
+00C8:  BTFSS  03.0
+00C9:  GOTO   0D0
+....................       shift_left(cmd,3,0); 
+00CA:  BCF    03.0
+00CB:  RLF    27,F
+00CC:  RLF    28,F
+00CD:  RLF    29,F
+00CE:  INCF   2A,F
+00CF:  GOTO   0C6
+....................    output_high(EEPROM_SELECT); 
+00D0:  BSF    03.5
+00D1:  BCF    05.1
+00D2:  BCF    03.5
+00D3:  BSF    05.1
+....................    for(i=1;i<=20;++i) { 
+00D4:  MOVLW  01
+00D5:  MOVWF  2A
+00D6:  MOVF   2A,W
+00D7:  SUBLW  14
+00D8:  BTFSS  03.0
+00D9:  GOTO   0FB
+....................       output_bit(EEPROM_DI, shift_left(cmd,3,0)); 
+00DA:  BCF    03.0
+00DB:  RLF    27,F
+00DC:  RLF    28,F
+00DD:  RLF    29,F
+00DE:  BTFSC  03.0
+00DF:  GOTO   0E2
+00E0:  BCF    05.4
+00E1:  GOTO   0E3
+00E2:  BSF    05.4
+00E3:  BSF    03.5
+00E4:  BCF    05.4
+....................       output_high(EEPROM_CLK); 
+00E5:  BCF    05.2
+00E6:  BCF    03.5
+00E7:  BSF    05.2
+....................       output_low(EEPROM_CLK); 
+00E8:  BSF    03.5
+00E9:  BCF    05.2
+00EA:  BCF    03.5
+00EB:  BCF    05.2
+....................  
+....................       if(i>12) 
+00EC:  MOVF   2A,W
+00ED:  SUBLW  0C
+00EE:  BTFSC  03.0
+00EF:  GOTO   0F9
+....................          shift_left(&data,1,input(EEPROM_DO)); 
+00F0:  BSF    03.5
+00F1:  BSF    05.5
+00F2:  BCF    03.5
+00F3:  BTFSC  05.5
+00F4:  GOTO   0F7
+00F5:  BCF    03.0
+00F6:  GOTO   0F8
+00F7:  BSF    03.0
+00F8:  RLF    2B,F
+....................    } 
+00F9:  INCF   2A,F
+00FA:  GOTO   0D6
+....................    output_low(EEPROM_SELECT); 
+00FB:  BSF    03.5
+00FC:  BCF    05.1
+00FD:  BCF    03.5
+00FE:  BCF    05.1
+....................    return(data); 
+00FF:  MOVF   2B,W
+0100:  MOVWF  21
+.................... } 
+0101:  GOTO   140 (RETURN)
+....................  
+....................  
+.................... void main(){ 
+0102:  CLRF   04
+0103:  MOVLW  1F
+0104:  ANDWF  03,F
+0105:  MOVLW  61
+0106:  BSF    03.5
+0107:  MOVWF  0F
+0108:  MOVF   0F,W
+0109:  BCF    05.2
+010A:  BCF    03.5
+010B:  BSF    05.2
+010C:  BCF    1F.6
+010D:  BSF    03.5
+010E:  BCF    1F.0
+010F:  BCF    1F.1
+0110:  BCF    1F.2
+0111:  BCF    1F.3
+0112:  MOVLW  07
+0113:  BCF    03.5
+0114:  MOVWF  19
+....................    char chr; 
+....................      
+....................    setup_adc_ports(NO_ANALOGS); 
+0115:  BCF    1F.6
+0116:  BSF    03.5
+0117:  BCF    1F.0
+0118:  BCF    1F.1
+0119:  BCF    1F.2
+011A:  BCF    1F.3
+....................    setup_adc(ADC_OFF); 
+011B:  BCF    03.5
+011C:  BCF    1F.0
+....................    setup_vref(FALSE); 
+011D:  BSF    03.5
+011E:  CLRF   19
+....................    setup_comparator(NC_NC); 
+011F:  MOVLW  07
+0120:  BCF    03.5
+0121:  MOVWF  19
+0122:  BSF    03.5
+0123:  MOVF   05,W
+0124:  MOVWF  05
+0125:  MOVLW  03
+0126:  BCF    03.5
+0127:  MOVWF  20
+0128:  DECFSZ 20,F
+0129:  GOTO   128
+012A:  MOVF   19,W
+012B:  BCF    0C.3
+....................    init_ext_eeprom(); 
+012C:  GOTO   00E
+....................    printf("teste"); 
+012D:  CLRF   26
+012E:  MOVF   26,W
+012F:  CALL   004
+0130:  INCF   26,F
+0131:  MOVWF  20
+0132:  MOVWF  27
+0133:  CALL   04F
+0134:  MOVLW  05
+0135:  SUBWF  26,W
+0136:  BTFSS  03.2
+0137:  GOTO   12E
+....................  
+....................    write_ext_eeprom(0x001, 'A');    
+0138:  MOVLW  01
+0139:  MOVWF  26
+013A:  MOVLW  41
+013B:  MOVWF  27
+013C:  GOTO   071
+....................    chr = read_ext_eeprom(0x0001); 
+013D:  MOVLW  01
+013E:  MOVWF  26
+013F:  GOTO   0BF
+0140:  MOVF   21,W
+0141:  MOVWF  25
+....................     
+....................    printf("\n\r%c", chr); 
+0142:  MOVLW  0A
+0143:  MOVWF  27
+0144:  CALL   04F
+0145:  MOVLW  0D
+0146:  MOVWF  27
+0147:  CALL   04F
+0148:  MOVF   25,W
+0149:  MOVWF  27
+014A:  CALL   04F
+....................     
+.................... } 
+014B:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3CD4   INTRC_IO NOWDT NOPUT NOMCLR NOPROTECT NOCPD NOBROWNOUT IESO FCMEN

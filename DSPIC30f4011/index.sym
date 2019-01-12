@@ -1,0 +1,46 @@
+W0      @SCRATCH
+W0      @delay_us1.P1
+W0 -W1  @DIV3232B.P2
+W0 -W1  @READ_PROGRAM_MEMORY.P3
+W0      @delay_ms1.P4
+W1      @SCRATCH
+W1      @READ_PACKED_MEMORY.P1
+W1      @WRITE_PACKED_MEMORY.P2
+W2      @READ_PACKED_MEMORY.P1
+W2 -W3  @DIV3232B.P2
+W2      @WRITE_PACKED_MEMORY.P3
+W2      @READ_PROGRAM_MEMORY.P4
+W3      @READ_PROGRAM_MEMORY.P1
+W3      @WRITE_PACKED_MEMORY.P2
+W3      @READ_PACKED_MEMORY.P3
+F80-FFF Stack
+
+ROM Allocation:
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\DSPIC30f4011\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\30F4011.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\DSPIC30f4011\index (main)
+
+Compiler Settings:
+    Processor:      DSPIC30F4011
+    Pointer Size:   16
+    ADC Range:      0-65535
+    Opt Level:      9
+    Short,Int,Long: SIGNED: 8,16,32
+    Float,Double:   32,64
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    Symbols:     index.sym

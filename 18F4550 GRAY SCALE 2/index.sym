@@ -1,0 +1,122 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     CurrentLine
+005     QuantChrLine
+006     OffsetX
+007-008 strtok.save
+009-050 MAIN.BLK
+051-098 MAIN.CNZ1
+099-0E0 MAIN.CNZ2
+0E1     MAIN.i
+0E2     MAIN.j
+0E3     MAIN.t
+0E4-0E5 MAIN.x
+0E6     MAIN.tempByte
+0E7     @delay_ms1.P1
+0E7     @PSTRINGCN_84.P2
+0E7-0E8 @PRINTF_LU_84.P3
+0E7     clear_screen.p
+0E7     MAIN.@SCRATCH1
+0E8     @delay_us1.P1
+0E8     clear_screen.c
+0E8     MAIN.@SCRATCH2
+0E8     @PSTRINGCN_84.@SCRATCH1
+0E9     @PRINTF_LU_84.@SCRATCH1
+0E9     @PSTRINGCN_84.@SCRATCH2
+0EA     @PRINTF_LU_84.@SCRATCH2
+0EB     @PRINTF_LU_84.@SCRATCH3
+0EC     @PRINTF_LU_84.@SCRATCH4
+0ED     @PRINTF_LU_84.@SCRATCH5
+0EE     @PRINTF_LU_84.@SCRATCH6
+0EF     @PRINTF_LU_84.@SCRATCH7
+0F0     HMF6598_Printchar.cvar
+0F1     HMF6598_Printchar.i
+0F2     newLine.@SCRATCH1
+0F2     HMF6598_Printchar.@SCRATCH1
+0F3     HMF6598_Write_data.byte_data
+0F3     HMF6598_Printchar.@SCRATCH2
+0F4     HMF6598_Gotoxy.x
+0F5     HMF6598_Gotoxy.y
+0F6     HMF6598_Gotoxy.OffsetChr
+0F7     HMF6598_Gotoxy.@SCRATCH1
+0F8     HMF6598_Write_command.byte_command
+0F8     HMF6598_Gotoxy.@SCRATCH2
+0F9     HMF6598_OutPort.byteDC
+0F9     @DIV88.P1
+0FA     @DIV88.P1
+0FB     @DIV88.@SCRATCH1
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE1-FE2 @READ_PACKED_MEMORY.P1
+FE1-FE2 @WRITE_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PROGRAM_MEMORY.P1
+FE9-FEA @READ_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PACKED_MEMORY.P3
+FE9-FEA @READ_PROGRAM_MEMORY.P4
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P1
+FF6-FF8 @READ_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0252  @delay_ms1
+020A  @delay_us1
+0004  TEXT
+0114  TEXT2
+0346  HMF6598_InitLcd
+022A  HMF6598_OutPort
+0246  HMF6598_Write_command
+02FE  HMF6598_Write_data
+03BE  newLine
+0316  clear_screen
+02A2  HMF6598_Gotoxy
+027A  @DIV88
+03E8  HMF6598_Printchar
+0582  MAIN
+0200  @const234
+04AE  @PRINTF_LU_84
+0562  @PSTRINGCN_84
+0582  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\18F4550 GRAY SCALE 2\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\18F4550.h
+    HMF6598SYH-PY.c
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\18F4550 GRAY SCALE 2\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

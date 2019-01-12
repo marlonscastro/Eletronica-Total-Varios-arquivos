@@ -1,0 +1,2422 @@
+CCS PCH C Compiler, Version 4.114, 93456895               20-mai-13 19:27
+
+               Filename: D:\PROGRAMAS\PROJETOS\NOKIA1100_1\index.lst
+
+               ROM used: 4662 bytes (14%)
+                         Largest free fragment is 28106
+               RAM used: 780 (38%) at main() level
+                         835 (41%) worst case
+               Stack:    6 locations
+
+*
+0000:  GOTO   0B52
+.................... #include <18F4550.h> 
+.................... //////// Standard Header file for the PIC18F4550 device //////////////// 
+.................... #device PIC18F4550 
+.................... #list 
+....................  
+.................... #device adc=8 
+.................... #use delay(clock=48000000) 
+*
+0200:  MOVLW  03
+0202:  MOVWF  FEA
+0204:  MOVLW  0C
+0206:  MOVWF  FE9
+0208:  MOVF   FEF,W
+020A:  BZ    0228
+020C:  MOVLW  0F
+020E:  MOVWF  01
+0210:  CLRF   00
+0212:  DECFSZ 00,F
+0214:  BRA    0212
+0216:  DECFSZ 01,F
+0218:  BRA    0210
+021A:  MOVLW  8F
+021C:  MOVWF  00
+021E:  DECFSZ 00,F
+0220:  BRA    021E
+0222:  NOP   
+0224:  DECFSZ FEF,F
+0226:  BRA    020C
+0228:  RETLW  00
+.................... #fuses HSPLL, PLL4, CPUDIV1, PUT, NOWDT, NOBROWNOUT, NOLVP 
+....................  
+.................... #include "driver1100.c" 
+.................... ////////////////////// 
+.................... ///    lcd1100.c 
+.................... /// 
+.................... ///    by Fatih GENC 
+.................... ///    fatihgenc81@hotmail.com 
+.................... ///    5/5/2011 
+.................... ////////////////////// 
+....................  
+.................... #define sclk   PIN_B3 
+.................... #define sda    PIN_B2 
+.................... #define cs     PIN_B1 
+.................... #define rst    PIN_B0 
+....................  
+.................... #define CMD      0 
+.................... #define DATA     1 
+....................  
+.................... #define lcd_WIDTH   96 
+....................  
+.................... #ifndef ON 
+.................... #define ON           1 
+.................... #endif 
+....................  
+.................... #ifndef OFF 
+.................... #define OFF          0 
+.................... #endif 
+....................  
+.................... void Lcd_Clear(void); 
+.................... void Lcd_Init(void); 
+.................... void Lcd_Write(int1 cd,unsigned char c); 
+.................... void Gotoxy(char x,char y); 
+.................... void lcd_pixel(unsigned char x,unsigned char y, int1 color); 
+.................... void lcd_line(int8 x1, int8 y1, int8 x2, int8 y2, int1 color); 
+.................... void lcd_circle(int8 x, int8 y, int8 radius, int1 fill, int1 color); 
+.................... void lcd_text57(int8 x, int8 y, char* textptr, int8 size, int1 color); 
+.................... void lcd_rect(int8 x1, int8 y1, int8 x2, int8 y2, int1 fill, int1 color); 
+....................  
+....................  
+.................... static int8 memory[96][8]; //LCD memory data 
+.................... static int8 XX,YY; 
+....................  
+....................  
+.................... // lookup table, here you can modify the font 
+.................... const int8 FONT[51][5] ={0x00, 0x00, 0x00, 0x00, 0x00, // SPACE 
+....................                          0x00, 0x00, 0x5F, 0x00, 0x00, // ! 
+....................                          0x00, 0x03, 0x00, 0x03, 0x00, // " 
+....................                          0x14, 0x3E, 0x14, 0x3E, 0x14, // # 
+....................                          0x24, 0x2A, 0x7F, 0x2A, 0x12, // $ 
+....................                          0x43, 0x33, 0x08, 0x66, 0x61, // % 
+....................                          0x36, 0x49, 0x55, 0x22, 0x50, // & 
+....................                          0x00, 0x05, 0x03, 0x00, 0x00, // ' 
+....................                          0x00, 0x1C, 0x22, 0x41, 0x00, // ( 
+....................                          0x00, 0x41, 0x22, 0x1C, 0x00, // ) 
+....................                          0x14, 0x08, 0x3E, 0x08, 0x14, // * 
+....................                          0x08, 0x08, 0x3E, 0x08, 0x08, // + 
+....................                          0x00, 0x50, 0x30, 0x00, 0x00, // , 
+....................                          0x08, 0x08, 0x08, 0x08, 0x08, // - 
+....................                          0x00, 0x60, 0x60, 0x00, 0x00, // . 
+....................                          0x20, 0x10, 0x08, 0x04, 0x02, // / 
+....................                          0x3E, 0x51, 0x49, 0x45, 0x3E, // 0 
+....................                          0x00, 0x04, 0x02, 0x7F, 0x00, // 1 
+....................                          0x42, 0x61, 0x51, 0x49, 0x46, // 2 
+....................                          0x22, 0x41, 0x49, 0x49, 0x36, // 3 
+....................                          0x18, 0x14, 0x12, 0x7F, 0x10, // 4 
+....................                          0x27, 0x45, 0x45, 0x45, 0x39, // 5 
+....................                          0x3E, 0x49, 0x49, 0x49, 0x32, // 6 
+....................                          0x01, 0x01, 0x71, 0x09, 0x07, // 7 
+....................                          0x36, 0x49, 0x49, 0x49, 0x36, // 8 
+....................                          0x26, 0x49, 0x49, 0x49, 0x3E, // 9 
+....................                          0x00, 0x36, 0x36, 0x00, 0x00, // : 
+....................                          0x00, 0x56, 0x36, 0x00, 0x00, // ; 
+....................                          0x08, 0x14, 0x22, 0x41, 0x00, // < 
+....................                          0x14, 0x14, 0x14, 0x14, 0x14, // = 
+....................                          0x00, 0x41, 0x22, 0x14, 0x08, // > 
+....................                          0x02, 0x01, 0x51, 0x09, 0x06, // ? 
+....................                          0x3E, 0x41, 0x59, 0x55, 0x5E, // @ 
+....................                          0x7E, 0x09, 0x09, 0x09, 0x7E, // A 
+....................                          0x7F, 0x49, 0x49, 0x49, 0x36, // B 
+....................                          0x3E, 0x41, 0x41, 0x41, 0x22, // C 
+....................                          0x7F, 0x41, 0x41, 0x41, 0x3E, // D 
+....................                          0x7F, 0x49, 0x49, 0x49, 0x41, // E 
+....................                          0x7F, 0x09, 0x09, 0x09, 0x01, // F 
+....................                          0x3E, 0x41, 0x41, 0x49, 0x3A, // G 
+....................                          0x7F, 0x08, 0x08, 0x08, 0x7F, // H 
+....................                          0x00, 0x41, 0x7F, 0x41, 0x00, // I 
+....................                          0x30, 0x40, 0x40, 0x40, 0x3F, // J 
+....................                          0x7F, 0x08, 0x14, 0x22, 0x41, // K 
+....................                          0x7F, 0x40, 0x40, 0x40, 0x40, // L 
+....................                          0x7F, 0x02, 0x0C, 0x02, 0x7F, // M 
+....................                          0x7F, 0x02, 0x04, 0x08, 0x7F, // N 
+....................                          0x3E, 0x41, 0x41, 0x41, 0x3E, // O 
+....................                          0x7F, 0x09, 0x09, 0x09, 0x06, // P 
+....................                          0x1E, 0x21, 0x21, 0x21, 0x5E, // Q 
+....................                          0x7F, 0x09, 0x09, 0x09, 0x76};// R 
+....................  
+.................... const int8 FONT2[44][5]={0x26, 0x49, 0x49, 0x49, 0x32, // S 
+....................                          0x01, 0x01, 0x7F, 0x01, 0x01, // T 
+....................                          0x3F, 0x40, 0x40, 0x40, 0x3F, // U 
+....................                          0x1F, 0x20, 0x40, 0x20, 0x1F, // V 
+....................                          0x7F, 0x20, 0x10, 0x20, 0x7F, // W 
+....................                          0x41, 0x22, 0x1C, 0x22, 0x41, // X 
+....................                          0x07, 0x08, 0x70, 0x08, 0x07, // Y 
+....................                          0x61, 0x51, 0x49, 0x45, 0x43, // Z 
+....................                          0x00, 0x7F, 0x41, 0x00, 0x00, // [ 
+....................                          0x02, 0x04, 0x08, 0x10, 0x20, // \ 
+....................                          0x00, 0x00, 0x41, 0x7F, 0x00, // ] 
+....................                          0x00, 0x07, 0x05, 0x07, 0x00, // ° (degree) 
+....................                          0x40, 0x40, 0x40, 0x40, 0x40, // _ 
+....................                          0x00, 0x01, 0x02, 0x04, 0x00, // ` 
+....................                          0x20, 0x54, 0x54, 0x54, 0x78, // a 
+....................                          0x7F, 0x44, 0x44, 0x44, 0x38, // b 
+....................                          0x38, 0x44, 0x44, 0x44, 0x44, // c 
+....................                          0x38, 0x44, 0x44, 0x44, 0x7F, // d 
+....................                          0x38, 0x54, 0x54, 0x54, 0x18, // e 
+....................                          0x04, 0x04, 0x7E, 0x05, 0x05, // f 
+....................                          0x08, 0x54, 0x54, 0x54, 0x3C, // g 
+....................                          0x7F, 0x08, 0x04, 0x04, 0x78, // h 
+....................                          0x00, 0x44, 0x7D, 0x40, 0x00, // i 
+....................                          0x20, 0x40, 0x44, 0x3D, 0x00, // j 
+....................                          0x7F, 0x10, 0x28, 0x44, 0x00, // k 
+....................                          0x00, 0x41, 0x7F, 0x40, 0x00, // l 
+....................                          0x7C, 0x04, 0x78, 0x04, 0x78, // m 
+....................                          0x7C, 0x08, 0x04, 0x04, 0x78, // n 
+....................                          0x38, 0x44, 0x44, 0x44, 0x38, // o 
+....................                          0x7C, 0x14, 0x14, 0x14, 0x08, // p 
+....................                          0x08, 0x14, 0x14, 0x14, 0x7C, // q 
+....................                          0x00, 0x7C, 0x08, 0x04, 0x04, // r 
+....................                          0x48, 0x54, 0x54, 0x54, 0x20, // s 
+....................                          0x04, 0x04, 0x3F, 0x44, 0x44, // t 
+....................                          0x3C, 0x40, 0x40, 0x20, 0x7C, // u 
+....................                          0x1C, 0x20, 0x40, 0x20, 0x1C, // v 
+....................                          0x3C, 0x40, 0x30, 0x40, 0x3C, // w 
+....................                          0x44, 0x28, 0x10, 0x28, 0x44, // x 
+....................                          0x0C, 0x50, 0x50, 0x50, 0x3C, // y 
+....................                          0x44, 0x64, 0x54, 0x4C, 0x44, // z 
+....................                          0x00, 0x08, 0x36, 0x41, 0x41, // { 
+....................                          0x00, 0x00, 0x7F, 0x00, 0x00, // | 
+....................                          0x41, 0x41, 0x36, 0x08, 0x00, // } 
+....................                          0x02, 0x01, 0x02, 0x04, 0x02};// ~ 
+.................... ///////////////////////////////////////////////////////////////////////// 
+....................  
+....................  
+.................... // clear LCD 
+.................... void Lcd_Clear(void){ 
+.................... unsigned int i; 
+.................... Lcd_Write(CMD,0x40); // Y = 0 
+*
+02D6:  MOVLB  3
+02D8:  CLRF   x3B
+02DA:  MOVLW  40
+02DC:  MOVWF  x3C
+02DE:  MOVLB  0
+02E0:  RCALL  024C
+.................... Lcd_Write(CMD,0xb0); 
+02E2:  MOVLB  3
+02E4:  CLRF   x3B
+02E6:  MOVLW  B0
+02E8:  MOVWF  x3C
+02EA:  MOVLB  0
+02EC:  RCALL  024C
+.................... Lcd_Write(CMD,0x10); // X = 0 
+02EE:  MOVLB  3
+02F0:  CLRF   x3B
+02F2:  MOVLW  10
+02F4:  MOVWF  x3C
+02F6:  MOVLB  0
+02F8:  RCALL  024C
+.................... Lcd_Write(CMD,0x0); 
+02FA:  MOVLB  3
+02FC:  CLRF   x3B
+02FE:  CLRF   x3C
+0300:  MOVLB  0
+0302:  RCALL  024C
+.................... Lcd_Write(CMD,0xae); // disable display; 
+0304:  MOVLB  3
+0306:  CLRF   x3B
+0308:  MOVLW  AE
+030A:  MOVWF  x3C
+030C:  MOVLB  0
+030E:  RCALL  024C
+.................... for(i=0;i<255;i++) 
+0310:  MOVLB  3
+0312:  CLRF   x0C
+0314:  INCFSZ x0C,W
+0316:  BRA    031A
+0318:  BRA    032A
+.................... Lcd_Write(DATA,0x00); 
+031A:  MOVLW  01
+031C:  MOVWF  x3B
+031E:  CLRF   x3C
+0320:  MOVLB  0
+0322:  RCALL  024C
+0324:  MOVLB  3
+0326:  INCF   x0C,F
+0328:  BRA    0314
+.................... for(i=0;i<255;i++) 
+032A:  CLRF   x0C
+032C:  INCFSZ x0C,W
+032E:  BRA    0332
+0330:  BRA    0342
+.................... Lcd_Write(DATA,0x00); 
+0332:  MOVLW  01
+0334:  MOVWF  x3B
+0336:  CLRF   x3C
+0338:  MOVLB  0
+033A:  RCALL  024C
+033C:  MOVLB  3
+033E:  INCF   x0C,F
+0340:  BRA    032C
+.................... for(i=0;i<255;i++) 
+0342:  CLRF   x0C
+0344:  INCFSZ x0C,W
+0346:  BRA    034A
+0348:  BRA    035A
+.................... Lcd_Write(DATA,0x00); 
+034A:  MOVLW  01
+034C:  MOVWF  x3B
+034E:  CLRF   x3C
+0350:  MOVLB  0
+0352:  RCALL  024C
+0354:  MOVLB  3
+0356:  INCF   x0C,F
+0358:  BRA    0344
+.................... for(i=0;i<99;i++) 
+035A:  CLRF   x0C
+035C:  MOVF   x0C,W
+035E:  SUBLW  62
+0360:  BNC   0372
+.................... Lcd_Write(DATA,0x00); 
+0362:  MOVLW  01
+0364:  MOVWF  x3B
+0366:  CLRF   x3C
+0368:  MOVLB  0
+036A:  RCALL  024C
+036C:  MOVLB  3
+036E:  INCF   x0C,F
+0370:  BRA    035C
+.................... Lcd_Write(CMD,0xaf); // enable display; 
+0372:  CLRF   x3B
+0374:  MOVLW  AF
+0376:  MOVWF  x3C
+0378:  MOVLB  0
+037A:  RCALL  024C
+.................... } 
+037C:  GOTO   0432 (RETURN)
+....................  
+.................... // Purpose:       Initialize the LCD. 
+.................... //                Call before using any other LCD function. 
+.................... void Lcd_Init(void){ 
+.................... output_low(cs); 
+0380:  BCF    F93.1
+0382:  BCF    F8A.1
+.................... output_low(rst); 
+0384:  BCF    F93.0
+0386:  BCF    F8A.0
+.................... delay_ms(5);         // 5mS so says the stop watch(less than 5ms will not work) 
+0388:  MOVLW  05
+038A:  MOVLB  3
+038C:  MOVWF  x0C
+038E:  MOVLB  0
+0390:  RCALL  0200
+.................... output_high(rst); 
+0392:  BCF    F93.0
+0394:  BSF    F8A.0
+.................... Lcd_Write(CMD,0x20); // write VOP register 
+0396:  MOVLB  3
+0398:  CLRF   x3B
+039A:  MOVLW  20
+039C:  MOVWF  x3C
+039E:  MOVLB  0
+03A0:  RCALL  024C
+.................... Lcd_Write(CMD,0x90); 
+03A2:  MOVLB  3
+03A4:  CLRF   x3B
+03A6:  MOVLW  90
+03A8:  MOVWF  x3C
+03AA:  MOVLB  0
+03AC:  RCALL  024C
+.................... Lcd_Write(CMD,0xA4); // all on/normal display 
+03AE:  MOVLB  3
+03B0:  CLRF   x3B
+03B2:  MOVLW  A4
+03B4:  MOVWF  x3C
+03B6:  MOVLB  0
+03B8:  RCALL  024C
+.................... Lcd_Write(CMD,0x2F); // Power control set(charge pump on/off) 
+03BA:  MOVLB  3
+03BC:  CLRF   x3B
+03BE:  MOVLW  2F
+03C0:  MOVWF  x3C
+03C2:  MOVLB  0
+03C4:  RCALL  024C
+.................... Lcd_Write(CMD,0x40); // set start row address = 0 
+03C6:  MOVLB  3
+03C8:  CLRF   x3B
+03CA:  MOVLW  40
+03CC:  MOVWF  x3C
+03CE:  MOVLB  0
+03D0:  RCALL  024C
+.................... Lcd_Write(CMD,0xb0); // set Y-address = 0 
+03D2:  MOVLB  3
+03D4:  CLRF   x3B
+03D6:  MOVLW  B0
+03D8:  MOVWF  x3C
+03DA:  MOVLB  0
+03DC:  RCALL  024C
+.................... Lcd_Write(CMD,0x10); // set X-address, upper 3 bits 
+03DE:  MOVLB  3
+03E0:  CLRF   x3B
+03E2:  MOVLW  10
+03E4:  MOVWF  x3C
+03E6:  MOVLB  0
+03E8:  RCALL  024C
+.................... Lcd_Write(CMD,0x0);  // set X-address, lower 4 bits 
+03EA:  MOVLB  3
+03EC:  CLRF   x3B
+03EE:  CLRF   x3C
+03F0:  MOVLB  0
+03F2:  RCALL  024C
+.................... Lcd_Write(CMD,0xC8); // mirror Y axis (about X axis) 
+03F4:  MOVLB  3
+03F6:  CLRF   x3B
+03F8:  MOVLW  C8
+03FA:  MOVWF  x3C
+03FC:  MOVLB  0
+03FE:  RCALL  024C
+.................... Lcd_Write(CMD,0xa1); // Invert screen in horizontal axis 
+0400:  MOVLB  3
+0402:  CLRF   x3B
+0404:  MOVLW  A1
+0406:  MOVWF  x3C
+0408:  MOVLB  0
+040A:  RCALL  024C
+.................... Lcd_Write(CMD,0xac); // set initial row (R0) of the display 
+040C:  MOVLB  3
+040E:  CLRF   x3B
+0410:  MOVLW  AC
+0412:  MOVWF  x3C
+0414:  MOVLB  0
+0416:  RCALL  024C
+.................... Lcd_Write(CMD,0x07); 
+0418:  MOVLB  3
+041A:  CLRF   x3B
+041C:  MOVLW  07
+041E:  MOVWF  x3C
+0420:  MOVLB  0
+0422:  RCALL  024C
+.................... //Lcd_Write(CMD,0xF9); // 
+.................... Lcd_Write(CMD,0xaf); // display ON/OFF 
+0424:  MOVLB  3
+0426:  CLRF   x3B
+0428:  MOVLW  AF
+042A:  MOVWF  x3C
+042C:  MOVLB  0
+042E:  RCALL  024C
+....................  
+.................... Lcd_Clear(); // clear LCD 
+0430:  BRA    02D6
+.................... Lcd_Write(CMD,0xa7); // invert display 
+0432:  MOVLB  3
+0434:  CLRF   x3B
+0436:  MOVLW  A7
+0438:  MOVWF  x3C
+043A:  MOVLB  0
+043C:  RCALL  024C
+.................... delay_ms(100);        
+043E:  MOVLW  64
+0440:  MOVLB  3
+0442:  MOVWF  x0C
+0444:  MOVLB  0
+0446:  RCALL  0200
+.................... Lcd_Write(CMD,0xa6); // normal display (non inverted) 
+0448:  MOVLB  3
+044A:  CLRF   x3B
+044C:  MOVLW  A6
+044E:  MOVWF  x3C
+0450:  MOVLB  0
+0452:  RCALL  024C
+.................... delay_ms(100);            
+0454:  MOVLW  64
+0456:  MOVLB  3
+0458:  MOVWF  x0C
+045A:  MOVLB  0
+045C:  RCALL  0200
+.................... } 
+045E:  GOTO   1188 (RETURN)
+....................  
+.................... // Purpose:    Write a byte of data to lcd 
+.................... // Inputs:     c - the byte of data to write 
+.................... void Lcd_Write(int1 cd,unsigned char c){ 
+.................... int i; 
+....................    output_low(cs); 
+*
+024C:  BCF    F93.1
+024E:  BCF    F8A.1
+....................    output_low(sclk); 
+0250:  BCF    F93.3
+0252:  BCF    F8A.3
+....................    output_bit(sda,cd); 
+0254:  MOVLB  3
+0256:  MOVF   x3B,F
+0258:  BNZ   025E
+025A:  BCF    F8A.2
+025C:  BRA    0260
+025E:  BSF    F8A.2
+0260:  BCF    F93.2
+....................    output_high(sclk); 
+0262:  BCF    F93.3
+0264:  BSF    F8A.3
+....................  
+.................... if(cd==DATA) 
+0266:  DECFSZ x3B,W
+0268:  BRA    029E
+....................    { 
+....................    memory[XX][YY]= c; //write data to memory 
+026A:  CLRF   x3F
+026C:  MOVFF  304,33E
+0270:  CLRF   x41
+0272:  MOVLW  08
+0274:  MOVWF  x40
+0276:  MOVLB  0
+0278:  RCALL  022A
+027A:  MOVFF  01,33E
+027E:  MOVLB  3
+0280:  MOVF   x05,W
+0282:  ADDWF  01,W
+0284:  MOVWF  01
+0286:  MOVLW  00
+0288:  ADDWFC 02,W
+028A:  MOVWF  03
+028C:  MOVF   01,W
+028E:  ADDLW  04
+0290:  MOVWF  FE9
+0292:  MOVLW  00
+0294:  ADDWFC 03,W
+0296:  MOVWF  FEA
+0298:  MOVFF  33C,FEF
+....................    XX++; 
+029C:  INCF   x04,F
+....................    } 
+....................  
+.................... for(i=0;i<8;i++){ 
+029E:  CLRF   x3D
+02A0:  MOVF   x3D,W
+02A2:  SUBLW  07
+02A4:  BNC   02CE
+....................       output_low(sclk); 
+02A6:  BCF    F93.3
+02A8:  BCF    F8A.3
+....................          if((c & 0x80)) 
+02AA:  BTFSS  x3C.7
+02AC:  BRA    02B4
+....................             output_high(sda); 
+02AE:  BCF    F93.2
+02B0:  BSF    F8A.2
+....................          else 
+02B2:  BRA    02B8
+....................             output_low(sda); 
+02B4:  BCF    F93.2
+02B6:  BCF    F8A.2
+....................       output_high(sclk); 
+02B8:  BCF    F93.3
+02BA:  BSF    F8A.3
+....................       c <<= 1; 
+02BC:  BCF    FD8.0
+02BE:  RLCF   x3C,F
+....................      delay_us(10); 
+02C0:  MOVLW  27
+02C2:  MOVWF  00
+02C4:  DECFSZ 00,F
+02C6:  BRA    02C4
+02C8:  BRA    02CA
+....................             } 
+02CA:  INCF   x3D,F
+02CC:  BRA    02A0
+....................      output_high(cs); 
+02CE:  BCF    F93.1
+02D0:  BSF    F8A.1
+....................       
+....................  
+....................  } 
+02D2:  MOVLB  0
+02D4:  RETLW  00
+....................  
+.................... void Gotoxy(char x,char y){ 
+....................       Lcd_Write(CMD,(0xB0|(y&0x0F)));       // Y axis initialisation: 0100 yyyy          
+*
+0462:  MOVLB  3
+0464:  MOVF   x39,W
+0466:  ANDLW  0F
+0468:  IORLW  B0
+046A:  MOVWF  x3A
+046C:  CLRF   x3B
+046E:  MOVWF  x3C
+0470:  MOVLB  0
+0472:  RCALL  024C
+....................       Lcd_Write(CMD,(0x00|(x&0x0F)));       // X axis initialisation: 0000 xxxx ( x3 x2 x1 x0) 
+0474:  MOVLB  3
+0476:  MOVF   x38,W
+0478:  ANDLW  0F
+047A:  MOVWF  x3A
+047C:  CLRF   x3B
+047E:  MOVWF  x3C
+0480:  MOVLB  0
+0482:  RCALL  024C
+....................       Lcd_Write(CMD,(0x10|((x>>4)&0x07))); // X axis initialisation: 0010 0xxx  ( x6 x5 x4) 
+0484:  MOVLB  3
+0486:  SWAPF  x38,W
+0488:  MOVWF  00
+048A:  MOVLW  0F
+048C:  ANDWF  00,F
+048E:  MOVF   00,W
+0490:  ANDLW  07
+0492:  IORLW  10
+0494:  MOVWF  x3A
+0496:  CLRF   x3B
+0498:  MOVWF  x3C
+049A:  MOVLB  0
+049C:  RCALL  024C
+....................  
+.................... } 
+049E:  GOTO   04C4 (RETURN)
+....................  
+.................... // Purpose:    Turn a pixel on a graphic LCD on or off 
+.................... // Inputs:     1) x - the x coordinate of the pixel 
+.................... //             2) y - the y coordinate of the pixel 
+.................... //             3) color - ON or OFF 
+.................... void lcd_pixel(unsigned char x,unsigned char y, int1 color){ 
+04A2:  MOVLW  01
+04A4:  MOVLB  3
+04A6:  MOVWF  x35
+....................    char aux[8]; 
+....................    char i,o; 
+....................    char c=1; 
+....................    char index; 
+....................    int8 temp; 
+....................     
+....................    XX=x; 
+04A8:  MOVFF  328,304
+....................    YY=y/8; 
+04AC:  RRCF   x29,W
+04AE:  MOVWF  x05
+04B0:  RRCF   x05,F
+04B2:  RRCF   x05,F
+04B4:  MOVLW  1F
+04B6:  ANDWF  x05,F
+....................  
+....................       Gotoxy(x,YY);            
+04B8:  MOVFF  328,338
+04BC:  MOVFF  305,339
+04C0:  MOVLB  0
+04C2:  BRA    0462
+....................       temp=memory[x][YY]; 
+04C4:  MOVLB  3
+04C6:  CLRF   x3F
+04C8:  MOVFF  328,33E
+04CC:  CLRF   x41
+04CE:  MOVLW  08
+04D0:  MOVWF  x40
+04D2:  MOVLB  0
+04D4:  RCALL  022A
+04D6:  MOVFF  01,338
+04DA:  MOVLB  3
+04DC:  MOVF   x05,W
+04DE:  ADDWF  01,W
+04E0:  MOVWF  01
+04E2:  MOVLW  00
+04E4:  ADDWFC 02,W
+04E6:  MOVWF  03
+04E8:  MOVF   01,W
+04EA:  ADDLW  04
+04EC:  MOVWF  FE9
+04EE:  MOVLW  00
+04F0:  ADDWFC 03,W
+04F2:  MOVWF  FEA
+04F4:  MOVFF  FEF,337
+....................       
+....................       if(color == ON) 
+04F8:  DECFSZ x2A,W
+04FA:  BRA    051A
+....................          bit_set(temp, y%8);        // Turn the pixel on 
+04FC:  MOVF   x29,W
+04FE:  ANDLW  07
+0500:  MOVWF  x38
+0502:  MOVLW  01
+0504:  MOVWF  00
+0506:  MOVF   x38,W
+0508:  MOVWF  01
+050A:  BZ    0514
+050C:  BCF    FD8.0
+050E:  RLCF   00,F
+0510:  DECFSZ 01,F
+0512:  BRA    050C
+0514:  MOVF   00,W
+0516:  IORWF  x37,F
+....................          else                          // or 
+0518:  BRA    0538
+....................          bit_clear(temp, y%8);      // turn the pixel off 
+051A:  MOVF   x29,W
+051C:  ANDLW  07
+051E:  MOVWF  x38
+0520:  MOVLW  01
+0522:  MOVWF  00
+0524:  MOVF   x38,W
+0526:  MOVWF  01
+0528:  BZ    0532
+052A:  BCF    FD8.0
+052C:  RLCF   00,F
+052E:  DECFSZ 01,F
+0530:  BRA    052A
+0532:  MOVF   00,W
+0534:  XORLW  FF
+0536:  ANDWF  x37,F
+....................       
+....................       Lcd_Write(DATA,temp);    
+0538:  MOVLW  01
+053A:  MOVWF  x3B
+053C:  MOVFF  337,33C
+0540:  MOVLB  0
+0542:  RCALL  024C
+.................... } 
+0544:  RETLW  00
+....................  
+.................... ///////////////////////////////////////////////////////////////////////// 
+.................... // Purpose:       Draw a line on a nokia 1100 LCD 
+.................... //                line drawing algorithm 
+.................... // Inputs:        (x1, y1) - the start coordinate 
+.................... //                (x2, y2) - the end coordinate 
+.................... //                color - ON or OFF 
+.................... // Dependencies:  glcd_pixel() 
+.................... ///////////////////////////////////////////////////////////////////////// 
+.................... void lcd_line(int8 x1, int8 y1, int8 x2, int8 y2, int1 color) 
+.................... { 
+0546:  MOVLW  01
+0548:  MOVLB  3
+054A:  MOVWF  x21
+054C:  MOVWF  x22
+054E:  CLRF   x27
+....................    int16        dy, dx; 
+....................    signed int8  addx=1, addy=1; 
+....................    signed int16 P, diff; 
+....................  
+....................    int8 i=0; 
+....................    dx = abs((signed int8)(x2 - x1)); 
+0550:  MOVF   x18,W
+0552:  SUBWF  x1A,W
+0554:  MOVWF  x28
+0556:  MOVF   x28,W
+0558:  BTFSS  x28.7
+055A:  BRA    0562
+055C:  MOVLW  00
+055E:  BSF    FD8.0
+0560:  SUBFWB x28,W
+0562:  CLRF   03
+0564:  MOVWF  x1F
+0566:  MOVFF  03,320
+....................    dy = abs((signed int8)(y2 - y1)); 
+056A:  MOVF   x19,W
+056C:  SUBWF  x1B,W
+056E:  MOVWF  x28
+0570:  MOVF   x28,W
+0572:  BTFSS  x28.7
+0574:  BRA    057C
+0576:  MOVLW  00
+0578:  BSF    FD8.0
+057A:  SUBFWB x28,W
+057C:  CLRF   03
+057E:  MOVWF  x1D
+0580:  MOVFF  03,31E
+....................  
+....................  
+....................    if(x1 > x2) 
+0584:  MOVF   x18,W
+0586:  SUBWF  x1A,W
+0588:  BC    058E
+....................       addx = -1; 
+058A:  MOVLW  FF
+058C:  MOVWF  x21
+....................    if(y1 > y2) 
+058E:  MOVF   x19,W
+0590:  SUBWF  x1B,W
+0592:  BC    0598
+....................       addy = -1; 
+0594:  MOVLW  FF
+0596:  MOVWF  x22
+....................  
+....................    if(dx >= dy) 
+0598:  MOVF   x1E,W
+059A:  SUBWF  x20,W
+059C:  BNC   0614
+059E:  BNZ   05A6
+05A0:  MOVF   x1D,W
+05A2:  SUBWF  x1F,W
+05A4:  BNC   0614
+....................    { 
+....................       dy *= 2; 
+05A6:  BCF    FD8.0
+05A8:  RLCF   x1D,F
+05AA:  RLCF   x1E,F
+....................       P = dy - dx; 
+05AC:  MOVF   x1F,W
+05AE:  SUBWF  x1D,W
+05B0:  MOVWF  00
+05B2:  MOVF   x20,W
+05B4:  SUBWFB x1E,W
+05B6:  MOVFF  00,323
+05BA:  MOVWF  x24
+....................       diff = P - dx; 
+05BC:  MOVF   x1F,W
+05BE:  SUBWF  x23,W
+05C0:  MOVWF  x25
+05C2:  MOVF   x20,W
+05C4:  SUBWFB x24,W
+05C6:  MOVWF  x26
+....................  
+....................       for(; i<=dx; ++i) 
+05C8:  MOVF   x20,F
+05CA:  BNZ   05D2
+05CC:  MOVF   x27,W
+05CE:  SUBWF  x1F,W
+05D0:  BNC   0612
+....................       { 
+....................          lcd_pixel(x1, y1, color); 
+05D2:  MOVFF  318,328
+05D6:  MOVFF  319,329
+05DA:  MOVFF  31C,32A
+05DE:  MOVLB  0
+05E0:  RCALL  04A2
+....................  
+....................          if(P < 0) 
+05E2:  MOVLB  3
+05E4:  BTFSC  x24.7
+05E6:  BRA    05EA
+05E8:  BRA    05FA
+....................          { 
+....................             P  += dy; 
+05EA:  MOVF   x1D,W
+05EC:  ADDWF  x23,F
+05EE:  MOVF   x1E,W
+05F0:  ADDWFC x24,F
+....................             x1 += addx; 
+05F2:  MOVF   x21,W
+05F4:  ADDWF  x18,W
+05F6:  MOVWF  x18
+....................          } 
+....................          else 
+05F8:  BRA    060E
+....................          { 
+....................             P  += diff; 
+05FA:  MOVF   x25,W
+05FC:  ADDWF  x23,F
+05FE:  MOVF   x26,W
+0600:  ADDWFC x24,F
+....................             x1 += addx; 
+0602:  MOVF   x21,W
+0604:  ADDWF  x18,W
+0606:  MOVWF  x18
+....................             y1 += addy; 
+0608:  MOVF   x22,W
+060A:  ADDWF  x19,W
+060C:  MOVWF  x19
+....................          } 
+....................       } 
+060E:  INCF   x27,F
+0610:  BRA    05C8
+....................    } 
+....................    else 
+0612:  BRA    0680
+....................    { 
+....................       dx *= 2; 
+0614:  BCF    FD8.0
+0616:  RLCF   x1F,F
+0618:  RLCF   x20,F
+....................       P = dx - dy; 
+061A:  MOVF   x1D,W
+061C:  SUBWF  x1F,W
+061E:  MOVWF  00
+0620:  MOVF   x1E,W
+0622:  SUBWFB x20,W
+0624:  MOVFF  00,323
+0628:  MOVWF  x24
+....................       diff = P - dy; 
+062A:  MOVF   x1D,W
+062C:  SUBWF  x23,W
+062E:  MOVWF  x25
+0630:  MOVF   x1E,W
+0632:  SUBWFB x24,W
+0634:  MOVWF  x26
+....................  
+....................       for(; i<=dy; ++i) 
+0636:  MOVF   x1E,F
+0638:  BNZ   0640
+063A:  MOVF   x27,W
+063C:  SUBWF  x1D,W
+063E:  BNC   0680
+....................       { 
+....................          lcd_pixel(x1, y1, color); 
+0640:  MOVFF  318,328
+0644:  MOVFF  319,329
+0648:  MOVFF  31C,32A
+064C:  MOVLB  0
+064E:  RCALL  04A2
+....................  
+....................          if(P < 0) 
+0650:  MOVLB  3
+0652:  BTFSC  x24.7
+0654:  BRA    0658
+0656:  BRA    0668
+....................          { 
+....................             P  += dx; 
+0658:  MOVF   x1F,W
+065A:  ADDWF  x23,F
+065C:  MOVF   x20,W
+065E:  ADDWFC x24,F
+....................             y1 += addy; 
+0660:  MOVF   x22,W
+0662:  ADDWF  x19,W
+0664:  MOVWF  x19
+....................          } 
+....................          else 
+0666:  BRA    067C
+....................          { 
+....................             P  += diff; 
+0668:  MOVF   x25,W
+066A:  ADDWF  x23,F
+066C:  MOVF   x26,W
+066E:  ADDWFC x24,F
+....................             x1 += addx; 
+0670:  MOVF   x21,W
+0672:  ADDWF  x18,W
+0674:  MOVWF  x18
+....................             y1 += addy; 
+0676:  MOVF   x22,W
+0678:  ADDWF  x19,W
+067A:  MOVWF  x19
+....................          } 
+....................       } 
+067C:  INCF   x27,F
+067E:  BRA    0636
+....................    } 
+.................... } 
+0680:  MOVLB  0
+0682:  RETLW  00
+....................  
+.................... ///////////////////////////////////////////////////////////////////////// 
+.................... // Purpose:       Draw a circle on a nokia 1100 LCD 
+.................... // Inputs:        (x,y) - the center of the circle 
+.................... //                radius - the radius of the circle 
+.................... //                fill - YES or NO 
+.................... //                color - ON or OFF 
+.................... ///////////////////////////////////////////////////////////////////////// 
+.................... void lcd_circle(int8 x, int8 y, int8 radius, int1 fill, int1 color) 
+.................... { 
+.................... signed int8  a, b, P; 
+....................  
+....................    a = 0; 
+*
+06D2:  MOVLB  3
+06D4:  CLRF   x11
+....................    b = radius; 
+06D6:  MOVFF  30E,312
+....................    P = 1 - radius; 
+06DA:  MOVLW  01
+06DC:  BSF    FD8.0
+06DE:  SUBFWB x0E,W
+06E0:  MOVWF  x13
+....................  
+....................    do 
+....................    { 
+....................       if(fill) 
+06E2:  MOVF   x0F,F
+06E4:  BZ    07A8
+....................       { 
+....................          lcd_line(x-a, y+b, x+a, y+b, color); 
+06E6:  MOVF   x11,W
+06E8:  SUBWF  x0C,W
+06EA:  MOVWF  x14
+06EC:  MOVF   x12,W
+06EE:  ADDWF  x0D,W
+06F0:  MOVWF  x15
+06F2:  MOVF   x11,W
+06F4:  ADDWF  x0C,W
+06F6:  MOVWF  x16
+06F8:  MOVF   x12,W
+06FA:  ADDWF  x0D,W
+06FC:  MOVWF  x17
+06FE:  MOVFF  314,318
+0702:  MOVFF  315,319
+0706:  MOVFF  316,31A
+070A:  MOVWF  x1B
+070C:  MOVFF  310,31C
+0710:  MOVLB  0
+0712:  RCALL  0546
+....................          lcd_line(x-a, y-b, x+a, y-b, color); 
+0714:  MOVLB  3
+0716:  MOVF   x11,W
+0718:  SUBWF  x0C,W
+071A:  MOVWF  x14
+071C:  MOVF   x12,W
+071E:  SUBWF  x0D,W
+0720:  MOVWF  x15
+0722:  MOVF   x11,W
+0724:  ADDWF  x0C,W
+0726:  MOVWF  x16
+0728:  MOVF   x12,W
+072A:  SUBWF  x0D,W
+072C:  MOVWF  x17
+072E:  MOVFF  314,318
+0732:  MOVFF  315,319
+0736:  MOVFF  316,31A
+073A:  MOVWF  x1B
+073C:  MOVFF  310,31C
+0740:  MOVLB  0
+0742:  RCALL  0546
+....................          lcd_line(x-b, y+a, x+b, y+a, color); 
+0744:  MOVLB  3
+0746:  MOVF   x12,W
+0748:  SUBWF  x0C,W
+074A:  MOVWF  x14
+074C:  MOVF   x11,W
+074E:  ADDWF  x0D,W
+0750:  MOVWF  x15
+0752:  MOVF   x12,W
+0754:  ADDWF  x0C,W
+0756:  MOVWF  x16
+0758:  MOVF   x11,W
+075A:  ADDWF  x0D,W
+075C:  MOVWF  x17
+075E:  MOVFF  314,318
+0762:  MOVFF  315,319
+0766:  MOVFF  316,31A
+076A:  MOVWF  x1B
+076C:  MOVFF  310,31C
+0770:  MOVLB  0
+0772:  RCALL  0546
+....................          lcd_line(x-b, y-a, x+b, y-a, color); 
+0774:  MOVLB  3
+0776:  MOVF   x12,W
+0778:  SUBWF  x0C,W
+077A:  MOVWF  x14
+077C:  MOVF   x11,W
+077E:  SUBWF  x0D,W
+0780:  MOVWF  x15
+0782:  MOVF   x12,W
+0784:  ADDWF  x0C,W
+0786:  MOVWF  x16
+0788:  MOVF   x11,W
+078A:  SUBWF  x0D,W
+078C:  MOVWF  x17
+078E:  MOVFF  314,318
+0792:  MOVFF  315,319
+0796:  MOVFF  316,31A
+079A:  MOVWF  x1B
+079C:  MOVFF  310,31C
+07A0:  MOVLB  0
+07A2:  RCALL  0546
+....................       } 
+....................       else 
+07A4:  BRA    0886
+07A6:  MOVLB  3
+....................       { 
+....................          lcd_pixel(a+x, b+y, color); 
+07A8:  MOVF   x0C,W
+07AA:  ADDWF  x11,W
+07AC:  MOVWF  x14
+07AE:  MOVF   x0D,W
+07B0:  ADDWF  x12,W
+07B2:  MOVWF  x15
+07B4:  MOVFF  314,328
+07B8:  MOVWF  x29
+07BA:  MOVFF  310,32A
+07BE:  MOVLB  0
+07C0:  RCALL  04A2
+....................          lcd_pixel(b+x, a+y, color); 
+07C2:  MOVLB  3
+07C4:  MOVF   x0C,W
+07C6:  ADDWF  x12,W
+07C8:  MOVWF  x14
+07CA:  MOVF   x0D,W
+07CC:  ADDWF  x11,W
+07CE:  MOVWF  x15
+07D0:  MOVFF  314,328
+07D4:  MOVWF  x29
+07D6:  MOVFF  310,32A
+07DA:  MOVLB  0
+07DC:  RCALL  04A2
+....................          lcd_pixel(x-a, b+y, color); 
+07DE:  MOVLB  3
+07E0:  MOVF   x11,W
+07E2:  SUBWF  x0C,W
+07E4:  MOVWF  x14
+07E6:  MOVF   x0D,W
+07E8:  ADDWF  x12,W
+07EA:  MOVWF  x15
+07EC:  MOVFF  314,328
+07F0:  MOVWF  x29
+07F2:  MOVFF  310,32A
+07F6:  MOVLB  0
+07F8:  RCALL  04A2
+....................          lcd_pixel(x-b, a+y, color); 
+07FA:  MOVLB  3
+07FC:  MOVF   x12,W
+07FE:  SUBWF  x0C,W
+0800:  MOVWF  x14
+0802:  MOVF   x0D,W
+0804:  ADDWF  x11,W
+0806:  MOVWF  x15
+0808:  MOVFF  314,328
+080C:  MOVWF  x29
+080E:  MOVFF  310,32A
+0812:  MOVLB  0
+0814:  RCALL  04A2
+....................          lcd_pixel(b+x, y-a, color); 
+0816:  MOVLB  3
+0818:  MOVF   x0C,W
+081A:  ADDWF  x12,W
+081C:  MOVWF  x14
+081E:  MOVF   x11,W
+0820:  SUBWF  x0D,W
+0822:  MOVWF  x15
+0824:  MOVFF  314,328
+0828:  MOVWF  x29
+082A:  MOVFF  310,32A
+082E:  MOVLB  0
+0830:  RCALL  04A2
+....................          lcd_pixel(a+x, y-b, color); 
+0832:  MOVLB  3
+0834:  MOVF   x0C,W
+0836:  ADDWF  x11,W
+0838:  MOVWF  x14
+083A:  MOVF   x12,W
+083C:  SUBWF  x0D,W
+083E:  MOVWF  x15
+0840:  MOVFF  314,328
+0844:  MOVWF  x29
+0846:  MOVFF  310,32A
+084A:  MOVLB  0
+084C:  RCALL  04A2
+....................          lcd_pixel(x-a, y-b, color); 
+084E:  MOVLB  3
+0850:  MOVF   x11,W
+0852:  SUBWF  x0C,W
+0854:  MOVWF  x14
+0856:  MOVF   x12,W
+0858:  SUBWF  x0D,W
+085A:  MOVWF  x15
+085C:  MOVFF  314,328
+0860:  MOVWF  x29
+0862:  MOVFF  310,32A
+0866:  MOVLB  0
+0868:  RCALL  04A2
+....................          lcd_pixel(x-b, y-a, color); 
+086A:  MOVLB  3
+086C:  MOVF   x12,W
+086E:  SUBWF  x0C,W
+0870:  MOVWF  x14
+0872:  MOVF   x11,W
+0874:  SUBWF  x0D,W
+0876:  MOVWF  x15
+0878:  MOVFF  314,328
+087C:  MOVWF  x29
+087E:  MOVFF  310,32A
+0882:  MOVLB  0
+0884:  RCALL  04A2
+....................       } 
+....................  
+....................       if(P < 0) 
+0886:  MOVLB  3
+0888:  BTFSC  x13.7
+088A:  BRA    088E
+088C:  BRA    08AA
+....................          P += 3 + 2 * a++; 
+088E:  MOVF   x11,W
+0890:  INCF   x11,F
+0892:  MOVWF  x14
+0894:  MOVLW  02
+0896:  MOVWF  x15
+0898:  MOVFF  314,316
+089C:  MOVLB  0
+089E:  RCALL  0684
+08A0:  MOVF   01,W
+08A2:  ADDLW  03
+08A4:  MOVLB  3
+08A6:  ADDWF  x13,F
+....................       else 
+08A8:  BRA    08CC
+....................          P += 5 + 2 * (a++ - b--); 
+08AA:  MOVF   x11,W
+08AC:  INCF   x11,F
+08AE:  MOVWF  x14
+08B0:  MOVF   x12,W
+08B2:  DECF   x12,F
+08B4:  SUBWF  x14,W
+08B6:  MOVWF  x14
+08B8:  MOVLW  02
+08BA:  MOVWF  x15
+08BC:  MOVFF  314,316
+08C0:  MOVLB  0
+08C2:  RCALL  0684
+08C4:  MOVF   01,W
+08C6:  ADDLW  05
+08C8:  MOVLB  3
+08CA:  ADDWF  x13,F
+....................     } while(a <= b); 
+08CC:  MOVF   x11,W
+08CE:  XORLW  80
+08D0:  MOVWF  00
+08D2:  MOVF   x12,W
+08D4:  XORLW  80
+08D6:  SUBWF  00,W
+08D8:  BTFSC  FD8.2
+08DA:  BRA    06E2
+08DC:  BTFSS  FD8.0
+08DE:  BRA    06E2
+.................... } 
+08E0:  MOVLB  0
+08E2:  GOTO   11A2 (RETURN)
+....................  
+.................... ///////////////////////////////////////////////////////////////////////// 
+.................... // Purpose:       Write text on a nokia 1100 LCD 
+.................... // Inputs:        (x,y) - The upper left coordinate of the first letter 
+.................... //                textptr - A pointer to an array of text to display 
+.................... //                size - The size of the text: 1 = 5x7, 2 = 10x14, ... 
+.................... //                color - ON or OFF 
+.................... ///////////////////////////////////////////////////////////////////////// 
+.................... void lcd_text57(int8 x, int8 y, char* textptr, int8 size, int1 color) 
+.................... { 
+....................    int8 j, k, l, m;                       // Loop counters 
+....................    int8 pixelData[5];                     // Stores character data 
+....................  
+....................    for(; *textptr != '\0'; ++textptr, ++x)// Loop through the passed string 
+08E6:  MOVFF  30F,03
+08EA:  MOVLB  3
+08EC:  MOVFF  30E,FE9
+08F0:  MOVFF  30F,FEA
+08F4:  MOVF   FEF,F
+08F6:  BTFSC  FD8.2
+08F8:  BRA    0A8A
+....................    { 
+....................       if(*textptr < 'S') // Checks if the letter is in the first font array 
+08FA:  MOVFF  30F,03
+08FE:  MOVFF  30E,FE9
+0902:  MOVFF  30F,FEA
+0906:  MOVF   FEF,W
+0908:  SUBLW  52
+090A:  BNC   0950
+....................          memcpy(pixelData, FONT[*textptr - ' '], 5); 
+090C:  MOVFF  30F,03
+0910:  MOVFF  30E,FE9
+0914:  MOVFF  30F,FEA
+0918:  MOVLW  20
+091A:  SUBWF  FEF,W
+091C:  MULLW  05
+091E:  MOVF   FF3,W
+0920:  CLRF   03
+0922:  MOVWF  x1B
+0924:  MOVLW  03
+0926:  MOVWF  FEA
+0928:  MOVLW  16
+092A:  MOVWF  FE9
+092C:  CLRF   x1F
+092E:  MOVFF  31B,31E
+0932:  MOVLW  05
+0934:  MOVWF  01
+0936:  CLRF   FF7
+0938:  MOVF   x1B,W
+093A:  MOVLB  0
+093C:  CALL   0004
+0940:  TBLRD*-
+0942:  TBLRD*+
+0944:  MOVFF  FF5,FEE
+0948:  DECFSZ 01,F
+094A:  BRA    0942
+....................       else if(*textptr <= '~') // Check if the letter is in the second font array 
+094C:  BRA    09B2
+094E:  MOVLB  3
+0950:  MOVFF  30F,03
+0954:  MOVFF  30E,FE9
+0958:  MOVFF  30F,FEA
+095C:  MOVF   FEF,W
+095E:  SUBLW  7E
+0960:  BNC   09A6
+....................          memcpy(pixelData, FONT2[*textptr - 'S'], 5); 
+0962:  MOVFF  30F,03
+0966:  MOVFF  30E,FE9
+096A:  MOVFF  30F,FEA
+096E:  MOVLW  53
+0970:  SUBWF  FEF,W
+0972:  MULLW  05
+0974:  MOVF   FF3,W
+0976:  CLRF   03
+0978:  MOVWF  x1B
+097A:  MOVLW  03
+097C:  MOVWF  FEA
+097E:  MOVLW  16
+0980:  MOVWF  FE9
+0982:  CLRF   x1F
+0984:  MOVFF  31B,31E
+0988:  MOVLW  05
+098A:  MOVWF  01
+098C:  CLRF   FF7
+098E:  MOVF   x1B,W
+0990:  MOVLB  0
+0992:  CALL   0114
+0996:  TBLRD*-
+0998:  TBLRD*+
+099A:  MOVFF  FF5,FEE
+099E:  DECFSZ 01,F
+09A0:  BRA    0998
+....................       else 
+09A2:  BRA    09B2
+09A4:  MOVLB  3
+....................          memcpy(pixelData, FONT[0], 5);   // Default to space 
+09A6:  CLRF   x16
+09A8:  CLRF   x17
+09AA:  CLRF   x18
+09AC:  CLRF   x19
+09AE:  CLRF   x1A
+09B0:  MOVLB  0
+....................  
+....................       // Handles newline and carriage returns 
+....................       switch(*textptr) 
+....................       { 
+09B2:  MOVFF  30F,03
+09B6:  MOVLB  3
+09B8:  MOVF   x0E,W
+09BA:  MOVWF  FE9
+09BC:  MOVFF  03,FEA
+09C0:  MOVF   FEF,W
+09C2:  XORLW  0A
+09C4:  MOVLB  0
+09C6:  BZ    09CE
+09C8:  XORLW  07
+09CA:  BZ    09DE
+09CC:  BRA    09E4
+....................          case '\n': 
+....................             y += 7*size + 1; 
+09CE:  MOVLB  3
+09D0:  MOVF   x10,W
+09D2:  MULLW  07
+09D4:  MOVF   FF3,W
+09D6:  ADDLW  01
+09D8:  ADDWF  x0D,F
+....................             continue; 
+09DA:  BRA    0A7C
+09DC:  MOVLB  0
+....................          case '\r': 
+....................             x = 0; 
+09DE:  MOVLB  3
+09E0:  CLRF   x0C
+....................             continue; 
+09E2:  BRA    0A7C
+....................       } 
+....................  
+....................       if(x+5*size >= lcd_WIDTH)          // Performs character wrapping 
+09E4:  MOVLB  3
+09E6:  MOVF   x10,W
+09E8:  MULLW  05
+09EA:  MOVF   FF3,W
+09EC:  ADDWF  x0C,W
+09EE:  SUBLW  5F
+09F0:  BC    09FE
+....................       { 
+....................          x = 0;                           // Set x at far left position 
+09F2:  CLRF   x0C
+....................          y += 7*size + 1;                 // Set y at next position down 
+09F4:  MOVF   x10,W
+09F6:  MULLW  07
+09F8:  MOVF   FF3,W
+09FA:  ADDLW  01
+09FC:  ADDWF  x0D,F
+....................       } 
+....................       for(j=0; j<5; ++j, x+=size)         // Loop through character byte data 
+09FE:  CLRF   x12
+0A00:  MOVF   x12,W
+0A02:  SUBLW  04
+0A04:  BNC   0A7C
+....................       { 
+....................          for(k=0; k < 7; ++k)             // Loop through the vertical pixels 
+0A06:  CLRF   x13
+0A08:  MOVF   x13,W
+0A0A:  SUBLW  06
+0A0C:  BNC   0A74
+....................          { 
+....................             if(bit_test(pixelData[j], k)) // Check if the pixel should be set 
+0A0E:  CLRF   03
+0A10:  MOVF   x12,W
+0A12:  ADDLW  16
+0A14:  MOVWF  FE9
+0A16:  MOVLW  03
+0A18:  ADDWFC 03,W
+0A1A:  MOVWF  FEA
+0A1C:  MOVFF  FEF,31B
+0A20:  MOVFF  31B,00
+0A24:  MOVF   x13,W
+0A26:  MOVWF  01
+0A28:  BZ    0A32
+0A2A:  BCF    FD8.0
+0A2C:  RRCF   00,F
+0A2E:  DECFSZ 01,F
+0A30:  BRA    0A2A
+0A32:  BTFSS  00.0
+0A34:  BRA    0A70
+....................             { 
+....................                for(l=0; l < size; ++l)    // These two loops change the 
+0A36:  CLRF   x14
+0A38:  MOVF   x10,W
+0A3A:  SUBWF  x14,W
+0A3C:  BC    0A70
+....................                {                          // character's size 
+....................                   for(m=0; m < size; ++m) 
+0A3E:  CLRF   x15
+0A40:  MOVF   x10,W
+0A42:  SUBWF  x15,W
+0A44:  BC    0A6C
+....................                   { 
+....................                      lcd_pixel(x+m, y+k*size+l, color); // Draws the pixel 
+0A46:  MOVF   x15,W
+0A48:  ADDWF  x0C,W
+0A4A:  MOVWF  x1B
+0A4C:  MOVF   x13,W
+0A4E:  MULWF  x10
+0A50:  MOVF   FF3,W
+0A52:  ADDWF  x0D,W
+0A54:  ADDWF  x14,W
+0A56:  MOVWF  x1C
+0A58:  MOVFF  31B,328
+0A5C:  MOVWF  x29
+0A5E:  MOVFF  311,32A
+0A62:  MOVLB  0
+0A64:  RCALL  04A2
+....................                   } 
+0A66:  MOVLB  3
+0A68:  INCF   x15,F
+0A6A:  BRA    0A40
+....................                } 
+0A6C:  INCF   x14,F
+0A6E:  BRA    0A38
+....................             } 
+....................          } 
+0A70:  INCF   x13,F
+0A72:  BRA    0A08
+....................       } 
+0A74:  INCF   x12,F
+0A76:  MOVF   x10,W
+0A78:  ADDWF  x0C,F
+0A7A:  BRA    0A00
+....................    } 
+0A7C:  INCF   x0E,F
+0A7E:  BTFSC  FD8.2
+0A80:  INCF   x0F,F
+0A82:  INCF   x0C,F
+0A84:  MOVLB  0
+0A86:  BRA    08E6
+0A88:  MOVLB  3
+.................... } 
+0A8A:  MOVLB  0
+0A8C:  RETLW  00
+....................  
+.................... ///////////////////////////////////////////////////////////////////////// 
+.................... // Purpose:       Draw a rectangle on a nokia 1100 LCD 
+.................... // Inputs:        (x1, y1) - the start coordinate 
+.................... //                (x2, y2) - the end coordinate 
+.................... //                fill  - YES or NO 
+.................... //                color - ON or OFF 
+.................... // Dependencies:  glcd_pixel(), glcd_line() 
+.................... ///////////////////////////////////////////////////////////////////////// 
+.................... void lcd_rect(int8 x1, int8 y1, int8 x2, int8 y2, int1 fill, int1 color) 
+.................... { 
+....................    if(fill) 
+0A8E:  MOVLB  3
+0A90:  MOVF   x10,F
+0A92:  BZ    0AF0
+....................    { 
+....................       
+....................       int8  i, xmin, xmax, ymin, ymax; 
+....................  
+....................       if(x1 < x2)                            //  Find x min and max 
+0A94:  MOVF   x0E,W
+0A96:  SUBWF  x0C,W
+0A98:  BC    0AA4
+....................       { 
+....................          xmin = x1; 
+0A9A:  MOVFF  30C,313
+....................          xmax = x2; 
+0A9E:  MOVFF  30E,314
+....................       } 
+....................       else 
+0AA2:  BRA    0AAC
+....................       { 
+....................          xmin = x2; 
+0AA4:  MOVFF  30E,313
+....................          xmax = x1; 
+0AA8:  MOVFF  30C,314
+....................       } 
+....................  
+....................       if(y1 < y2)                            // Find the y min and max 
+0AAC:  MOVF   x0F,W
+0AAE:  SUBWF  x0D,W
+0AB0:  BC    0ABC
+....................       { 
+....................          ymin = y1; 
+0AB2:  MOVFF  30D,315
+....................          ymax = y2; 
+0AB6:  MOVFF  30F,316
+....................       } 
+....................       else 
+0ABA:  BRA    0AC4
+....................       { 
+....................          ymin = y2; 
+0ABC:  MOVFF  30F,315
+....................          ymax = y1; 
+0AC0:  MOVFF  30D,316
+....................       } 
+....................  
+....................       for(; xmin <= xmax; ++xmin) 
+0AC4:  MOVF   x13,W
+0AC6:  SUBWF  x14,W
+0AC8:  BNC   0AEE
+....................       { 
+....................          for(i=ymin; i<=ymax; ++i) 
+0ACA:  MOVFF  315,312
+0ACE:  MOVF   x12,W
+0AD0:  SUBWF  x16,W
+0AD2:  BNC   0AEA
+....................          { 
+....................             lcd_pixel(xmin, i, color); 
+0AD4:  MOVFF  313,328
+0AD8:  MOVFF  312,329
+0ADC:  MOVFF  311,32A
+0AE0:  MOVLB  0
+0AE2:  RCALL  04A2
+....................          } 
+0AE4:  MOVLB  3
+0AE6:  INCF   x12,F
+0AE8:  BRA    0ACE
+....................       } 
+0AEA:  INCF   x13,F
+0AEC:  BRA    0AC4
+....................    } 
+....................    else 
+0AEE:  BRA    0B4C
+....................    { 
+....................       lcd_line(x1, y1, x2, y1, color);      // Draw the 4 sides 
+0AF0:  MOVFF  30C,318
+0AF4:  MOVFF  30D,319
+0AF8:  MOVFF  30E,31A
+0AFC:  MOVFF  30D,31B
+0B00:  MOVFF  311,31C
+0B04:  MOVLB  0
+0B06:  RCALL  0546
+....................       lcd_line(x1, y2, x2, y2, color); 
+0B08:  MOVFF  30C,318
+0B0C:  MOVFF  30F,319
+0B10:  MOVFF  30E,31A
+0B14:  MOVFF  30F,31B
+0B18:  MOVFF  311,31C
+0B1C:  RCALL  0546
+....................       lcd_line(x1, y1, x1, y2, color); 
+0B1E:  MOVFF  30C,318
+0B22:  MOVFF  30D,319
+0B26:  MOVFF  30C,31A
+0B2A:  MOVFF  30F,31B
+0B2E:  MOVFF  311,31C
+0B32:  RCALL  0546
+....................       lcd_line(x2, y1, x2, y2, color); 
+0B34:  MOVFF  30E,318
+0B38:  MOVFF  30D,319
+0B3C:  MOVFF  30E,31A
+0B40:  MOVFF  30F,31B
+0B44:  MOVFF  311,31C
+0B48:  RCALL  0546
+0B4A:  MOVLB  3
+....................    } 
+.................... }  
+0B4C:  MOVLB  0
+0B4E:  GOTO   1214 (RETURN)
+....................  
+....................  
+.................... int8 i; 
+.................... char c[]="TEST"; 
+....................  
+.................... void main (void) { 
+0B52:  CLRF   FF8
+0B54:  BCF    FD0.7
+0B56:  CLRF   FEA
+0B58:  CLRF   FE9
+0B5A:  MOVF   FC1,W
+0B5C:  ANDLW  C0
+0B5E:  IORLW  0F
+0B60:  MOVWF  FC1
+0B62:  MOVLW  07
+0B64:  MOVWF  FB4
+0B66:  CLRF   04
+0B68:  CLRF   05
+0B6A:  CLRF   06
+0B6C:  CLRF   07
+0B6E:  CLRF   08
+0B70:  CLRF   09
+0B72:  CLRF   0A
+0B74:  CLRF   0B
+0B76:  CLRF   0C
+0B78:  CLRF   0D
+0B7A:  CLRF   0E
+0B7C:  CLRF   0F
+0B7E:  CLRF   10
+0B80:  CLRF   11
+0B82:  CLRF   12
+0B84:  CLRF   13
+0B86:  CLRF   14
+0B88:  CLRF   15
+0B8A:  CLRF   16
+0B8C:  CLRF   17
+0B8E:  CLRF   18
+0B90:  CLRF   19
+0B92:  CLRF   1A
+0B94:  CLRF   1B
+0B96:  CLRF   1C
+0B98:  CLRF   1D
+0B9A:  CLRF   1E
+0B9C:  CLRF   1F
+0B9E:  CLRF   20
+0BA0:  CLRF   21
+0BA2:  CLRF   22
+0BA4:  CLRF   23
+0BA6:  CLRF   24
+0BA8:  CLRF   25
+0BAA:  CLRF   26
+0BAC:  CLRF   27
+0BAE:  CLRF   28
+0BB0:  CLRF   29
+0BB2:  CLRF   2A
+0BB4:  CLRF   2B
+0BB6:  CLRF   2C
+0BB8:  CLRF   2D
+0BBA:  CLRF   2E
+0BBC:  CLRF   2F
+0BBE:  CLRF   30
+0BC0:  CLRF   31
+0BC2:  CLRF   32
+0BC4:  CLRF   33
+0BC6:  CLRF   34
+0BC8:  CLRF   35
+0BCA:  CLRF   36
+0BCC:  CLRF   37
+0BCE:  CLRF   38
+0BD0:  CLRF   39
+0BD2:  CLRF   3A
+0BD4:  CLRF   3B
+0BD6:  CLRF   3C
+0BD8:  CLRF   3D
+0BDA:  CLRF   3E
+0BDC:  CLRF   3F
+0BDE:  CLRF   40
+0BE0:  CLRF   41
+0BE2:  CLRF   42
+0BE4:  CLRF   43
+0BE6:  CLRF   44
+0BE8:  CLRF   45
+0BEA:  CLRF   46
+0BEC:  CLRF   47
+0BEE:  CLRF   48
+0BF0:  CLRF   49
+0BF2:  CLRF   4A
+0BF4:  CLRF   4B
+0BF6:  CLRF   4C
+0BF8:  CLRF   4D
+0BFA:  CLRF   4E
+0BFC:  CLRF   4F
+0BFE:  CLRF   50
+0C00:  CLRF   51
+0C02:  CLRF   52
+0C04:  CLRF   53
+0C06:  CLRF   54
+0C08:  CLRF   55
+0C0A:  CLRF   56
+0C0C:  CLRF   57
+0C0E:  CLRF   58
+0C10:  CLRF   59
+0C12:  CLRF   5A
+0C14:  CLRF   5B
+0C16:  CLRF   5C
+0C18:  CLRF   5D
+0C1A:  CLRF   5E
+0C1C:  CLRF   5F
+0C1E:  CLRF   x60
+0C20:  CLRF   x61
+0C22:  CLRF   x62
+0C24:  CLRF   x63
+0C26:  CLRF   x64
+0C28:  CLRF   x65
+0C2A:  CLRF   x66
+0C2C:  CLRF   x67
+0C2E:  CLRF   x68
+0C30:  CLRF   x69
+0C32:  CLRF   x6A
+0C34:  CLRF   x6B
+0C36:  CLRF   x6C
+0C38:  CLRF   x6D
+0C3A:  CLRF   x6E
+0C3C:  CLRF   x6F
+0C3E:  CLRF   x70
+0C40:  CLRF   x71
+0C42:  CLRF   x72
+0C44:  CLRF   x73
+0C46:  CLRF   x74
+0C48:  CLRF   x75
+0C4A:  CLRF   x76
+0C4C:  CLRF   x77
+0C4E:  CLRF   x78
+0C50:  CLRF   x79
+0C52:  CLRF   x7A
+0C54:  CLRF   x7B
+0C56:  CLRF   x7C
+0C58:  CLRF   x7D
+0C5A:  CLRF   x7E
+0C5C:  CLRF   x7F
+0C5E:  CLRF   x80
+0C60:  CLRF   x81
+0C62:  CLRF   x82
+0C64:  CLRF   x83
+0C66:  CLRF   x84
+0C68:  CLRF   x85
+0C6A:  CLRF   x86
+0C6C:  CLRF   x87
+0C6E:  CLRF   x88
+0C70:  CLRF   x89
+0C72:  CLRF   x8A
+0C74:  CLRF   x8B
+0C76:  CLRF   x8C
+0C78:  CLRF   x8D
+0C7A:  CLRF   x8E
+0C7C:  CLRF   x8F
+0C7E:  CLRF   x90
+0C80:  CLRF   x91
+0C82:  CLRF   x92
+0C84:  CLRF   x93
+0C86:  CLRF   x94
+0C88:  CLRF   x95
+0C8A:  CLRF   x96
+0C8C:  CLRF   x97
+0C8E:  CLRF   x98
+0C90:  CLRF   x99
+0C92:  CLRF   x9A
+0C94:  CLRF   x9B
+0C96:  CLRF   x9C
+0C98:  CLRF   x9D
+0C9A:  CLRF   x9E
+0C9C:  CLRF   x9F
+0C9E:  CLRF   xA0
+0CA0:  CLRF   xA1
+0CA2:  CLRF   xA2
+0CA4:  CLRF   xA3
+0CA6:  CLRF   xA4
+0CA8:  CLRF   xA5
+0CAA:  CLRF   xA6
+0CAC:  CLRF   xA7
+0CAE:  CLRF   xA8
+0CB0:  CLRF   xA9
+0CB2:  CLRF   xAA
+0CB4:  CLRF   xAB
+0CB6:  CLRF   xAC
+0CB8:  CLRF   xAD
+0CBA:  CLRF   xAE
+0CBC:  CLRF   xAF
+0CBE:  CLRF   xB0
+0CC0:  CLRF   xB1
+0CC2:  CLRF   xB2
+0CC4:  CLRF   xB3
+0CC6:  CLRF   xB4
+0CC8:  CLRF   xB5
+0CCA:  CLRF   xB6
+0CCC:  CLRF   xB7
+0CCE:  CLRF   xB8
+0CD0:  CLRF   xB9
+0CD2:  CLRF   xBA
+0CD4:  CLRF   xBB
+0CD6:  CLRF   xBC
+0CD8:  CLRF   xBD
+0CDA:  CLRF   xBE
+0CDC:  CLRF   xBF
+0CDE:  CLRF   xC0
+0CE0:  CLRF   xC1
+0CE2:  CLRF   xC2
+0CE4:  CLRF   xC3
+0CE6:  CLRF   xC4
+0CE8:  CLRF   xC5
+0CEA:  CLRF   xC6
+0CEC:  CLRF   xC7
+0CEE:  CLRF   xC8
+0CF0:  CLRF   xC9
+0CF2:  CLRF   xCA
+0CF4:  CLRF   xCB
+0CF6:  CLRF   xCC
+0CF8:  CLRF   xCD
+0CFA:  CLRF   xCE
+0CFC:  CLRF   xCF
+0CFE:  CLRF   xD0
+0D00:  CLRF   xD1
+0D02:  CLRF   xD2
+0D04:  CLRF   xD3
+0D06:  CLRF   xD4
+0D08:  CLRF   xD5
+0D0A:  CLRF   xD6
+0D0C:  CLRF   xD7
+0D0E:  CLRF   xD8
+0D10:  CLRF   xD9
+0D12:  CLRF   xDA
+0D14:  CLRF   xDB
+0D16:  CLRF   xDC
+0D18:  CLRF   xDD
+0D1A:  CLRF   xDE
+0D1C:  CLRF   xDF
+0D1E:  CLRF   xE0
+0D20:  CLRF   xE1
+0D22:  CLRF   xE2
+0D24:  CLRF   xE3
+0D26:  CLRF   xE4
+0D28:  CLRF   xE5
+0D2A:  CLRF   xE6
+0D2C:  CLRF   xE7
+0D2E:  CLRF   xE8
+0D30:  CLRF   xE9
+0D32:  CLRF   xEA
+0D34:  CLRF   xEB
+0D36:  CLRF   xEC
+0D38:  CLRF   xED
+0D3A:  CLRF   xEE
+0D3C:  CLRF   xEF
+0D3E:  CLRF   xF0
+0D40:  CLRF   xF1
+0D42:  CLRF   xF2
+0D44:  CLRF   xF3
+0D46:  CLRF   xF4
+0D48:  CLRF   xF5
+0D4A:  CLRF   xF6
+0D4C:  CLRF   xF7
+0D4E:  CLRF   xF8
+0D50:  CLRF   xF9
+0D52:  CLRF   xFA
+0D54:  CLRF   xFB
+0D56:  CLRF   xFC
+0D58:  CLRF   xFD
+0D5A:  CLRF   xFE
+0D5C:  CLRF   xFF
+0D5E:  MOVLB  1
+0D60:  CLRF   x00
+0D62:  CLRF   x01
+0D64:  CLRF   x02
+0D66:  CLRF   x03
+0D68:  CLRF   x04
+0D6A:  CLRF   x05
+0D6C:  CLRF   x06
+0D6E:  CLRF   x07
+0D70:  CLRF   x08
+0D72:  CLRF   x09
+0D74:  CLRF   x0A
+0D76:  CLRF   x0B
+0D78:  CLRF   x0C
+0D7A:  CLRF   x0D
+0D7C:  CLRF   x0E
+0D7E:  CLRF   x0F
+0D80:  CLRF   x10
+0D82:  CLRF   x11
+0D84:  CLRF   x12
+0D86:  CLRF   x13
+0D88:  CLRF   x14
+0D8A:  CLRF   x15
+0D8C:  CLRF   x16
+0D8E:  CLRF   x17
+0D90:  CLRF   x18
+0D92:  CLRF   x19
+0D94:  CLRF   x1A
+0D96:  CLRF   x1B
+0D98:  CLRF   x1C
+0D9A:  CLRF   x1D
+0D9C:  CLRF   x1E
+0D9E:  CLRF   x1F
+0DA0:  CLRF   x20
+0DA2:  CLRF   x21
+0DA4:  CLRF   x22
+0DA6:  CLRF   x23
+0DA8:  CLRF   x24
+0DAA:  CLRF   x25
+0DAC:  CLRF   x26
+0DAE:  CLRF   x27
+0DB0:  CLRF   x28
+0DB2:  CLRF   x29
+0DB4:  CLRF   x2A
+0DB6:  CLRF   x2B
+0DB8:  CLRF   x2C
+0DBA:  CLRF   x2D
+0DBC:  CLRF   x2E
+0DBE:  CLRF   x2F
+0DC0:  CLRF   x30
+0DC2:  CLRF   x31
+0DC4:  CLRF   x32
+0DC6:  CLRF   x33
+0DC8:  CLRF   x34
+0DCA:  CLRF   x35
+0DCC:  CLRF   x36
+0DCE:  CLRF   x37
+0DD0:  CLRF   x38
+0DD2:  CLRF   x39
+0DD4:  CLRF   x3A
+0DD6:  CLRF   x3B
+0DD8:  CLRF   x3C
+0DDA:  CLRF   x3D
+0DDC:  CLRF   x3E
+0DDE:  CLRF   x3F
+0DE0:  CLRF   x40
+0DE2:  CLRF   x41
+0DE4:  CLRF   x42
+0DE6:  CLRF   x43
+0DE8:  CLRF   x44
+0DEA:  CLRF   x45
+0DEC:  CLRF   x46
+0DEE:  CLRF   x47
+0DF0:  CLRF   x48
+0DF2:  CLRF   x49
+0DF4:  CLRF   x4A
+0DF6:  CLRF   x4B
+0DF8:  CLRF   x4C
+0DFA:  CLRF   x4D
+0DFC:  CLRF   x4E
+0DFE:  CLRF   x4F
+0E00:  CLRF   x50
+0E02:  CLRF   x51
+0E04:  CLRF   x52
+0E06:  CLRF   x53
+0E08:  CLRF   x54
+0E0A:  CLRF   x55
+0E0C:  CLRF   x56
+0E0E:  CLRF   x57
+0E10:  CLRF   x58
+0E12:  CLRF   x59
+0E14:  CLRF   x5A
+0E16:  CLRF   x5B
+0E18:  CLRF   x5C
+0E1A:  CLRF   x5D
+0E1C:  CLRF   x5E
+0E1E:  CLRF   x5F
+0E20:  CLRF   x60
+0E22:  CLRF   x61
+0E24:  CLRF   x62
+0E26:  CLRF   x63
+0E28:  CLRF   x64
+0E2A:  CLRF   x65
+0E2C:  CLRF   x66
+0E2E:  CLRF   x67
+0E30:  CLRF   x68
+0E32:  CLRF   x69
+0E34:  CLRF   x6A
+0E36:  CLRF   x6B
+0E38:  CLRF   x6C
+0E3A:  CLRF   x6D
+0E3C:  CLRF   x6E
+0E3E:  CLRF   x6F
+0E40:  CLRF   x70
+0E42:  CLRF   x71
+0E44:  CLRF   x72
+0E46:  CLRF   x73
+0E48:  CLRF   x74
+0E4A:  CLRF   x75
+0E4C:  CLRF   x76
+0E4E:  CLRF   x77
+0E50:  CLRF   x78
+0E52:  CLRF   x79
+0E54:  CLRF   x7A
+0E56:  CLRF   x7B
+0E58:  CLRF   x7C
+0E5A:  CLRF   x7D
+0E5C:  CLRF   x7E
+0E5E:  CLRF   x7F
+0E60:  CLRF   x80
+0E62:  CLRF   x81
+0E64:  CLRF   x82
+0E66:  CLRF   x83
+0E68:  CLRF   x84
+0E6A:  CLRF   x85
+0E6C:  CLRF   x86
+0E6E:  CLRF   x87
+0E70:  CLRF   x88
+0E72:  CLRF   x89
+0E74:  CLRF   x8A
+0E76:  CLRF   x8B
+0E78:  CLRF   x8C
+0E7A:  CLRF   x8D
+0E7C:  CLRF   x8E
+0E7E:  CLRF   x8F
+0E80:  CLRF   x90
+0E82:  CLRF   x91
+0E84:  CLRF   x92
+0E86:  CLRF   x93
+0E88:  CLRF   x94
+0E8A:  CLRF   x95
+0E8C:  CLRF   x96
+0E8E:  CLRF   x97
+0E90:  CLRF   x98
+0E92:  CLRF   x99
+0E94:  CLRF   x9A
+0E96:  CLRF   x9B
+0E98:  CLRF   x9C
+0E9A:  CLRF   x9D
+0E9C:  CLRF   x9E
+0E9E:  CLRF   x9F
+0EA0:  CLRF   xA0
+0EA2:  CLRF   xA1
+0EA4:  CLRF   xA2
+0EA6:  CLRF   xA3
+0EA8:  CLRF   xA4
+0EAA:  CLRF   xA5
+0EAC:  CLRF   xA6
+0EAE:  CLRF   xA7
+0EB0:  CLRF   xA8
+0EB2:  CLRF   xA9
+0EB4:  CLRF   xAA
+0EB6:  CLRF   xAB
+0EB8:  CLRF   xAC
+0EBA:  CLRF   xAD
+0EBC:  CLRF   xAE
+0EBE:  CLRF   xAF
+0EC0:  CLRF   xB0
+0EC2:  CLRF   xB1
+0EC4:  CLRF   xB2
+0EC6:  CLRF   xB3
+0EC8:  CLRF   xB4
+0ECA:  CLRF   xB5
+0ECC:  CLRF   xB6
+0ECE:  CLRF   xB7
+0ED0:  CLRF   xB8
+0ED2:  CLRF   xB9
+0ED4:  CLRF   xBA
+0ED6:  CLRF   xBB
+0ED8:  CLRF   xBC
+0EDA:  CLRF   xBD
+0EDC:  CLRF   xBE
+0EDE:  CLRF   xBF
+0EE0:  CLRF   xC0
+0EE2:  CLRF   xC1
+0EE4:  CLRF   xC2
+0EE6:  CLRF   xC3
+0EE8:  CLRF   xC4
+0EEA:  CLRF   xC5
+0EEC:  CLRF   xC6
+0EEE:  CLRF   xC7
+0EF0:  CLRF   xC8
+0EF2:  CLRF   xC9
+0EF4:  CLRF   xCA
+0EF6:  CLRF   xCB
+0EF8:  CLRF   xCC
+0EFA:  CLRF   xCD
+0EFC:  CLRF   xCE
+0EFE:  CLRF   xCF
+0F00:  CLRF   xD0
+0F02:  CLRF   xD1
+0F04:  CLRF   xD2
+0F06:  CLRF   xD3
+0F08:  CLRF   xD4
+0F0A:  CLRF   xD5
+0F0C:  CLRF   xD6
+0F0E:  CLRF   xD7
+0F10:  CLRF   xD8
+0F12:  CLRF   xD9
+0F14:  CLRF   xDA
+0F16:  CLRF   xDB
+0F18:  CLRF   xDC
+0F1A:  CLRF   xDD
+0F1C:  CLRF   xDE
+0F1E:  CLRF   xDF
+0F20:  CLRF   xE0
+0F22:  CLRF   xE1
+0F24:  CLRF   xE2
+0F26:  CLRF   xE3
+0F28:  CLRF   xE4
+0F2A:  CLRF   xE5
+0F2C:  CLRF   xE6
+0F2E:  CLRF   xE7
+0F30:  CLRF   xE8
+0F32:  CLRF   xE9
+0F34:  CLRF   xEA
+0F36:  CLRF   xEB
+0F38:  CLRF   xEC
+0F3A:  CLRF   xED
+0F3C:  CLRF   xEE
+0F3E:  CLRF   xEF
+0F40:  CLRF   xF0
+0F42:  CLRF   xF1
+0F44:  CLRF   xF2
+0F46:  CLRF   xF3
+0F48:  CLRF   xF4
+0F4A:  CLRF   xF5
+0F4C:  CLRF   xF6
+0F4E:  CLRF   xF7
+0F50:  CLRF   xF8
+0F52:  CLRF   xF9
+0F54:  CLRF   xFA
+0F56:  CLRF   xFB
+0F58:  CLRF   xFC
+0F5A:  CLRF   xFD
+0F5C:  CLRF   xFE
+0F5E:  CLRF   xFF
+0F60:  MOVLB  2
+0F62:  CLRF   x00
+0F64:  CLRF   x01
+0F66:  CLRF   x02
+0F68:  CLRF   x03
+0F6A:  CLRF   x04
+0F6C:  CLRF   x05
+0F6E:  CLRF   x06
+0F70:  CLRF   x07
+0F72:  CLRF   x08
+0F74:  CLRF   x09
+0F76:  CLRF   x0A
+0F78:  CLRF   x0B
+0F7A:  CLRF   x0C
+0F7C:  CLRF   x0D
+0F7E:  CLRF   x0E
+0F80:  CLRF   x0F
+0F82:  CLRF   x10
+0F84:  CLRF   x11
+0F86:  CLRF   x12
+0F88:  CLRF   x13
+0F8A:  CLRF   x14
+0F8C:  CLRF   x15
+0F8E:  CLRF   x16
+0F90:  CLRF   x17
+0F92:  CLRF   x18
+0F94:  CLRF   x19
+0F96:  CLRF   x1A
+0F98:  CLRF   x1B
+0F9A:  CLRF   x1C
+0F9C:  CLRF   x1D
+0F9E:  CLRF   x1E
+0FA0:  CLRF   x1F
+0FA2:  CLRF   x20
+0FA4:  CLRF   x21
+0FA6:  CLRF   x22
+0FA8:  CLRF   x23
+0FAA:  CLRF   x24
+0FAC:  CLRF   x25
+0FAE:  CLRF   x26
+0FB0:  CLRF   x27
+0FB2:  CLRF   x28
+0FB4:  CLRF   x29
+0FB6:  CLRF   x2A
+0FB8:  CLRF   x2B
+0FBA:  CLRF   x2C
+0FBC:  CLRF   x2D
+0FBE:  CLRF   x2E
+0FC0:  CLRF   x2F
+0FC2:  CLRF   x30
+0FC4:  CLRF   x31
+0FC6:  CLRF   x32
+0FC8:  CLRF   x33
+0FCA:  CLRF   x34
+0FCC:  CLRF   x35
+0FCE:  CLRF   x36
+0FD0:  CLRF   x37
+0FD2:  CLRF   x38
+0FD4:  CLRF   x39
+0FD6:  CLRF   x3A
+0FD8:  CLRF   x3B
+0FDA:  CLRF   x3C
+0FDC:  CLRF   x3D
+0FDE:  CLRF   x3E
+0FE0:  CLRF   x3F
+0FE2:  CLRF   x40
+0FE4:  CLRF   x41
+0FE6:  CLRF   x42
+0FE8:  CLRF   x43
+0FEA:  CLRF   x44
+0FEC:  CLRF   x45
+0FEE:  CLRF   x46
+0FF0:  CLRF   x47
+0FF2:  CLRF   x48
+0FF4:  CLRF   x49
+0FF6:  CLRF   x4A
+0FF8:  CLRF   x4B
+0FFA:  CLRF   x4C
+0FFC:  CLRF   x4D
+0FFE:  CLRF   x4E
+1000:  CLRF   x4F
+1002:  CLRF   x50
+1004:  CLRF   x51
+1006:  CLRF   x52
+1008:  CLRF   x53
+100A:  CLRF   x54
+100C:  CLRF   x55
+100E:  CLRF   x56
+1010:  CLRF   x57
+1012:  CLRF   x58
+1014:  CLRF   x59
+1016:  CLRF   x5A
+1018:  CLRF   x5B
+101A:  CLRF   x5C
+101C:  CLRF   x5D
+101E:  CLRF   x5E
+1020:  CLRF   x5F
+1022:  CLRF   x60
+1024:  CLRF   x61
+1026:  CLRF   x62
+1028:  CLRF   x63
+102A:  CLRF   x64
+102C:  CLRF   x65
+102E:  CLRF   x66
+1030:  CLRF   x67
+1032:  CLRF   x68
+1034:  CLRF   x69
+1036:  CLRF   x6A
+1038:  CLRF   x6B
+103A:  CLRF   x6C
+103C:  CLRF   x6D
+103E:  CLRF   x6E
+1040:  CLRF   x6F
+1042:  CLRF   x70
+1044:  CLRF   x71
+1046:  CLRF   x72
+1048:  CLRF   x73
+104A:  CLRF   x74
+104C:  CLRF   x75
+104E:  CLRF   x76
+1050:  CLRF   x77
+1052:  CLRF   x78
+1054:  CLRF   x79
+1056:  CLRF   x7A
+1058:  CLRF   x7B
+105A:  CLRF   x7C
+105C:  CLRF   x7D
+105E:  CLRF   x7E
+1060:  CLRF   x7F
+1062:  CLRF   x80
+1064:  CLRF   x81
+1066:  CLRF   x82
+1068:  CLRF   x83
+106A:  CLRF   x84
+106C:  CLRF   x85
+106E:  CLRF   x86
+1070:  CLRF   x87
+1072:  CLRF   x88
+1074:  CLRF   x89
+1076:  CLRF   x8A
+1078:  CLRF   x8B
+107A:  CLRF   x8C
+107C:  CLRF   x8D
+107E:  CLRF   x8E
+1080:  CLRF   x8F
+1082:  CLRF   x90
+1084:  CLRF   x91
+1086:  CLRF   x92
+1088:  CLRF   x93
+108A:  CLRF   x94
+108C:  CLRF   x95
+108E:  CLRF   x96
+1090:  CLRF   x97
+1092:  CLRF   x98
+1094:  CLRF   x99
+1096:  CLRF   x9A
+1098:  CLRF   x9B
+109A:  CLRF   x9C
+109C:  CLRF   x9D
+109E:  CLRF   x9E
+10A0:  CLRF   x9F
+10A2:  CLRF   xA0
+10A4:  CLRF   xA1
+10A6:  CLRF   xA2
+10A8:  CLRF   xA3
+10AA:  CLRF   xA4
+10AC:  CLRF   xA5
+10AE:  CLRF   xA6
+10B0:  CLRF   xA7
+10B2:  CLRF   xA8
+10B4:  CLRF   xA9
+10B6:  CLRF   xAA
+10B8:  CLRF   xAB
+10BA:  CLRF   xAC
+10BC:  CLRF   xAD
+10BE:  CLRF   xAE
+10C0:  CLRF   xAF
+10C2:  CLRF   xB0
+10C4:  CLRF   xB1
+10C6:  CLRF   xB2
+10C8:  CLRF   xB3
+10CA:  CLRF   xB4
+10CC:  CLRF   xB5
+10CE:  CLRF   xB6
+10D0:  CLRF   xB7
+10D2:  CLRF   xB8
+10D4:  CLRF   xB9
+10D6:  CLRF   xBA
+10D8:  CLRF   xBB
+10DA:  CLRF   xBC
+10DC:  CLRF   xBD
+10DE:  CLRF   xBE
+10E0:  CLRF   xBF
+10E2:  CLRF   xC0
+10E4:  CLRF   xC1
+10E6:  CLRF   xC2
+10E8:  CLRF   xC3
+10EA:  CLRF   xC4
+10EC:  CLRF   xC5
+10EE:  CLRF   xC6
+10F0:  CLRF   xC7
+10F2:  CLRF   xC8
+10F4:  CLRF   xC9
+10F6:  CLRF   xCA
+10F8:  CLRF   xCB
+10FA:  CLRF   xCC
+10FC:  CLRF   xCD
+10FE:  CLRF   xCE
+1100:  CLRF   xCF
+1102:  CLRF   xD0
+1104:  CLRF   xD1
+1106:  CLRF   xD2
+1108:  CLRF   xD3
+110A:  CLRF   xD4
+110C:  CLRF   xD5
+110E:  CLRF   xD6
+1110:  CLRF   xD7
+1112:  CLRF   xD8
+1114:  CLRF   xD9
+1116:  CLRF   xDA
+1118:  CLRF   xDB
+111A:  CLRF   xDC
+111C:  CLRF   xDD
+111E:  CLRF   xDE
+1120:  CLRF   xDF
+1122:  CLRF   xE0
+1124:  CLRF   xE1
+1126:  CLRF   xE2
+1128:  CLRF   xE3
+112A:  CLRF   xE4
+112C:  CLRF   xE5
+112E:  CLRF   xE6
+1130:  CLRF   xE7
+1132:  CLRF   xE8
+1134:  CLRF   xE9
+1136:  CLRF   xEA
+1138:  CLRF   xEB
+113A:  CLRF   xEC
+113C:  CLRF   xED
+113E:  CLRF   xEE
+1140:  CLRF   xEF
+1142:  CLRF   xF0
+1144:  CLRF   xF1
+1146:  CLRF   xF2
+1148:  CLRF   xF3
+114A:  CLRF   xF4
+114C:  CLRF   xF5
+114E:  CLRF   xF6
+1150:  CLRF   xF7
+1152:  CLRF   xF8
+1154:  CLRF   xF9
+1156:  CLRF   xFA
+1158:  CLRF   xFB
+115A:  CLRF   xFC
+115C:  CLRF   xFD
+115E:  CLRF   xFE
+1160:  CLRF   xFF
+1162:  MOVLB  3
+1164:  CLRF   x00
+1166:  CLRF   x01
+1168:  CLRF   x02
+116A:  CLRF   x03
+116C:  CLRF   x04
+116E:  CLRF   x05
+1170:  MOVLW  54
+1172:  MOVWF  x07
+1174:  MOVLW  45
+1176:  MOVWF  x08
+1178:  MOVLW  53
+117A:  MOVWF  x09
+117C:  MOVLW  54
+117E:  MOVWF  x0A
+1180:  CLRF   x0B
+....................    Lcd_Init(); 
+1182:  MOVLB  0
+1184:  GOTO   0380
+....................    lcd_circle(76, 38, 10, 0, 1); 
+1188:  MOVLW  4C
+118A:  MOVLB  3
+118C:  MOVWF  x0C
+118E:  MOVLW  26
+1190:  MOVWF  x0D
+1192:  MOVLW  0A
+1194:  MOVWF  x0E
+1196:  CLRF   x0F
+1198:  MOVLW  01
+119A:  MOVWF  x10
+119C:  MOVLB  0
+119E:  GOTO   06D2
+....................    lcd_line(95, 0, 0, 64, 1); 
+11A2:  MOVLW  5F
+11A4:  MOVLB  3
+11A6:  MOVWF  x18
+11A8:  CLRF   x19
+11AA:  CLRF   x1A
+11AC:  MOVLW  40
+11AE:  MOVWF  x1B
+11B0:  MOVLW  01
+11B2:  MOVWF  x1C
+11B4:  MOVLB  0
+11B6:  CALL   0546
+....................    lcd_text57(10, 15, c, 1, 1); 
+11BA:  MOVLW  0A
+11BC:  MOVLB  3
+11BE:  MOVWF  x0C
+11C0:  MOVLW  0F
+11C2:  MOVWF  x0D
+11C4:  MOVLW  03
+11C6:  MOVWF  x0F
+11C8:  MOVLW  07
+11CA:  MOVWF  x0E
+11CC:  MOVLW  01
+11CE:  MOVWF  x10
+11D0:  MOVWF  x11
+11D2:  MOVLB  0
+11D4:  CALL   08E6
+....................    lcd_text57(10, 25, c, 2, 1); 
+11D8:  MOVLW  0A
+11DA:  MOVLB  3
+11DC:  MOVWF  x0C
+11DE:  MOVLW  19
+11E0:  MOVWF  x0D
+11E2:  MOVLW  03
+11E4:  MOVWF  x0F
+11E6:  MOVLW  07
+11E8:  MOVWF  x0E
+11EA:  MOVLW  02
+11EC:  MOVWF  x10
+11EE:  MOVLW  01
+11F0:  MOVWF  x11
+11F2:  MOVLB  0
+11F4:  CALL   08E6
+....................    lcd_rect(60, 50, 92, 60, 1, 1); 
+11F8:  MOVLW  3C
+11FA:  MOVLB  3
+11FC:  MOVWF  x0C
+11FE:  MOVLW  32
+1200:  MOVWF  x0D
+1202:  MOVLW  5C
+1204:  MOVWF  x0E
+1206:  MOVLW  3C
+1208:  MOVWF  x0F
+120A:  MOVLW  01
+120C:  MOVWF  x10
+120E:  MOVWF  x11
+1210:  MOVLB  0
+1212:  BRA    0A8E
+....................    lcd_text57(65, 52, c, 1, 0); 
+1214:  MOVLW  41
+1216:  MOVLB  3
+1218:  MOVWF  x0C
+121A:  MOVLW  34
+121C:  MOVWF  x0D
+121E:  MOVLW  03
+1220:  MOVWF  x0F
+1222:  MOVLW  07
+1224:  MOVWF  x0E
+1226:  MOVLW  01
+1228:  MOVWF  x10
+122A:  CLRF   x11
+122C:  MOVLB  0
+122E:  CALL   08E6
+....................    while(true){ 
+....................    }; 
+1232:  BRA    1232
+.................... }  
+....................  
+1234:  SLEEP 
+
+Configuration Fuses:
+   Word  1: CE23   PLL4 CPUDIV1 USBDIV HSPLL FCMEN IESO
+   Word  2: 1E38   PUT NOBROWNOUT BORV20 VREGEN NOWDT WDT32768
+   Word  3: 8700   CCP2C1 PBADEN LPT1OSC MCLR
+   Word  4: 00A1   STVREN NOLVP ICPRT NOXINST NODEBUG
+   Word  5: C00F   NOPROTECT NOCPB NOCPD
+   Word  6: E00F   NOWRT NOWRTC NOWRTB NOWRTD
+   Word  7: 400F   NOEBTR NOEBTRB

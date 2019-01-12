@@ -1,0 +1,26 @@
+clonicee
+23/06/2008, 05:08:43
+quais display sao compativeis com o do 5200???
+
+sfilho.com
+23/06/2008, 05:21:37
+6111, 6060, 6101. deve-se tirar a fita preta que cobre o flex e dobra-lo(6111 não há nessecidade de virar o flex).
+
+joaopaulofrancis
+23/06/2008, 06:09:54
+Compativel também com:
+Nokia 6070
+Nokia 6085
+Nokia 6103
+Nokia 6125
+
+softmastercelulares
+27/06/2008, 08:35:45
+Para organizar mais um pouco, vamos fazer assim:
+Os display são compativeis dos seguintes modelos:
+6060,6070,6101,6103,6125,6085,5200,5300... e tambem com o 6111, só que temos que tirarum fita preta que cobre o cabo flat na frente do display, e vira-lo para traz.
+
+Tambem são compatíveis os modelos 2630,2660, e 2760
+
+
+1680 Classic / 2600 Classic / 2630 / 2660 / 2760 

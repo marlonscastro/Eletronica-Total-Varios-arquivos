@@ -1,0 +1,77 @@
+void SerialWrite(int byte_data);
+void Write_eeprom(int16 Addr, char data);
+int8 SerialRead(int16 Addr);
+int8 Read_eeprom(int16 Addr);
+void Communication(int1 Condition);
+
+#define SDA    pin_A0
+#define SCL    pin_A1
+
+#define START  1
+#define STOP   0
+
+void Communication(int1 Condition){
+   output_high(SCL);
+   if(Condition == START){
+      output_high(SDA);
+      output_low(SDA); 
+   }
+   else{
+      output_low(SDA);
+      output_high(SDA);      
+   }
+}
+int8 Read_eeprom(int16 Addr){
+   Communication(START);
+   SerialWrite(0xA0|(Addr<<8));   // 1010-0000 |   Write
+   SerialWrite(0x00|Addr);
+   SerialWrite(0xA1|(Addr<<8));   // 1010-0001 |   Read 
+   return SerialRead(Addr);
+   Communication(STOP);   
+}
+void write_eeprom(int16 Addr, char data){
+   Communication(START);
+   SerialWrite(0xA0|(Addr<<8));   // 1010-0000 | 
+   SerialWrite(0x00|Addr);
+   SerialWrite(data); 
+   Communication(STOP);   
+}
+int8 SerialRead(int16 Addr){
+   int i = 9;
+   byte byte_lido = 0x00;
+   while(i>0){
+      if((i==1) && (!input(SDA)))
+         i = 9;
+      else{
+         output_low(SCL); 
+         if((!input(SDA))==0)
+            byte_lido<<=1;
+         else{
+            byte_lido<<=1;
+            byte_lido|=0x01;
+         }
+         output_high(SCL);
+      }
+      i--;      
+   }
+   return byte_lido;
+}
+void SerialWrite(int byte_data){
+   int i = 9;
+   while(i>0){
+      if((i==1) && (input(SDA)))
+         i = 9;
+      else{
+         output_low(SCL); 
+        // delay_us(1);
+         if((byte_data&0x080)==0)
+            output_low(SDA);
+         else
+            output_high(SDA);
+         output_high(SCL);
+         //delay_us(1);      
+      }  
+      i--;
+   }
+}
+

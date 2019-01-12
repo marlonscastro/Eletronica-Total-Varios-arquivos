@@ -1,0 +1,5 @@
+>>> Warning 202 "index.c" Line 67(9,12): Variable never used:   vet
+>>> Warning 202 "index.c" Line 68(8,9): Variable never used:   x
+>>> Warning 202 "index.c" Line 68(11,16): Variable never used:   valor
+      Memory usage:   ROM=5%      RAM=8% - 13%
+      0 Errors,  3 Warnings.

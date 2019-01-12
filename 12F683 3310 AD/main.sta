@@ -1,0 +1,67 @@
+
+ROM used: 2044 (100%)
+          2044 (100%) including unused fragments
+
+          3 Average locations per line
+          13 Average locations per statement
+
+RAM used: 36 (28%) at main() level
+          77 (60%) worst case
+
+Stack used: 6 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   65    37  23  main.c
+  279     0   0  C:\Program Files (x86)\PICC\devices\12F683.h
+  363   125  77  driver3310.c
+----- -----
+  707   162 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     19   1   1             @delay_ms1
+0    247  12   0     5  1.0  @const65
+0    247  12   0    43  2.0  @const67
+0     57   3   0   243  1.4  nokia_init
+ Inline        0   114  3.4  nokia_clean_ddram
+0      8   0   1    42  1.1  nokia_write_command
+0      8   0   1    42  1.1  nokia_write_data
+0     31   2   3   274  5.8  nokia_write_dorc
+0     13   1   3   106  2.8  nokia_gotoxy
+0     60   3   1    37  1.7  nokia_printchar
+ Inline        2   547  7.6  table_to_nokialcd
+0     37   2   2             @MUL88
+0    534  26   4   403  5.5  TIMER0_isr
+ Inline        5     3  0.0  @DIV1616
+ Inline        2   388  3.1  @ITOF
+0    117   6  13             @MULFF
+ Inline       16             @ADDFF
+0      8   0   0    42  1.7  isr_ra
+0    171   8   0   563  3.3  MAIN
+0     21   1   3             @DIV88
+0    101   5   6             @PRINTF_D_83
+ Inline        5             @FTOSD
+0     78   4  13             @DIV3232
+0    229  11  11             @PRINTF_L32D_83FPFPF
+
+Program metrics:
+    Functions               15
+    Statements              162
+    Comments                228
+    Volume (V)              4737
+    Difficilty (D)          41.6
+    Effort to implement (E) 197227
+    Time to implement (T)   3 hours, 3 minutes
+    Est Delivered Bugs (B)  1
+    Cyclomatic Complexity   14
+    Maintainability (MI)    90
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-00039    54  0  
+0003A-007FF  1986  4  
+
+
+

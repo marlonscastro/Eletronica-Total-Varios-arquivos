@@ -1,0 +1,75 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028-04F chr
+050     cont
+051     i
+052.0   OK
+052.1   timeOut
+052.2   TimeOut_Timer.led
+053-054 TimeOut_Timer.conta
+055     MAIN.@SCRATCH1
+056     @delay_ms1.P1
+057     serial_isr.@SCRATCH1
+058     serial_isr.@SCRATCH2
+059     @PUTCHAR_2_.P1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+00E5  @delay_ms1
+0068  @PUTCHAR_2_
+004E  TimeOut_Timer
+008A  serial_isr
+0035  @const76
+00FA  MAIN
+0046  @const79
+00FA  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    E:\SkyDrive\Eletronica\PROJETOS PIC CCS\Interrupcao SERIAL 16F628A\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\16f628a.h
+
+Units:
+    E:\SkyDrive\Eletronica\PROJETOS PIC CCS\Interrupcao SERIAL 16F628A\index (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX8:       index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Debug/COFF:  index.cof
+    Project:     index.PJT
+    Call Tree:   index.tre
+    Statistics:  index.sta

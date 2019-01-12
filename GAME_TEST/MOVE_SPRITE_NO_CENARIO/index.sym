@@ -1,0 +1,110 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     CurrentLine
+005     QuantChrLine
+006     OffsetX
+007-008 strtok.save
+009     x_ext
+00A     y_ext
+00B     MAIN.i
+00C     MAIN.j
+00D     @delay_us1.P1
+00D     clear_screen.p
+00D     @delay_ms1.P1
+00D     MAIN.@SCRATCH1
+00E     putSprite.x
+00E     clear_screen.c
+00E     MAIN.@SCRATCH2
+00F     putSprite.y
+00F     MAIN.@SCRATCH3
+010     putSprite.i
+011     putSprite.Sp1
+012     putSprite.Sp2
+013     HMF6598_Write_data.byte_data
+013     putSprite.@SCRATCH1
+014     HMF6598_Gotoxy.x
+014     putSprite.@SCRATCH2
+015     HMF6598_Gotoxy.y
+015-016 @MUL1616.P1
+016     HMF6598_Gotoxy.OffsetChr
+017-018 @MUL1616.P1
+017     HMF6598_Gotoxy.@SCRATCH1
+018     HMF6598_Write_command.byte_command
+018     HMF6598_Gotoxy.@SCRATCH2
+019     @DIV88.P1
+019     HMF6598_OutPort.byteDC
+019     @MUL1616.@SCRATCH1
+01A     @DIV88.P1
+01B     @DIV88.@SCRATCH1
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2
+FBB     CCP_2_LOW
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @READ_PACKED_MEMORY.P1
+FE9-FEA @WRITE_PROGRAM_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P3
+FE9-FEA @WRITE_PACKED_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0472  @delay_ms1
+042A  @delay_us1
+0004  cenario
+0566  HMF6598_InitLcd
+044A  HMF6598_OutPort
+0466  HMF6598_Write_command
+051E  HMF6598_Write_data
+0536  clear_screen
+04C2  HMF6598_Gotoxy
+049A  @DIV88
+0412  bloco
+05FC  putSprite
+05DE  @MUL1616
+071A  MAIN
+071A  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\GAME_TEST\MOVE_SPRITE_NO_CENARIO\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\18F4550.h
+    HMF6598SYH-PY.c
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\GAME_TEST\MOVE_SPRITE_NO_CENARIO\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

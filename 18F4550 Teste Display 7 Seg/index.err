@@ -1,0 +1,5 @@
+>>> Warning 202 "index.c" Line 5(15,21): Variable never used:   tabela
+>>> Warning 202 "index.c" Line 20(8,13): Variable never used:   valor
+>>> Warning 202 "index.c" Line 21(17,23): Variable never used:   atraso
+      Memory usage:   ROM=0%      RAM=0% - 0%
+      0 Errors,  3 Warnings.

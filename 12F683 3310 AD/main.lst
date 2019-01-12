@@ -1,0 +1,1047 @@
+CCS PCM C Compiler, Version 4.114, 93483988               25-mar-14 20:28
+
+               Filename: H:\12F683 3310 AD\main.lst
+
+               ROM used: 2044 words (100%)
+                         Largest free fragment is 4
+               RAM used: 36 (28%) at main() level
+                         77 (60%) worst case
+               Stack:    6 worst case (4 in main + 2 for interrupts)
+
+*
+0000:  MOVLW  07
+0001:  MOVWF  0A
+0002:  GOTO   751
+0003:  NOP
+0004:  BTFSC  03.5
+0005:  GOTO   00A
+0006:  MOVWF  24
+0007:  SWAPF  03,W
+0008:  MOVWF  25
+0009:  GOTO   00F
+000A:  BCF    03.5
+000B:  MOVWF  24
+000C:  SWAPF  03,W
+000D:  MOVWF  25
+000E:  BSF    25.1
+000F:  MOVF   0A,W
+0010:  MOVWF  2B
+0011:  CLRF   0A
+0012:  BCF    03.7
+0013:  SWAPF  24,F
+0014:  MOVF   04,W
+0015:  MOVWF  26
+0016:  MOVF   20,W
+0017:  MOVWF  27
+0018:  MOVF   21,W
+0019:  MOVWF  28
+001A:  MOVF   22,W
+001B:  MOVWF  29
+001C:  MOVF   23,W
+001D:  MOVWF  2A
+001E:  BCF    03.5
+001F:  BTFSS  0B.5
+0020:  GOTO   023
+0021:  BTFSC  0B.2
+0022:  GOTO   29D
+0023:  BTFSS  0B.3
+0024:  GOTO   027
+0025:  BTFSC  0B.0
+0026:  GOTO   4B3
+0027:  MOVF   26,W
+0028:  MOVWF  04
+0029:  MOVF   27,W
+002A:  MOVWF  20
+002B:  MOVF   28,W
+002C:  MOVWF  21
+002D:  MOVF   29,W
+002E:  MOVWF  22
+002F:  MOVF   2A,W
+0030:  MOVWF  23
+0031:  MOVF   2B,W
+0032:  MOVWF  0A
+0033:  SWAPF  25,W
+0034:  MOVWF  03
+0035:  BCF    03.5
+0036:  SWAPF  24,W
+0037:  BTFSC  25.1
+0038:  BSF    03.5
+0039:  RETFIE
+.................... #include <12F683.h> 
+.................... //////// Standard Header file for the PIC12F683 device //////////////// 
+.................... #device PIC12F683 
+.................... #list 
+....................  
+.................... #device adc=10 
+....................  
+.................... #FUSES NOWDT, INTRC_IO, NOPUT, NOMCLR, NOPROTECT, NOCPD, NOBROWNOUT, IESO, FCMEN 
+.................... #use delay(clock=8000000) 
+*
+04BB:  MOVLW  44
+04BC:  MOVWF  04
+04BD:  MOVF   00,W
+04BE:  BTFSC  03.2
+04BF:  GOTO   4CD
+04C0:  MOVLW  02
+04C1:  MOVWF  21
+04C2:  CLRF   20
+04C3:  DECFSZ 20,F
+04C4:  GOTO   4C3
+04C5:  DECFSZ 21,F
+04C6:  GOTO   4C2
+04C7:  MOVLW  97
+04C8:  MOVWF  20
+04C9:  DECFSZ 20,F
+04CA:  GOTO   4C9
+04CB:  DECFSZ 00,F
+04CC:  GOTO   4C0
+04CD:  RETURN
+.................... #include "driver3310.c" 
+.................... #define nok_sclk     pin_a5 
+.................... #define nok_sda      pin_a4 
+.................... #define nok_dc       pin_a2 
+.................... #define nok_res      pin_a1 
+....................  
+.................... char char_row,charsel,charpos,chardata;       // for nokia_3310 lcd 
+.................... int16 ddram; 
+.................... //char plot_value; 
+....................  
+.................... BYTE const TABLE5[240]=            {0x00,0x00,0x00,0x00,0x00,   // 20 space          ASCII table for NOKIA LCD: 96 rows * 5 bytes= 480 bytes 
+....................   0x00,0x00,0x5f,0x00,0x00,   // 21 ! 
+....................   0x00,0x07,0x00,0x07,0x00,   // 22 " 
+....................   0x14,0x7f,0x14,0x7f,0x14,   // 23 # 
+....................   0x24,0x2a,0x7f,0x2a,0x12,   // 24 $ 
+....................   0x23,0x13,0x08,0x64,0x62,   // 25 % 
+....................   0x36,0x49,0x55,0x22,0x50,   // 26 & 
+....................   0x00,0x05,0x03,0x00,0x00,   // 27 ' 
+....................   0x00,0x1c,0x22,0x41,0x00,   // 28 ( 
+....................   0x00,0x41,0x22,0x1c,0x00,   // 29 ) 
+....................   0x14,0x08,0x3e,0x08,0x14,   // 2a * 
+....................   0x08,0x08,0x3e,0x08,0x08,   // 2b + 
+....................   0x00,0x50,0x30,0x00,0x00,   // 2c , 
+....................   0x08,0x08,0x08,0x08,0x08,   // 2d - 
+....................   0x00,0x60,0x60,0x00,0x00,   // 2e . 
+....................   0x20,0x10,0x08,0x04,0x02,   // 2f / 
+....................   0x3e,0x51,0x49,0x45,0x3e,   // 30 0 
+....................   0x00,0x42,0x7f,0x40,0x00,   // 31 1 
+....................   0x42,0x61,0x51,0x49,0x46,   // 32 2 
+....................   0x21,0x41,0x45,0x4b,0x31,   // 33 3 
+....................   0x18,0x14,0x12,0x7f,0x10,   // 34 4 
+....................   0x27,0x45,0x45,0x45,0x39,   // 35 5 
+....................   0x3c,0x4a,0x49,0x49,0x30,   // 36 6 
+....................   0x01,0x71,0x09,0x05,0x03,   // 37 7 
+....................   0x36,0x49,0x49,0x49,0x36,   // 38 8 
+....................   0x06,0x49,0x49,0x29,0x1e,   // 39 9 
+....................   0x00,0x36,0x36,0x00,0x00,   // 3a : 
+....................   0x00,0x56,0x36,0x00,0x00,   // 3b ; 
+....................   0x08,0x14,0x22,0x41,0x00,   // 3c < 
+....................   0x14,0x14,0x14,0x14,0x14,   // 3d = 
+....................   0x00,0x41,0x22,0x14,0x08,   // 3e > 
+....................   0x02,0x01,0x51,0x09,0x06,   // 3f ? 
+....................   0x32,0x49,0x79,0x41,0x3e,   // 40 @ 
+....................   0x7e,0x11,0x11,0x11,0x7e,   // 41 A 
+....................   0x7f,0x49,0x49,0x49,0x36,   // 42 B 
+....................   0x3e,0x41,0x41,0x41,0x22,   // 43 C 
+....................   0x7f,0x41,0x41,0x22,0x1c,   // 44 D 
+....................   0x7f,0x49,0x49,0x49,0x41,   // 45 E 
+....................   0x7f,0x09,0x09,0x09,0x01,   // 46 F 
+....................   0x3e,0x41,0x49,0x49,0x7a,   // 47 G 
+....................   0x7f,0x08,0x08,0x08,0x7f,   // 48 H 
+....................   0x00,0x41,0x7f,0x41,0x00,   // 49 I 
+....................   0x20,0x40,0x41,0x3f,0x01,   // 4a J 
+....................   0x7f,0x08,0x14,0x22,0x41,   // 4b K 
+....................   0x7f,0x40,0x40,0x40,0x40,   // 4c L 
+....................   0x7f,0x02,0x0c,0x02,0x7f,   // 4d M 
+....................   0x7f,0x04,0x08,0x10,0x7f,   // 4e N 
+....................   0x3e,0x41,0x41,0x41,0x3e    // 4f O 
+.................... };    
+....................  
+....................  
+.................... BYTE const TABLE6[240]=            {0x7f,0x09,0x09,0x09,0x06,   // 50 P 
+....................   0x3e,0x41,0x51,0x21,0x5e,   // 51 Q 
+....................   0x7f,0x09,0x19,0x29,0x46,   // 52 R 
+....................   0x46,0x49,0x49,0x49,0x31,   // 53 S 
+....................   0x01,0x01,0x7f,0x01,0x01,   // 54 T 
+....................   0x3f,0x40,0x40,0x40,0x3f,   // 55 U 
+....................   0x1f,0x20,0x40,0x20,0x1f,   // 56 V 
+....................   0x3f,0x40,0x38,0x40,0x3f,   // 57 W 
+....................   0x63,0x14,0x08,0x14,0x63,   // 58 X 
+....................   0x07,0x08,0x70,0x08,0x07,   // 59 Y 
+....................   0x61,0x51,0x49,0x45,0x43,   // 5a Z 
+....................   0x00,0x7f,0x41,0x41,0x00,   // 5b [ 
+....................   0x02,0x04,0x08,0x10,0x20,   // 5c 
+....................   0x00,0x41,0x41,0x7f,0x00,   // 5d 
+....................   0x04,0x02,0x01,0x02,0x04,   // 5e 
+....................   0x40,0x40,0x40,0x40,0x40,   // 5f 
+....................   0x00,0x01,0x02,0x04,0x00,   // 60 
+....................   0x20,0x54,0x54,0x54,0x78,   // 61 a 
+....................   0x7f,0x48,0x44,0x44,0x38,   // 62 b 
+....................   0x38,0x44,0x44,0x44,0x20,   // 63 c 
+....................   0x38,0x44,0x44,0x48,0x7f,   // 64 d 
+....................   0x38,0x54,0x54,0x54,0x18,   // 65 e 
+....................   0x08,0x7e,0x09,0x01,0x02,   // 66 f 
+....................   0x0c,0x52,0x52,0x52,0x3e,   // 67 g 
+....................   0x7f,0x08,0x04,0x04,0x78,   // 68 h 
+....................   0x00,0x44,0x7d,0x40,0x00,   // 69 i 
+....................   0x20,0x40,0x44,0x3d,0x00,   // 6a j 
+....................   0x7f,0x10,0x28,0x44,0x00,   // 6b k 
+....................   0x00,0x41,0x7f,0x40,0x00,   // 6c l 
+....................   0x7c,0x04,0x18,0x04,0x78,   // 6d m 
+....................   0x7c,0x08,0x04,0x04,0x78,   // 6e n 
+....................   0x38,0x44,0x44,0x44,0x38,   // 6f o 
+....................   0x7c,0x14,0x14,0x14,0x08,   // 70 p 
+....................   0x08,0x14,0x14,0x18,0x7c,   // 71 q 
+....................   0x7c,0x08,0x04,0x04,0x08,   // 72 r 
+....................   0x48,0x54,0x54,0x54,0x20,   // 73 s 
+....................   0x04,0x3f,0x44,0x40,0x20,   // 74 t 
+....................   0x3c,0x40,0x40,0x20,0x7c,   // 75 u 
+....................   0x1c,0x20,0x40,0x20,0x1c,   // 76 v 
+....................   0x3c,0x40,0x30,0x40,0x3c,   // 77 w 
+....................   0x44,0x28,0x10,0x28,0x44,   // 78 x 
+....................   0x0c,0x50,0x50,0x50,0x3c,   // 79 y 
+....................   0x44,0x64,0x54,0x4c,0x44,   // 7a z 
+....................   0x00,0x08,0x36,0x41,0x00,   // 7b 
+....................   0x00,0x00,0x7f,0x00,0x00,   // 7c 
+....................   0x00,0x41,0x36,0x08,0x00,   // 7d 
+....................   0x10,0x08,0x08,0x10,0x08,   // 7e 
+....................   0x78,0x46,0x41,0x46,0x78    // 7f 
+.................... }; 
+....................  
+.................... // 
+.................... void    nokia_init(void); 
+.................... void    nokia_write_command(char bytefornokia_command); 
+.................... void    nokia_write_data(char bytefornokia_data); 
+.................... void    nokia_write_dorc(char bytefornokia); 
+.................... void    nokia_gotoxy(int8 xnokia, int8 ynokia); 
+.................... void    nokia_erase_y(int8 ynokia); 
+.................... void    nokia_erase_x(int8 xnokia); 
+.................... void    nokia_printchar(int8 cvar); 
+.................... void    nokia_clean_ddram(void); 
+.................... void    table_to_nokialcd(void); 
+.................... void    nokia_putpixel(int8 xnokia,int8 ynokia); 
+.................... void    nokia_write_data_inv(char bytefornokia_data_inv); 
+.................... void    nokia_clear_screen(void); 
+.................... void    nokia_clear_xy(int8 xnokia, int8 ynokia); 
+.................... void    nokia_print_uparrow(void); 
+.................... void    nokia_print_downarrow(void); 
+.................... void    nokia_print_leftarrow(void); 
+.................... void    nokia_print_rightarrow(void); 
+.................... void    nokia_print_degree(void); 
+.................... void    nokia_print_lowbatdegree(void); 
+.................... /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+.................... void nokia_init(void) 
+.................... { 
+....................   output_high(nok_dc);            // bytes are stored in the display data ram, address counter, incremented automatically 
+*
+050A:  BSF    03.5
+050B:  BCF    05.2
+050C:  BCF    03.5
+050D:  BSF    05.2
+....................   //output_high(nok_cs);            // chip disabled 
+....................   output_low(nok_res);            // reset chip during 250ms 
+050E:  BSF    03.5
+050F:  BCF    05.1
+0510:  BCF    03.5
+0511:  BCF    05.1
+....................   delay_ms(10);         // works with less..... 
+0512:  MOVLW  0A
+0513:  MOVWF  44
+0514:  CALL   4BB
+....................   output_high(nok_res); 
+0515:  BSF    03.5
+0516:  BCF    05.1
+0517:  BCF    03.5
+0518:  BSF    05.1
+....................  
+....................   nokia_write_command(0x21);   // set extins extended instruction set 
+0519:  MOVLW  21
+051A:  MOVWF  47
+051B:  CALL   4ED
+....................   nokia_write_command(0xc2);   // Vop  v1: 0xc8 (for 3V)// v2: 0xa0 (for 3V) // v3: 0xc2 (2v6-5v)   ******************************************************************************************************************** 
+051C:  MOVLW  C2
+051D:  MOVWF  47
+051E:  CALL   4ED
+....................   nokia_write_command(0x13);   // bias 
+051F:  MOVLW  13
+0520:  MOVWF  47
+0521:  CALL   4ED
+....................   nokia_write_command(0x20);   // horizontal mode from left to right, X axe are incremented automatically , 0x22 for vertical addressing ,back on normal instruction set too 
+0522:  MOVLW  20
+0523:  MOVWF  47
+0524:  CALL   4ED
+....................   nokia_write_command(0x09);   // all on 
+0525:  MOVLW  09
+0526:  MOVWF  47
+0527:  CALL   4ED
+....................  
+....................   nokia_clean_ddram();      // reset DDRAM, otherwise the lcd is blurred with random pixels 
+....................  
+....................   nokia_write_command(0x08);   // mod control blank change (all off) 
+*
+053C:  MOVLW  08
+053D:  MOVWF  47
+053E:  CALL   4ED
+....................   nokia_write_command(0x0c);   // mod control normal change 
+053F:  MOVLW  0C
+0540:  MOVWF  47
+0541:  CALL   4ED
+.................... } 
+0542:  GOTO   779 (RETURN)
+....................  
+.................... //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+.................... void nokia_clean_ddram(void) 
+.................... { 
+....................   nokia_gotoxy(0,0);         // 84*6=504      clear LCD 
+*
+0528:  CLRF   44
+0529:  CLRF   45
+052A:  CALL   4F5
+....................   for (ddram=504;ddram>0;ddram--){nokia_write_data(0x00);} 
+052B:  MOVLW  01
+052C:  MOVWF  32
+052D:  MOVLW  F8
+052E:  MOVWF  31
+052F:  MOVF   31,F
+0530:  BTFSS  03.2
+0531:  GOTO   535
+0532:  MOVF   32,F
+0533:  BTFSC  03.2
+0534:  GOTO   53C
+0535:  CLRF   50
+0536:  CALL   502
+0537:  MOVF   31,W
+0538:  BTFSC  03.2
+0539:  DECF   32,F
+053A:  DECF   31,F
+053B:  GOTO   52F
+.................... } 
+.................... //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+....................  
+.................... void nokia_write_command(char bytefornokia_command) 
+.................... { 
+....................   output_low(nok_dc);   // byte is a command it is read with the eight SCLK pulse 
+*
+04ED:  BSF    03.5
+04EE:  BCF    05.2
+04EF:  BCF    03.5
+04F0:  BCF    05.2
+....................  // output_low(nok_cs);   // chip enabled 
+....................   nokia_write_dorc(bytefornokia_command); 
+04F1:  MOVF   47,W
+04F2:  MOVWF  51
+04F3:  CALL   4CE
+....................  // output_high(nok_cs);   // chip disabled 
+....................  
+.................... } 
+04F4:  RETURN
+.................... ///////////////////////////////////////////////////////////////////////////////// 
+.................... void nokia_write_data(char bytefornokia_data) 
+.................... { 
+....................  
+....................   output_high(nok_dc); 
+*
+0502:  BSF    03.5
+0503:  BCF    05.2
+0504:  BCF    03.5
+0505:  BSF    05.2
+....................  // output_low(nok_cs);   // chip enabled 
+....................   nokia_write_dorc(bytefornokia_data); 
+0506:  MOVF   50,W
+0507:  MOVWF  51
+0508:  CALL   4CE
+....................   //output_high(nok_cs);   // chip disabled 
+....................  
+.................... } 
+0509:  RETURN
+.................... ////////////////////////////////////////////////////////////////////////////////// 
+.................... void nokia_write_dorc(char bytefornokia)         // serial write data or command subroutine 
+.................... { 
+....................   char caa; 
+....................   for (caa=8;caa>0;caa--) { 
+*
+04CE:  MOVLW  08
+04CF:  MOVWF  52
+04D0:  MOVF   52,F
+04D1:  BTFSC  03.2
+04D2:  GOTO   4EC
+....................     output_low(nok_sclk); 
+04D3:  BSF    03.5
+04D4:  BCF    05.5
+04D5:  BCF    03.5
+04D6:  BCF    05.5
+....................     // delay_us(2); 
+....................     if ((bytefornokia&0x80)==0){output_low(nok_sda);} 
+04D7:  MOVF   51,W
+04D8:  ANDLW  80
+04D9:  BTFSS  03.2
+04DA:  GOTO   4E0
+04DB:  BSF    03.5
+04DC:  BCF    05.4
+04DD:  BCF    03.5
+04DE:  BCF    05.4
+....................     else {output_high(nok_sda);} 
+04DF:  GOTO   4E4
+04E0:  BSF    03.5
+04E1:  BCF    05.4
+04E2:  BCF    03.5
+04E3:  BSF    05.4
+....................     output_high(nok_sclk); 
+04E4:  BSF    03.5
+04E5:  BCF    05.5
+04E6:  BCF    03.5
+04E7:  BSF    05.5
+....................     bytefornokia=bytefornokia<<1; 
+04E8:  BCF    03.0
+04E9:  RLF    51,F
+....................   } 
+04EA:  DECF   52,F
+04EB:  GOTO   4D0
+.................... } 
+04EC:  RETURN
+.................... ////////////////////////////////////////////////////////////////////////////////// 
+.................... void nokia_gotoxy(int8 xnokia, int8 ynokia)  // Nokia LCD 3310 Position cursor 
+.................... { 
+....................   nokia_write_command(0x40|(ynokia&0x07));   // Y axe initialisation: 0100 0yyy 
+*
+04F5:  MOVF   45,W
+04F6:  ANDLW  07
+04F7:  IORLW  40
+04F8:  MOVWF  46
+04F9:  MOVWF  47
+04FA:  CALL   4ED
+....................   nokia_write_command(0x80|(xnokia&0x7f));   // X axe initialisation: 1xxx xxxx 
+04FB:  MOVF   44,W
+04FC:  ANDLW  7F
+04FD:  IORLW  80
+04FE:  MOVWF  46
+04FF:  MOVWF  47
+0500:  CALL   4ED
+.................... } 
+0501:  RETURN
+.................... ////////////////////////////////////////////////////////////////////////////////// 
+.................... void nokia_erase_y(int8 ynokia) 
+.................... { 
+....................   nokia_gotoxy(0,ynokia); 
+....................   printf(nokia_printchar,"              "); 
+.................... } 
+.................... ////////////////////////////////////////////////////////////////////////////////// 
+.................... void nokia_erase_x(int8 xnokia) 
+.................... { 
+....................   char column; 
+....................   for (column=0;column!=6;column++){ 
+....................     nokia_gotoxy(xnokia,column); 
+....................     nokia_write_data(0x00); 
+....................     nokia_write_data(0x00); 
+....................     nokia_write_data(0x00); 
+....................     nokia_write_data(0x00); 
+....................     nokia_write_data(0x00); 
+....................     nokia_write_data(0x00); 
+....................   } 
+.................... } 
+.................... ////////////////////////////////////////////////////////////////////////////////// 
+....................  
+.................... void nokia_printchar(int8 cvar)               // Write 1 character to LCD 
+.................... { 
+....................   charsel=cvar; 
+*
+057D:  MOVF   4F,W
+057E:  MOVWF  2E
+....................   table_to_nokialcd(); 
+.................... } 
+*
+05B8:  RETURN
+.................... ////////////////////////////////////////////////////////////////////////////////// 
+.................... void table_to_nokialcd(void)   // extract ascii from tables & write to LCD 
+.................... { 
+....................   if (charsel<0x20)return; 
+*
+057F:  MOVF   2E,W
+0580:  SUBLW  1F
+0581:  BTFSC  03.0
+0582:  GOTO   5B8
+....................   if (charsel>0x7f)return; 
+0583:  MOVF   2E,W
+0584:  SUBLW  7F
+0585:  BTFSS  03.0
+0586:  GOTO   5B8
+....................  
+....................   for (char_row=0;char_row<5;char_row++) {      // 5 bytes 
+0587:  CLRF   2D
+0588:  MOVF   2D,W
+0589:  SUBLW  04
+058A:  BTFSS  03.0
+058B:  GOTO   5B6
+....................  
+....................     if (charsel<0x50){ 
+058C:  MOVF   2E,W
+058D:  SUBLW  4F
+058E:  BTFSS  03.0
+058F:  GOTO   59F
+....................       charpos=(((charsel&0xff)-0x20)*5); 
+0590:  MOVF   2E,W
+0591:  ADDLW  E0
+0592:  MOVWF  51
+0593:  MOVWF  52
+0594:  MOVLW  05
+0595:  MOVWF  53
+0596:  CALL   558
+0597:  MOVF   21,W
+0598:  MOVWF  2F
+....................       chardata=TABLE5[(charpos+char_row)]; 
+0599:  MOVF   2D,W
+059A:  ADDWF  2F,W
+059B:  CALL   03A
+059C:  MOVWF  21
+059D:  MOVWF  30
+....................     }            // use TABLE5 
+....................     else if (charsel>0x4f){ 
+059E:  GOTO   5B1
+059F:  MOVF   2E,W
+05A0:  SUBLW  4F
+05A1:  BTFSC  03.0
+05A2:  GOTO   5B1
+....................       charpos=(((charsel&0xff)-0x50)*5); 
+05A3:  MOVF   2E,W
+05A4:  ADDLW  B0
+05A5:  MOVWF  51
+05A6:  MOVWF  52
+05A7:  MOVLW  05
+05A8:  MOVWF  53
+05A9:  CALL   558
+05AA:  MOVF   21,W
+05AB:  MOVWF  2F
+....................       chardata=TABLE6[(charpos+char_row)]; 
+05AC:  MOVF   2D,W
+05AD:  ADDWF  2F,W
+05AE:  CALL   131
+05AF:  MOVWF  21
+05B0:  MOVWF  30
+....................     }            // use TABLE6 
+....................     nokia_write_data(chardata);      // send data to nokia 
+05B1:  MOVF   30,W
+05B2:  MOVWF  50
+05B3:  CALL   502
+....................   } 
+05B4:  INCF   2D,F
+05B5:  GOTO   588
+....................   nokia_write_data(0x00);      //    1 byte (always blank) 
+05B6:  CLRF   50
+05B7:  CALL   502
+.................... } 
+.................... /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+....................  
+.................... void nokia_putpixel(int8 xnokia,int8 ynokia) 
+.................... { 
+....................    int line_y, plot_value; 
+....................    byte byte_plot; 
+....................    if((xnokia > 83)||(ynokia > 47)) 
+....................       return; 
+....................    line_y = (ynokia / 8); 
+....................    plot_value = 0; 
+....................    plot_value |= 1; 
+....................    byte_plot = (plot_value<<(8-(ynokia%8)-1)); 
+....................    nokia_gotoxy(xnokia,line_y); 
+....................    nokia_write_data_inv(byte_plot); 
+.................... } 
+.................... //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+....................  
+.................... void nokia_write_data_inv(char bytefornokia_data_inv) 
+.................... { 
+....................   char caa; 
+....................   output_high(nok_dc); 
+....................  // output_low(nok_cs);   // chip enabled 
+....................  
+....................   for (caa=8;caa>0;caa--) { 
+....................     output_low(nok_sclk); 
+....................     delay_us(2); 
+....................     if ((bytefornokia_data_inv&0x01)==0){output_low(nok_sda);} 
+....................     else {output_high(nok_sda);} 
+....................     output_high(nok_sclk); 
+....................     bytefornokia_data_inv=bytefornokia_data_inv>>1; 
+....................   } 
+....................   //output_high(nok_cs);   // chip disabled 
+.................... } 
+.................... //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+....................  
+.................... void nokia_clear_screen(void) 
+.................... { 
+....................   nokia_erase_y(0); 
+....................   nokia_erase_y(1); 
+....................   nokia_erase_y(2); 
+....................   nokia_erase_y(3); 
+....................   nokia_erase_y(4); 
+....................   nokia_erase_y(5); 
+.................... } 
+....................  
+.................... //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+....................  
+.................... void nokia_clear_xy(int8 xnokia, int8 ynokia) 
+.................... { 
+....................   nokia_gotoxy(xnokia,ynokia); 
+....................   nokia_printchar(" "); 
+.................... } 
+.................... //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+.................... void nokia_print_uparrow(void) 
+.................... { 
+....................   nokia_write_data(0x04); 
+....................   nokia_write_data(0x02); 
+....................   nokia_write_data(0x7f); 
+....................   nokia_write_data(0x02); 
+....................   nokia_write_data(0x04); 
+....................   nokia_write_data(0x00); 
+.................... } 
+.................... // 
+.................... void nokia_print_downarrow(void) 
+.................... { 
+....................   nokia_write_data(0x10); 
+....................   nokia_write_data(0x20); 
+....................   nokia_write_data(0x7f); 
+....................   nokia_write_data(0x20); 
+....................   nokia_write_data(0x10); 
+....................   nokia_write_data(0x00); 
+.................... } 
+.................... // 
+.................... void nokia_print_leftarrow(void) 
+.................... { 
+....................   nokia_write_data(0x08); 
+....................   nokia_write_data(0x1c); 
+....................   nokia_write_data(0x2a); 
+....................   nokia_write_data(0x08); 
+....................   nokia_write_data(0x08); 
+....................   nokia_write_data(0xf8); 
+.................... } 
+.................... // 
+.................... void nokia_print_rightarrow(void) 
+.................... { 
+....................   nokia_write_data(0x08); 
+....................   nokia_write_data(0x08); 
+....................   nokia_write_data(0x2a); 
+....................   nokia_write_data(0x1c); 
+....................   nokia_write_data(0x08); 
+....................   nokia_write_data(0x00); 
+.................... } 
+.................... // 
+.................... void nokia_print_degree(void) 
+.................... { 
+....................   nokia_write_data(0x00); 
+....................   nokia_write_data(0x06); 
+....................   nokia_write_data(0x09); 
+....................   nokia_write_data(0x09); 
+....................   nokia_write_data(0x06); 
+....................   nokia_write_data(0x00); 
+....................   // nokia_printchar("  "); 
+.................... } 
+.................... // 
+.................... void nokia_print_lowbatdegree(void) 
+.................... { 
+....................   nokia_write_data(0x00); 
+....................   nokia_write_data(0x06); 
+....................   nokia_write_data(0x0f); 
+....................   nokia_write_data(0x0f); 
+....................   nokia_write_data(0x06); 
+....................   nokia_write_data(0x00); 
+....................   // nokia_printchar("  "); 
+.................... } 
+.................... //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+....................  
+....................  
+....................  
+....................  
+....................  
+.................... long x; 
+.................... int s, m; 
+.................... char c; 
+.................... double W_100ms_preco = 0.00000000912, valor_total = 0.0, WtMedido = 0.0; 
+....................  
+.................... #int_TIMER0 
+.................... void TIMER0_isr(void){ 
+....................    x++; 
+*
+029D:  INCF   33,F
+029E:  BTFSC  03.2
+029F:  INCF   34,F
+....................    if(x>999){ 
+02A0:  MOVF   34,W
+02A1:  SUBLW  02
+02A2:  BTFSC  03.0
+02A3:  GOTO   2B8
+02A4:  XORLW  FF
+02A5:  BTFSS  03.2
+02A6:  GOTO   2AB
+02A7:  MOVF   33,W
+02A8:  SUBLW  E7
+02A9:  BTFSC  03.0
+02AA:  GOTO   2B8
+....................       x=0; 
+02AB:  CLRF   34
+02AC:  CLRF   33
+....................       s+=1; 
+02AD:  MOVLW  01
+02AE:  ADDWF  35,F
+....................       c = ' ';       
+02AF:  MOVLW  20
+02B0:  MOVWF  37
+....................       if(s>59){ 
+02B1:  MOVF   35,W
+02B2:  SUBLW  3B
+02B3:  BTFSC  03.0
+02B4:  GOTO   2B8
+....................          s=0; 
+02B5:  CLRF   35
+....................          m+=1; 
+02B6:  MOVLW  01
+02B7:  ADDWF  36,F
+....................       } 
+....................    } 
+....................    if(x==500) 
+02B8:  MOVF   33,W
+02B9:  SUBLW  F4
+02BA:  BTFSS  03.2
+02BB:  GOTO   2C0
+02BC:  DECFSZ 34,W
+02BD:  GOTO   2C0
+....................       c = '>'; 
+02BE:  MOVLW  3E
+02BF:  MOVWF  37
+....................    if(x % 100 == 0){ 
+02C0:  MOVF   34,W
+02C1:  MOVWF  5D
+02C2:  MOVF   33,W
+02C3:  MOVWF  5C
+02C4:  CLRF   5F
+02C5:  MOVLW  64
+02C6:  MOVWF  5E
+*
+02EB:  MOVF   20,W
+02EC:  MOVWF  5C
+02ED:  MOVF   23,W
+02EE:  MOVWF  5D
+02EF:  MOVF   5C,F
+02F0:  BTFSS  03.2
+02F1:  GOTO   4B0
+02F2:  MOVF   5D,F
+02F3:  BTFSS  03.2
+02F4:  GOTO   4B0
+....................       WtMedido = 0.0048828125*read_adc()*215;  
+02F5:  BSF    1F.1
+02F6:  BTFSC  1F.1
+02F7:  GOTO   2F6
+02F8:  MOVF   1E,W
+02F9:  MOVWF  23
+02FA:  BSF    03.5
+02FB:  MOVF   1E,W
+02FC:  BCF    03.5
+02FD:  MOVWF  5C
+02FE:  MOVF   23,W
+02FF:  MOVWF  5D
+*
+031C:  CLRF   63
+031D:  CLRF   62
+031E:  MOVLW  20
+031F:  MOVWF  61
+0320:  MOVLW  77
+0321:  MOVWF  60
+0322:  MOVF   23,W
+0323:  MOVWF  67
+0324:  MOVF   22,W
+0325:  MOVWF  66
+0326:  MOVF   21,W
+0327:  MOVWF  65
+0328:  MOVF   20,W
+0329:  MOVWF  64
+032A:  CALL   228
+032B:  MOVF   20,W
+032C:  MOVWF  5C
+032D:  MOVF   21,W
+032E:  MOVWF  5D
+032F:  MOVF   22,W
+0330:  MOVWF  5E
+0331:  MOVF   23,W
+0332:  MOVWF  5F
+0333:  MOVWF  63
+0334:  MOVF   22,W
+0335:  MOVWF  62
+0336:  MOVF   21,W
+0337:  MOVWF  61
+0338:  MOVF   20,W
+0339:  MOVWF  60
+033A:  CLRF   67
+033B:  CLRF   66
+033C:  MOVLW  57
+033D:  MOVWF  65
+033E:  MOVLW  86
+033F:  MOVWF  64
+0340:  CALL   228
+0341:  MOVF   23,W
+0342:  MOVWF  43
+0343:  MOVF   22,W
+0344:  MOVWF  42
+0345:  MOVF   21,W
+0346:  MOVWF  41
+0347:  MOVF   20,W
+0348:  MOVWF  40
+....................       valor_total = valor_total + (W_100ms_preco * WtMedido); 
+0349:  MOVF   3B,W
+034A:  MOVWF  63
+034B:  MOVF   3A,W
+034C:  MOVWF  62
+034D:  MOVF   39,W
+034E:  MOVWF  61
+034F:  MOVF   38,W
+0350:  MOVWF  60
+0351:  MOVF   43,W
+0352:  MOVWF  67
+0353:  MOVF   42,W
+0354:  MOVWF  66
+0355:  MOVF   41,W
+0356:  MOVWF  65
+0357:  MOVF   40,W
+0358:  MOVWF  64
+0359:  CALL   228
+035A:  BCF    03.1
+035B:  MOVF   3F,W
+035C:  MOVWF  5F
+035D:  MOVF   3E,W
+035E:  MOVWF  5E
+035F:  MOVF   3D,W
+0360:  MOVWF  5D
+0361:  MOVF   3C,W
+0362:  MOVWF  5C
+0363:  MOVF   23,W
+0364:  MOVWF  63
+0365:  MOVF   22,W
+0366:  MOVWF  62
+0367:  MOVF   21,W
+0368:  MOVWF  61
+0369:  MOVF   20,W
+036A:  MOVWF  60
+*
+04A8:  MOVF   23,W
+04A9:  MOVWF  3F
+04AA:  MOVF   22,W
+04AB:  MOVWF  3E
+04AC:  MOVF   21,W
+04AD:  MOVWF  3D
+04AE:  MOVF   20,W
+04AF:  MOVWF  3C
+....................    } 
+.................... } 
+....................  
+04B0:  BCF    0B.2
+04B1:  BCF    0A.3
+04B2:  GOTO   027
+.................... #int_RA 
+.................... void isr_ra(){ 
+....................    if(!input(pin_a3)) 
+04B3:  BSF    03.5
+04B4:  BSF    05.3
+04B5:  BCF    03.5
+04B6:  BTFSS  05.3
+....................       disable_interrupts(INT_TIMER0); 
+04B7:  BCF    0B.5
+.................... } 
+....................  
+04B8:  BCF    0B.0
+04B9:  BCF    0A.3
+04BA:  GOTO   027
+.................... void main(){ 
+*
+0751:  CLRF   04
+0752:  MOVLW  1F
+0753:  ANDWF  03,F
+0754:  MOVLW  71
+0755:  BSF    03.5
+0756:  MOVWF  0F
+0757:  MOVF   0F,W
+0758:  MOVLW  2F
+0759:  BCF    03.5
+075A:  MOVWF  3B
+075B:  MOVLW  AE
+075C:  MOVWF  3A
+075D:  MOVLW  1C
+075E:  MOVWF  39
+075F:  MOVLW  64
+0760:  MOVWF  38
+0761:  CLRF   3F
+0762:  CLRF   3E
+0763:  CLRF   3D
+0764:  CLRF   3C
+0765:  CLRF   43
+0766:  CLRF   42
+0767:  CLRF   41
+0768:  CLRF   40
+0769:  BCF    1F.6
+076A:  BSF    03.5
+076B:  BCF    1F.0
+076C:  BCF    1F.1
+076D:  BCF    1F.2
+076E:  BCF    1F.3
+076F:  MOVLW  07
+0770:  BCF    03.5
+0771:  MOVWF  19
+....................    x=s=m=0; 
+0772:  CLRF   36
+0773:  MOVF   36,W
+0774:  MOVWF  35
+0775:  CLRF   34
+0776:  MOVF   35,W
+0777:  MOVWF  33
+....................    nokia_init(); 
+0778:  GOTO   50A
+....................    setup_adc(ADC_CLOCK_DIV_64); 
+0779:  BSF    03.5
+077A:  BCF    1F.4
+077B:  BSF    1F.5
+077C:  BSF    1F.6
+077D:  BCF    03.5
+077E:  BSF    1F.7
+077F:  BSF    1F.0
+....................    setup_adc_ports(sAN0); 
+0780:  BCF    1F.6
+0781:  BSF    03.5
+0782:  BSF    1F.0
+0783:  BCF    1F.1
+0784:  BCF    1F.2
+0785:  BCF    1F.3
+....................    set_adc_channel(0); 
+0786:  MOVLW  00
+0787:  BCF    03.5
+0788:  MOVWF  21
+0789:  MOVF   1F,W
+078A:  ANDLW  F3
+078B:  IORWF  21,W
+078C:  MOVWF  1F
+....................    
+....................    setup_comparator(NC_NC_NC_NC);                           // Comparador não utilizado 
+078D:  MOVLW  07
+078E:  MOVWF  19
+078F:  BSF    03.5
+0790:  MOVF   05,W
+0791:  MOVWF  05
+0792:  MOVLW  06
+0793:  BCF    03.5
+0794:  MOVWF  20
+0795:  DECFSZ 20,F
+0796:  GOTO   795
+0797:  NOP
+0798:  MOVF   19,W
+0799:  BCF    0C.3
+....................    setup_vref(FALSE);                                       // VREF não configurado     
+079A:  BSF    03.5
+079B:  CLRF   19
+....................    setup_timer_0(RTCC_INTERNAL|RTCC_DIV_8|RTCC_8_bit);      //1.0 ms overflow 
+079C:  MOVF   01,W
+079D:  ANDLW  C0
+079E:  IORLW  02
+079F:  MOVWF  01
+....................    setup_comparator(NC_NC); 
+07A0:  MOVLW  07
+07A1:  BCF    03.5
+07A2:  MOVWF  19
+07A3:  BSF    03.5
+07A4:  MOVF   05,W
+07A5:  MOVWF  05
+07A6:  MOVLW  06
+07A7:  BCF    03.5
+07A8:  MOVWF  20
+07A9:  DECFSZ 20,F
+07AA:  GOTO   7A9
+07AB:  NOP
+07AC:  MOVF   19,W
+07AD:  BCF    0C.3
+....................      
+....................    enable_interrupts(INT_TIMER0); 
+07AE:  BSF    0B.5
+....................    enable_interrupts(INT_RA); 
+07AF:  BSF    0B.3
+07B0:  MOVLW  FF
+07B1:  BSF    03.5
+07B2:  IORWF  16,F
+....................    enable_interrupts(GLOBAL); 
+07B3:  MOVLW  C0
+07B4:  BCF    03.5
+07B5:  IORWF  0B,F
+....................  
+....................  
+....................    
+....................    while(true){ 
+....................       delay_ms(20); 
+07B6:  MOVLW  14
+07B7:  MOVWF  44
+07B8:  CALL   4BB
+....................       nokia_gotoxy(0,2);       
+07B9:  CLRF   44
+07BA:  MOVLW  02
+07BB:  MOVWF  45
+07BC:  CALL   4F5
+....................       printf(nokia_printchar, "%02d:%02d %fW ", m, s, WtMedido);        
+07BD:  MOVF   36,W
+07BE:  MOVWF  44
+07BF:  MOVLW  01
+07C0:  MOVWF  45
+07C1:  CALL   5B9
+07C2:  MOVLW  3A
+07C3:  MOVWF  4F
+07C4:  CALL   57D
+07C5:  MOVF   35,W
+07C6:  MOVWF  44
+07C7:  MOVLW  01
+07C8:  MOVWF  45
+07C9:  CALL   5B9
+07CA:  MOVLW  20
+07CB:  MOVWF  4F
+07CC:  CALL   57D
+07CD:  MOVLW  89
+07CE:  MOVWF  04
+07CF:  MOVF   43,W
+07D0:  MOVWF  47
+07D1:  MOVF   42,W
+07D2:  MOVWF  46
+07D3:  MOVF   41,W
+07D4:  MOVWF  45
+07D5:  MOVF   40,W
+07D6:  MOVWF  44
+07D7:  MOVLW  02
+07D8:  MOVWF  48
+07D9:  CALL   66C
+07DA:  MOVLW  57
+07DB:  MOVWF  4F
+07DC:  CALL   57D
+07DD:  MOVLW  20
+07DE:  MOVWF  4F
+07DF:  CALL   57D
+....................       nokia_gotoxy(0,5);       
+07E0:  CLRF   44
+07E1:  MOVLW  05
+07E2:  MOVWF  45
+07E3:  CALL   4F5
+....................       printf(nokia_printchar, "R$ %1.9f", valor_total); 
+07E4:  MOVLW  52
+07E5:  MOVWF  4F
+07E6:  CALL   57D
+07E7:  MOVLW  24
+07E8:  MOVWF  4F
+07E9:  CALL   57D
+07EA:  MOVLW  20
+07EB:  MOVWF  4F
+07EC:  CALL   57D
+07ED:  MOVLW  89
+07EE:  MOVWF  04
+07EF:  MOVF   3F,W
+07F0:  MOVWF  47
+07F1:  MOVF   3E,W
+07F2:  MOVWF  46
+07F3:  MOVF   3D,W
+07F4:  MOVWF  45
+07F5:  MOVF   3C,W
+07F6:  MOVWF  44
+07F7:  MOVLW  09
+07F8:  MOVWF  48
+07F9:  CALL   66C
+....................    } 
+07FA:  GOTO   7B6
+.................... } 
+07FB:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3CD4   INTRC_IO NOWDT NOPUT NOMCLR NOPROTECT NOCPD NOBROWNOUT IESO FCMEN

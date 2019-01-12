@@ -1,0 +1,137 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     CurrentLine
+005     QuantChrLine
+006     OffsetX
+007-008 distancia
+009-00A tempo
+00B-00C @PRINTF_LU_84.P1
+00B-00C @ITOF.P2
+00B     @delay_us1.P3
+00B-00E @SFTOI.P4
+00B     clear_screen.p
+00B-00E @MULFF.P1
+00B     @PSTRINGCN_84.P2
+00B     MAIN.@SCRATCH1
+00C     clear_screen.c
+00C     @delay_ms1.P1
+00C     MAIN.@SCRATCH2
+00C     @PSTRINGCN_84.@SCRATCH1
+00D     MAIN.@SCRATCH3
+00D     @PSTRINGCN_84.@SCRATCH2
+00D     @PRINTF_LU_84.@SCRATCH1
+00E     MAIN.@SCRATCH4
+00E     @PRINTF_LU_84.@SCRATCH2
+00F-012 @ADDFF.P1
+00F-012 @MULFF.P2
+00F     @PRINTF_LU_84.@SCRATCH3
+010     @PRINTF_LU_84.@SCRATCH4
+011     @PRINTF_LU_84.@SCRATCH5
+012     @PRINTF_LU_84.@SCRATCH6
+013-016 @ADDFF.P1
+013     @MULFF.@SCRATCH1
+013     @PRINTF_LU_84.@SCRATCH7
+014     HMF6598_Printchar.cvar
+014     @MULFF.@SCRATCH2
+015     HMF6598_Printchar.i
+015     @MULFF.@SCRATCH3
+016     newLine.@SCRATCH1
+016     HMF6598_Printchar.@SCRATCH1
+017     HMF6598_Write_data.byte_data
+017     HMF6598_Printchar.@SCRATCH2
+017     @ADDFF.@SCRATCH1
+018     HMF6598_Gotoxy.x
+018     @ADDFF.@SCRATCH2
+019     HMF6598_Gotoxy.y
+019     @ADDFF.@SCRATCH3
+01A     HMF6598_Gotoxy.OffsetChr
+01A     @ADDFF.@SCRATCH4
+01B     HMF6598_Gotoxy.@SCRATCH1
+01B     @ADDFF.@SCRATCH5
+01C     HMF6598_Write_command.byte_command
+01C     HMF6598_Gotoxy.@SCRATCH2
+01C     @ADDFF.@SCRATCH6
+01D     @DIV88.P1
+01D     HMF6598_OutPort.byteDC
+01D     @ADDFF.@SCRATCH7
+01E     @DIV88.P1
+01E     @ADDFF.@SCRATCH8
+01F     @DIV88.@SCRATCH1
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PROGRAM_MEMORY.P1
+FE9-FEA @WRITE_PACKED_MEMORY.P2
+FE9-FEA @READ_PACKED_MEMORY.P3
+FE9-FEA @READ_PROGRAM_MEMORY.P4
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P1
+FF6-FF8 @READ_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0272  @delay_ms1
+022A  @delay_us1
+0004  TEXT
+0114  TEXT2
+0366  HMF6598_InitLcd
+024A  HMF6598_OutPort
+0266  HMF6598_Write_command
+031E  HMF6598_Write_data
+07B0  newLine
+0336  clear_screen
+02C2  HMF6598_Gotoxy
+029A  @DIV88
+07DA  HMF6598_Printchar
+0974  MAIN
+03DE  @ITOF
+0416  @MULFF
+050A  @ADDFF
+0776  @SFTOI
+0200  @const143
+08A4  @PSTRINGCN_84
+08C2  @PRINTF_LU_84
+0212  @const148
+0974  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\SONAR HC-SR04\18F4550\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\18F4550.h
+    HMF6598SYH-PY.c
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\SONAR HC-SR04\18F4550\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Debug/COFF:  index.cof
+    Project:     index.PJT

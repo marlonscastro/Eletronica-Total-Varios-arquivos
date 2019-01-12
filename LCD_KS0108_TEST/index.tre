@@ -1,0 +1,14 @@
+ÀÄindex
+   ÀÄMAIN  0/14  Ram=0
+      ÃÄ??0??
+      ÃÄKS0108_init  0/70  Ram=1
+      ³  ÃÄKS0108_write  0/35  Ram=1
+      ³  ÃÄKS0108_write  0/35  Ram=1
+      ³  ÃÄKS0108_write  0/35  Ram=1
+      ³  ÃÄKS0108_write  0/35  Ram=1
+      ³  ÃÄKS0108_write  0/35  Ram=1
+      ³  ÀÄKS0108_fill  (Inline)  Ram=4
+      ³     ÃÄKS0108_write  0/35  Ram=1
+      ³     ÃÄKS0108_write  0/35  Ram=1
+      ³     ÀÄKS0108_write  0/35  Ram=1
+      ÀÄKS0108_write  0/35  Ram=1

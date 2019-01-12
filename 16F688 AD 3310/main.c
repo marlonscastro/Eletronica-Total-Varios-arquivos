@@ -1,0 +1,79 @@
+#include <16F688.h>
+#device adc=10
+#FUSES NOWDT, INTRC_IO, NOPUT, MCLR, NOPROTECT, NOCPD, NOBROWNOUT, NOIESO, NOFCMEN
+#use delay(clock=4000000)
+
+#use rs232(baud=9600,parity=N,xmit=PIN_C4,rcv=PIN_C5,bits=8,stream=PORT1)
+
+#include "driver3310.c"
+long x;
+int s, m, h;
+char c;
+double W_100ms_preco = 0.00000000912, valor_total = 0.0, WtMedido = 0.0;
+
+#int_timer0
+void isr(){
+   x++;
+   if(x>999){
+      output_toggle(pin_c5);
+      x=0;
+      s+=1;
+      c = ' ';      
+      if(s>59){
+         s=0;
+         m+=1;
+      }
+      if(m>59){
+         m=0;
+         h+=1;
+      }
+   }
+   if(x==500)
+      c = '>';
+   if(x % 100 == 0){
+      WtMedido = 0.0048828125*read_adc()*215; 
+      valor_total = valor_total + (W_100ms_preco * WtMedido);
+   }
+}
+
+#int_ra
+void isr_ra(void){
+   disable_interrupts(INT_TIMER0);       
+}
+
+void main(){
+   x=s=m=h=0;
+   setup_spi(SPI_MASTER | SPI_MODE_0 | SPI_CLK_DIV_16); 
+   
+   nokia_init();                    // Inicializa o LCD 3310 da Nokia  
+   setup_adc_ports(sAN0);           // Quais portas analogicas serão utilizadas
+   setup_adc(ADC_CLOCK_DIV_64);     // Clock interno dividido por 64 
+   setup_timer_1(T1_DISABLED);      // Timer 1 desativado
+   setup_comparator(NC_NC_NC_NC);   // Comparador não utilizado
+   setup_vref(FALSE);               // VREF não configurado 
+   set_adc_channel(0);      
+   setup_timer_0(RTCC_INTERNAL|RTCC_DIV_4|RTCC_8_bit);      //1.0 ms overflow 
+   
+   enable_interrupts(INT_TIMER0);
+   enable_interrupts(INT_RA5);   
+   enable_interrupts(GLOBAL);      
+   
+   nokia_gotoxy(0,1);
+   printf(nokia_printchar, "--------------");      
+   nokia_gotoxy(0,3);      
+   printf(nokia_printchar, "--------------"); 
+   nokia_gotoxy(0,4);      
+   printf(nokia_printchar, "   Valor RS"); 
+   while(true){
+      delay_ms(100);
+      nokia_gotoxy(0,0);      
+      printf(nokia_printchar, "  %c %02d:%02d:%02d", c, h, m, s);       
+      nokia_gotoxy(0,2);      
+      printf(nokia_printchar, "              ");      
+      nokia_gotoxy(0,2);      
+      printf(nokia_printchar, "Watts: %f", WtMedido);
+      //printf("%ld\n\r", read_adc());
+      nokia_gotoxy(0,5);      
+      printf(nokia_printchar, " %1.9f", valor_total);
+   }
+}

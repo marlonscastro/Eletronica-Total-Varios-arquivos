@@ -1,0 +1,112 @@
+CCS PCH C Compiler, Version 4.114, 93460303               08-jun-12 23:22
+
+               Filename: E:\SkyDrive\Eletronica\PROJETOS PIC CCS\18F4550 Teste Display 7 Seg\index.lst
+
+               ROM used: 112 bytes (0%)
+                         Largest free fragment is 32656
+               RAM used: 8 (0%) at main() level
+                         9 (0%) worst case
+               Stack:    1 locations
+
+*
+0000:  GOTO   002C
+.................... #include <18F4550.h> 
+.................... //////// Standard Header file for the PIC18F4550 device //////////////// 
+.................... #device PIC18F4550 
+.................... #list 
+....................  
+.................... #use delay(clock=48000000) 
+0004:  CLRF   FEA
+0006:  MOVLW  09
+0008:  MOVWF  FE9
+000A:  MOVF   FEF,W
+000C:  BZ    002A
+000E:  MOVLW  0F
+0010:  MOVWF  01
+0012:  CLRF   00
+0014:  DECFSZ 00,F
+0016:  BRA    0014
+0018:  DECFSZ 01,F
+001A:  BRA    0012
+001C:  MOVLW  8F
+001E:  MOVWF  00
+0020:  DECFSZ 00,F
+0022:  BRA    0020
+0024:  NOP   
+0026:  DECFSZ FEF,F
+0028:  BRA    000E
+002A:  RETLW  00
+.................... #fuses HSPLL, PLL4, CPUDIV1, PUT, NOWDT, NOBROWNOUT, NOLVP               
+....................  
+....................    byte const tabela[] = {  
+....................          0b10111111, // 0   dp-gfedcba 
+....................          0b10000110, // 1   
+....................          0b11011011, // 2   
+....................          0b11001111, // 3   
+....................          0b11100110, // 4   
+....................          0b11101101, // 5   
+....................          0b11111101, // 6   
+....................          0b10000111, // 7   
+....................          0b11111111, // 8   
+....................          0b11100111, // 9            
+....................    }; 
+....................  
+.................... void main() 
+.................... { 
+002C:  CLRF   FF8
+002E:  BCF    FD0.7
+0030:  CLRF   FEA
+0032:  CLRF   FE9
+0034:  MOVF   FC1,W
+0036:  ANDLW  C0
+0038:  IORLW  0F
+003A:  MOVWF  FC1
+003C:  MOVLW  07
+003E:  MOVWF  FB4
+0040:  MOVLW  02
+0042:  MOVWF  07
+0044:  MOVLW  58
+0046:  MOVWF  06
+....................    int valor; 
+....................    int16 atraso = 600; 
+....................    while(true){ 
+....................      /* for (valor = 0; valor < 10; valor++){ 
+....................          output_b(tabela[valor]); 
+....................          delay_us(atraso);             
+....................       }*/ 
+....................       output_high(pin_D0); 
+0048:  BCF    F95.0
+004A:  BSF    F8C.0
+....................       delay_ms(600); 
+004C:  MOVLW  03
+004E:  MOVWF  08
+0050:  MOVLW  C8
+0052:  MOVWF  09
+0054:  RCALL  0004
+0056:  DECFSZ 08,F
+0058:  BRA    0050
+....................       output_low(pin_D0); 
+005A:  BCF    F95.0
+005C:  BCF    F8C.0
+....................       delay_ms(600);       
+005E:  MOVLW  03
+0060:  MOVWF  08
+0062:  MOVLW  C8
+0064:  MOVWF  09
+0066:  RCALL  0004
+0068:  DECFSZ 08,F
+006A:  BRA    0062
+....................    } 
+006C:  BRA    0048
+.................... } 
+....................  
+006E:  SLEEP 
+
+Configuration Fuses:
+   Word  1: CE23   PLL4 CPUDIV1 USBDIV HSPLL FCMEN IESO
+   Word  2: 1E38   PUT NOBROWNOUT BORV20 VREGEN NOWDT WDT32768
+   Word  3: 8700   CCP2C1 PBADEN LPT1OSC MCLR
+   Word  4: 00A1   STVREN NOLVP ICPRT NOXINST NODEBUG
+   Word  5: C00F   NOPROTECT NOCPB NOCPD
+   Word  6: E00F   NOWRT NOWRTC NOWRTB NOWRTD
+   Word  7: 400F   NOEBTR NOEBTRB

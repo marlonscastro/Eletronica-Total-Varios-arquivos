@@ -1,0 +1,231 @@
+//// Marcus Russell
+//// Russell Evolutions Inc.
+//// Nokia 6100 LCD with Epson S1D15G10 Controller
+////  sample initialization program for PIC16LF872 in CCS C  3-14-07
+////
+//// Based on Spark Fun Electronics Code by Owen Osborn 1-22-05
+////   with thanks to David Carne of SFE for DISCTL help
+////   and user 'Ttelmah' from CCS C forum for SSPEN bit idea for 9-bit hardware SPI
+////
+//// You are free to use this code for any purpose.
+////
+////
+//// START OF HEADER FILE ////
+
+#include <16F872.h>
+#device adc=8
+
+#FUSES NOWDT                    //No Watch Dog Timer
+#FUSES XT                       //Crystal Osc (<= 4mhz)
+#FUSES PUT                      //Power Up Timer
+#FUSES NOPROTECT                //Code not protected from reading
+#FUSES NODEBUG                  //No Debug mode for ICD
+#FUSES NOBROWNOUT               //Don't Reset when brownout detected
+#FUSES NOLVP                    //No low voltage prgming, B3(PIC16) or B5(PIC18) used for I/O
+#FUSES NOCPD                    //No EE protection
+#FUSES NOWRT                    //Program memory not write protected
+
+#use delay(clock=4000000)
+
+#define LCD_RESET   PIN_C0
+#define LCD_CS   PIN_C1
+#define SPI_CLK   PIN_C3
+#define SPI_DI   PIN_C4 //unused
+#define SPI_DO   PIN_C5
+
+#bit SSPEN = 0x14.5   // bit to turn on/off hardware SPI
+
+// Epson S1D15G10 Command Set
+
+#define DISON       0xaf
+#define DISOFF      0xae
+#define DISNOR      0xa6
+#define DISINV      0xa7
+#define SLPIN       0x95
+#define SLPOUT      0x94
+#define COMSCN      0xbb
+#define DISCTL      0xca
+#define PASET       0x75
+#define CASET       0x15
+#define DATCTL      0xbc
+#define RGBSET8     0xce
+#define RAMWR       0x5c
+#define RAMRD       0x5d
+#define PTLIN       0xa8
+#define PTLOUT      0xa9
+#define RMWIN       0xe0
+#define RMWOUT      0xee
+#define ASCSET      0xaa
+#define SCSTART     0xab
+#define OSCON       0xd1
+#define OSCOFF      0xd2
+#define PWRCTR      0x20
+#define VOLCTR      0x81
+#define VOLUP       0xd6
+#define VOLDOWN     0xd7
+#define TMPGRD      0x82
+#define EPCTIN      0xcd
+#define EPCOUT      0xcc
+#define EPMWR       0xfc
+#define EPMRD       0xfd
+#define EPSRRD1     0x7c
+#define EPSRRD2     0x7d
+#define NOP         0x25
+
+#define ENDPAGE     132
+#define ENDCOL      130
+
+
+////  START OF MAIN .C SOURCE FILE ////
+
+//#include "<path to .h file cut from above>"
+#use fast_io(C)
+
+void pset(unsigned char color, unsigned char x, unsigned char y);
+void spi_command(int);
+void spi_data(int);
+
+void main()
+{
+
+   int16 i;
+
+   setup_adc_ports(NO_ANALOGS);
+   setup_adc(ADC_OFF);
+   setup_spi(SPI_MASTER|SPI_L_TO_H|SPI_XMIT_L_TO_H|SPI_CLK_DIV_4);
+   setup_timer_0(RTCC_INTERNAL|RTCC_DIV_1);
+   setup_timer_1(T1_DISABLED);
+   setup_timer_2(T2_DISABLED, 0, 1);
+   set_tris_c(0x00);   // all outputs, can change to mask only hardware SPI bits if needed
+
+   // reset display
+
+   output_low (SPI_CLK);
+   output_low (SPI_DO);
+   output_high (LCD_CS);
+   output_low (LCD_RESET);
+   delay_ms(100);
+   output_high (LCD_RESET);
+
+   //init'd, now drop CS to send commands/data and raise when finished
+
+    spi_command(DISCTL);  // display control
+    spi_data(0x0C);      // 12 = 1100 - CL dividing ratio [don't divide] switching period 8H (default)
+    spi_data(0x20);      // 32 = (128/4)-1 (round up) number of display lines for scanning
+    spi_data(0x0C);      // 12 = 1100 - number of lines to be inversely highlighted
+    spi_data(0x00);
+
+    spi_command(COMSCN);  // common scanning direction
+    spi_data(0x01);
+    // 0 0 0 =   1 -> 80   81 -> 160
+    // 0 0 1 =   1 -> 80   81 <- 160
+    // 0 1 0 =   1 <- 80   81 -> 160
+    // 0 1 1 =   1 <- 80   81 <- 160
+
+    spi_command(OSCON);  // internal oscialltor ON
+
+    spi_command(SLPOUT);  // sleep out
+
+    spi_command(VOLCTR);  // electronic volume, this is the contrast/brightness
+    spi_data(0x23);   // volume (contrast) setting - fine tuning
+    spi_data(0x03);   // internal resistor ratio - coarse adjustment
+
+    spi_command(PWRCTR);  // power ctrl
+    spi_data(0x0f);      //everything on, no external reference resistors
+    delay_ms(100);
+
+    spi_command(DISINV);  // invert display mode
+
+    spi_command(DATCTL);  // data control
+    spi_data(0x00);   // normal display of page/column address, page scan direction
+    spi_data(0x00);   // normal RGB arrangement
+    spi_data(0x01);   // 8-bit grayscale
+
+    spi_command(RGBSET8);   // setup 8-bit color lookup table  [RRRGGGBB]
+    //RED
+    spi_data(0);
+    spi_data(2);
+    spi_data(4);
+    spi_data(6);
+    spi_data(8);
+    spi_data(10);
+    spi_data(12);
+    spi_data(15);
+    // GREEN
+    spi_data(0);
+    spi_data(2);
+    spi_data(4);
+    spi_data(6);
+    spi_data(8);
+    spi_data(10);
+    spi_data(12);
+    spi_data(15);
+    //BLUE
+    spi_data(0);
+    spi_data(4);
+    spi_data(9);
+    spi_data(15);
+
+    spi_command(NOP);  // nop
+
+  pset(0b11100000, 0, 0); // red pixel top left (also sets start of bulk write, see pset routine)
+
+  for (i = 1; i <= 16900; i++) {  // 130x130 = 16900
+      spi_data(0b11100000);   // fill screen red
+  }
+
+  spi_command(DISON);   // display on
+
+  while (1) {  // main program loop.  just blinks A0 to show chip is running
+      output_toggle(PIN_A0);
+      delay_ms(500);
+   }
+}
+
+void pset(unsigned char color, unsigned char x, unsigned char y){
+//  sets the starting page(row) and column (x & y) coordinates in ram,
+//  then writes the colour to display memory.  The ending x & y are left
+//  maxed out so one can continue sending colour data bytes to the 'open'
+//  RAMWR command to fill further memory.  issuing any other command
+//  finishes RAMWR.
+
+  x += 2;                  // for some reason starts at 2
+
+  spi_command(PASET);   // page start/end ram
+  spi_data(x);
+  spi_data(ENDPAGE);
+
+  spi_command(CASET);   // column start/end ram
+  spi_data(y);
+  spi_data(ENDCOL);
+
+  spi_command(RAMWR);    // write
+  spi_data(color);
+}
+
+void spi_command(int dat){
+
+   output_low(LCD_CS);      // enable chip
+   SSPEN = 0;               // shut off hardware SPI allowing direct access to SPI in/out pins
+   output_low (SPI_DO);     // output low on data out (9th bit low = command)
+   output_high (SPI_CLK);
+   delay_cycles(1);         // send clock pulse
+   output_low (SPI_CLK);
+   SSPEN=1;                 // turn hardware SPI back on
+   spi_write(dat);          // make PIC do the work for the command byte
+   output_high(LCD_CS);     // disable
+
+}
+
+void spi_data(int dat){
+
+   output_low(LCD_CS);      // enable chip
+   SSPEN = 0;               // turn off hardware SPI allowing us direct access to SPI in/out pins
+   output_high (SPI_DO);    // output high on data out (9th bit high = data)
+   output_high (SPI_CLK);
+   delay_cycles(1);         // send clock pulse
+   output_low (SPI_CLK);
+   SSPEN=1;                 // turn hardware SPI back on
+   spi_write(dat);          // make PIC do the work for the data byte
+   output_high(LCD_CS);     // disable
+}

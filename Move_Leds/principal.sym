@@ -1,0 +1,56 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1_LOW
+015-016 CCP_1
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020-022 mat
+023     MAIN.var
+024     mover.comando
+024     MAIN.@SCRATCH1
+025     mover.i
+026     mover.x
+027.0   mover.flag
+028     @delay_ms1.P1
+028     mover.@SCRATCH1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+10D-10E @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+0004  @delay_ms1
+0019  mover
+00DB  MAIN
+00DB  @cinit
+
+Project Directory:
+    D:\DVD_BACKUP9\ELETRONICA\Gravador de PIC\Ic-Prog\PROJETOS PIC\Move_Leds\
+
+Project Files:
+    principal.c
+    C:\Arquivos de programas\PICC\devices\16F628A.h
+
+Units:
+    principal.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      principal.err
+    Ext Symbols: principal.esym
+    INHX8:       principal.hex
+    Symbols:     principal.sym
+    List:        principal.lst
+    Debug/COFF:  principal.cof
+    Project:     principal.PJT
+    Call Tree:   principal.tre
+    Statistics:  principal.sta

@@ -1,0 +1,4 @@
+a tensão do LCD é de 3v3
+
+deve-se colocar um zener entre os pinos SCK e SDA (Clock e dados) para um correto funcionamento 
+e adequado contraste!

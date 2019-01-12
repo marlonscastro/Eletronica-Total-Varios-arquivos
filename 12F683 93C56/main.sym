@@ -1,0 +1,70 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+013     CCP_1
+013     CCP_1_LOW
+014     CCP_1_HIGH
+019.6   C1OUT
+020     @SCRATCH
+021     @SCRATCH
+021     _RETURN_
+022     @SCRATCH
+023     @SCRATCH
+025     MAIN.chr
+026     read_ext_eeprom.address
+026     write_ext_eeprom.address
+026-027 init_ext_eeprom.cmd
+026     MAIN.@SCRATCH1
+027     @PUTCHAR_1_.P1
+027-029 read_ext_eeprom.cmd
+027     write_ext_eeprom.data
+028-02A write_ext_eeprom.cmd
+028     init_ext_eeprom.i
+02A     read_ext_eeprom.i
+02B     read_ext_eeprom.data
+02B     write_ext_eeprom.i
+02C     @delay_ms1.P1
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+00AB  @delay_ms1
+004F  @PUTCHAR_1_
+000E  init_ext_eeprom
+0071  write_ext_eeprom
+00BF  read_ext_eeprom
+0102  MAIN
+0004  @const81
+0102  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    F:\12F683 93C56\
+
+Project Files:
+    main.c
+    C:\Arquivos de programas\PICC\devices\12F683.h
+    9356.c
+
+Units:
+    F:\12F683 93C56\main (main)
+
+Compiler Settings:
+    Processor:      PIC12F683
+    Pointer Size:   8
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.PJT
+    Call Tree:   main.tre
+    Statistics:  main.sta

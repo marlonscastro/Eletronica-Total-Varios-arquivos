@@ -1,0 +1,56 @@
+[PROJECT]
+Target=index.hex
+Development_Mode=
+Processor=0x4550
+Processor_Text=PIC18F4550
+ToolSuite=CCS
+
+[Directories]
+Include=D:\Arquivos de programas\PICC\devices\;D:\Arquivos de programas\PICC\drivers\;
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=E:\SkyDrive\Eletronica\PROJETOS PIC CCS\18F4550 Teste Display 7 Seg\index.c
+BuildTool=C-COMPILER
+OptionString=+FH
+AdditionalOptionString=
+BuildRequired=1
+
+[index.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=index.c
+
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+
+[Opened Files]
+1=index.c
+2=
+[defines]
+enabled=0
+D1=
+V1=
+[fileformats]
+forcecoff=0
+debug=4
+error=2
+object=0
+list=0
+scratch=0
+sta=0
+tre=0
+allerrors=1
+allwarnings=1
+stayupne=0
+stayupoe=0
+[Units]
+Count=1
+1=index (main)

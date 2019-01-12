@@ -1,0 +1,228 @@
+CCS PCM C Compiler, Version 4.114, 93460303               12-mai-12 19:09
+
+               Filename: E:\SkyDrive\Eletronica\PROJETOS PIC CCS\16F877A_SERIAL\index.lst
+
+               ROM used: 255 words (3%)
+                         Largest free fragment is 2048
+               RAM used: 8 (2%) at main() level
+                         11 (3%) worst case
+               Stack:    2 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   0C6
+0003:  NOP
+.................... //#include <18F4550.h> 
+.................... #include <16F877A.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #use delay(clock=4000000) 
+0089:  MOVLW  24
+008A:  MOVWF  04
+008B:  BCF    03.7
+008C:  MOVF   00,W
+008D:  BTFSC  03.2
+008E:  GOTO   09D
+008F:  MOVLW  01
+0090:  MOVWF  78
+0091:  CLRF   77
+0092:  DECFSZ 77,F
+0093:  GOTO   092
+0094:  DECFSZ 78,F
+0095:  GOTO   091
+0096:  MOVLW  4A
+0097:  MOVWF  77
+0098:  DECFSZ 77,F
+0099:  GOTO   098
+009A:  GOTO   09B
+009B:  DECFSZ 00,F
+009C:  GOTO   08F
+009D:  BCF    0A.3
+009E:  BCF    0A.4
+009F:  GOTO   0E7 (RETURN)
+....................  
+.................... #FUSES NOWDT, NOBROWNOUT, PUT, XT    
+....................  
+.................... #use rs232(baud=19200, parity=N, xmit=PIN_D4, rcv=PIN_D5, stream = gprs)   // GPs 
+00A0:  BSF    03.5
+00A1:  BSF    08.5
+00A2:  BCF    03.5
+00A3:  BTFSC  08.5
+00A4:  GOTO   0A3
+00A5:  MOVLW  08
+00A6:  MOVWF  77
+00A7:  CLRF   23
+00A8:  BSF    77.7
+00A9:  GOTO   0B8
+00AA:  BCF    77.7
+00AB:  GOTO   0B8
+00AC:  BCF    03.0
+00AD:  BTFSC  08.5
+00AE:  BSF    03.0
+00AF:  RRF    23,F
+00B0:  BSF    77.6
+00B1:  GOTO   0B8
+00B2:  BCF    77.6
+00B3:  DECFSZ 77,F
+00B4:  GOTO   0AC
+00B5:  MOVF   23,W
+00B6:  MOVWF  78
+00B7:  GOTO   0C3
+00B8:  MOVLW  0B
+00B9:  BTFSC  77.7
+00BA:  MOVLW  03
+00BB:  MOVWF  78
+00BC:  DECFSZ 78,F
+00BD:  GOTO   0BC
+00BE:  BTFSC  77.7
+00BF:  GOTO   0AA
+00C0:  BTFSC  77.6
+00C1:  GOTO   0B2
+00C2:  GOTO   0AC
+00C3:  BCF    0A.3
+00C4:  BCF    0A.4
+00C5:  GOTO   0EB (RETURN)
+.................... #use rs232(baud=19200, parity=N, xmit=PIN_D6, rcv=PIN_D7, stream = serial)   // Ecoar na Serial 
+*
+0021:  BSF    03.5
+0022:  BCF    08.6
+0023:  BCF    03.5
+0024:  BCF    08.6
+0025:  MOVLW  08
+0026:  MOVWF  78
+0027:  GOTO   028
+0028:  NOP
+0029:  BSF    78.7
+002A:  GOTO   039
+002B:  BCF    78.7
+002C:  RRF    26,F
+002D:  BTFSC  03.0
+002E:  BSF    08.6
+002F:  BTFSS  03.0
+0030:  BCF    08.6
+0031:  BSF    78.6
+0032:  GOTO   039
+0033:  BCF    78.6
+0034:  DECFSZ 78,F
+0035:  GOTO   02C
+0036:  GOTO   037
+0037:  NOP
+0038:  BSF    08.6
+0039:  MOVLW  0B
+003A:  MOVWF  04
+003B:  DECFSZ 04,F
+003C:  GOTO   03B
+003D:  NOP
+003E:  BTFSC  78.7
+003F:  GOTO   02B
+0040:  BTFSC  78.6
+0041:  GOTO   033
+0042:  RETURN
+....................  
+.................... void main(){ 
+*
+0020:  DATA 00,00
+*
+00C6:  CLRF   04
+00C7:  BCF    03.7
+00C8:  MOVLW  1F
+00C9:  ANDWF  03,F
+00CA:  BSF    03.5
+00CB:  BCF    08.4
+00CC:  BCF    03.5
+00CD:  BSF    08.4
+00CE:  BSF    03.5
+00CF:  BCF    08.6
+00D0:  BCF    03.5
+00D1:  BSF    08.6
+00D2:  BSF    03.5
+00D3:  BSF    1F.0
+00D4:  BSF    1F.1
+00D5:  BSF    1F.2
+00D6:  BCF    1F.3
+00D7:  MOVLW  07
+00D8:  MOVWF  1C
+00D9:  BCF    03.5
+00DA:  CLRF   21
+....................    /*char chr[40];    
+....................    int i = 0; 
+....................    while(true){ 
+....................        chr[i] = fgetc(gprs); 
+....................        if(chr[i] == '\r'){ 
+....................          fprintf(serial, "%s", chr);                
+....................          i = 0; 
+....................        } 
+....................        i++; 
+....................    }*/ 
+....................    int i = 0; 
+....................    char k;   
+....................    while(true){   
+....................       fprintf(serial, "\"inicio da com serial\"\r\n"); 
+00DB:  MOVLW  04
+00DC:  BSF    03.6
+00DD:  MOVWF  0D
+00DE:  MOVLW  00
+00DF:  MOVWF  0F
+00E0:  BCF    03.6
+00E1:  CALL   043
+....................       delay_ms(1000); 
+00E2:  MOVLW  04
+00E3:  MOVWF  23
+00E4:  MOVLW  FA
+00E5:  MOVWF  24
+00E6:  GOTO   089
+00E7:  DECFSZ 23,F
+00E8:  GOTO   0E4
+....................    } 
+00E9:  GOTO   0DB
+....................    while(true){    
+....................       k = fgetc(gprs); 
+00EA:  GOTO   0A0
+00EB:  MOVF   78,W
+00EC:  MOVWF  22
+....................       fputc(k, serial);  
+00ED:  MOVF   22,W
+00EE:  MOVWF  26
+00EF:  CALL   021
+....................       if (i == 10){ 
+00F0:  MOVF   21,W
+00F1:  SUBLW  0A
+00F2:  BTFSS  03.2
+00F3:  GOTO   0FC
+....................             fprintf(serial, "Beleza Doido: \"teste serial\"\r\n");  
+00F4:  MOVLW  11
+00F5:  BSF    03.6
+00F6:  MOVWF  0D
+00F7:  MOVLW  00
+00F8:  MOVWF  0F
+00F9:  BCF    03.6
+00FA:  CALL   043
+....................             i=0; 
+00FB:  CLRF   21
+....................       } 
+....................       i++; 
+00FC:  INCF   21,F
+....................    } 
+00FD:  GOTO   0EA
+....................  
+.................... } 
+....................   /* int tempo; 
+....................    tempo = 1000; 
+....................    while (true){ 
+....................       output_high(pin_D2); 
+....................       delay_ms(tempo); 
+....................       output_low(pin_D2); 
+....................       delay_ms(tempo); 
+....................  
+....................       delay_ms(tempo); 
+....................       fprintf(serial, "Beleza Doido: \"teste serial\"\r\n");  
+....................    }*/ 
+....................  
+....................  
+00FE:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F31   XT NOWDT PUT NOBROWNOUT NOLVP NOCPD NOWRT NODEBUG NOPROTECT

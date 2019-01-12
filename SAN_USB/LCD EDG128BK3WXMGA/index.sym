@@ -1,0 +1,126 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     @INTERRUPT_AREA
+005     @INTERRUPT_AREA
+006     @INTERRUPT_AREA
+007     @INTERRUPT_AREA
+008     @INTERRUPT_AREA
+009     @INTERRUPT_AREA
+00A     @INTERRUPT_AREA
+00B     @INTERRUPT_AREA
+00C     @INTERRUPT_AREA
+00D     @INTERRUPT_AREA
+00E     @INTERRUPT_AREA
+00F     @INTERRUPT_AREA
+010     @INTERRUPT_AREA
+011     @INTERRUPT_AREA
+012     @INTERRUPT_AREA
+013     @INTERRUPT_AREA
+014     @INTERRUPT_AREA
+015     @INTERRUPT_AREA
+016     @INTERRUPT_AREA
+017     @INTERRUPT_AREA
+018     @INTERRUPT_AREA
+019     CurrentLine
+01A     QuantChrLine
+01B     OffsetX
+01C     tempo
+01D     clear_screen.p
+01D     @delay_ms1.P1
+01D     @PSTRINGC_89.@SCRATCH1
+01E     clear_screen.c
+01E     @PSTRINGC_89.@SCRATCH2
+01F     PE12864_Printchar.cvar
+020     PE12864_Printchar.i
+021     newLine.@SCRATCH1
+021     PE12864_Printchar.@SCRATCH1
+022     PE12864_Write_data.byte_data
+022     PE12864_Printchar.@SCRATCH2
+023     PE12864_Gotoxy.x
+024     PE12864_Gotoxy.y
+025     PE12864_Gotoxy.OffsetChr
+026     PE12864_Gotoxy.@SCRATCH1
+027     PE12864_Write_command.byte_command
+027     PE12864_Gotoxy.@SCRATCH2
+028     PE12864_SerialOut.byteDC
+028     @DIV88.P1
+029     @DIV88.P1
+029     @SPI_XFER_1.P2
+02A     @SPI_XFER_1.P1
+02A     @DIV88.@SCRATCH1
+02B     @SPI_XFER_1.@SCRATCH1
+02C     @SPI_XFER_1.@SCRATCH2
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1_LOW
+FBE     CCP_1
+FBF     CCP_1_HIGH
+FD3     OSCCON
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PACKED_MEMORY.P1
+FE9-FEA @WRITE_PROGRAM_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P3
+FE9-FEA @READ_PACKED_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+12D0  @delay_ms1
+12FA  @SPI_XFER_1
+10AE  TEXT
+11BE  TEXT2
+1420  PE12864_InitLcd
+1334  PE12864_SerialOut
+1348  PE12864_Write_command
+13D8  PE12864_Write_data
+1490  newLine
+13F0  clear_screen
+137C  PE12864_Gotoxy
+1354  @DIV88
+14BA  PE12864_Printchar
+12AA  TIMER0_isr
+15A4  MAIN
+12BE  @const138
+1582  @PSTRINGC_89
+15A4  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\SAN_USB\LCD EDG128BK3WXMGA\
+
+Project Files:
+    index.c
+    SanUSB.h
+    C:\Program Files\PICC\devices\18F4550.h
+    EDG128BK3WXMGA.c
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\SAN_USB\LCD EDG128BK3WXMGA\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

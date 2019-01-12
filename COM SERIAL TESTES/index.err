@@ -1,0 +1,6 @@
+>>> Warning 202 "index.c" Line 115(9,16): Variable never used:   CallVal
+>>> Warning 202 "index.c" Line 183(8,9): Variable never used:   i
+>>> Warning 202 "index.c" Line 183(11,15): Variable never used:   cont
+>>> Warning 202 "index.c" Line 183(21,22): Variable never used:   j
+      Memory usage:   ROM=6%      RAM=51% - 51%
+      0 Errors,  4 Warnings.

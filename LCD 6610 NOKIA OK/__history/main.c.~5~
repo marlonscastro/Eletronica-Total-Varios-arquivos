@@ -1,0 +1,14 @@
+#include <16F688.h>
+
+#FUSES NOWDT                    //No Watch Dog Timer
+#FUSES NOBROWNOUT               //No brownout reset
+
+#use delay(internal=4000000)
+
+void main(){
+
+   while(TRUE)   {
+            
+   }
+
+}

@@ -1,0 +1,59 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028.0   trata_t0.led
+029     trata_t0.conta
+02A     trata_t0.@SCRATCH1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+002F  trata_t0
+0047  MAIN
+0047  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    E:\SkyDrive\Eletronica\PROJETOS PIC CCS\Teste_Timer0\
+
+Project Files:
+    index_timer0.c
+    D:\Arquivos de programas\PICC\devices\16f628A.h
+
+Units:
+    E:\SkyDrive\Eletronica\PROJETOS PIC CCS\Teste_Timer0\index_timer0 (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index_timer0.err
+    Ext Symbols: index_timer0.esym
+    INHX8:       index_timer0.hex
+    Symbols:     index_timer0.sym
+    List:        index_timer0.lst
+    Debug/COFF:  index_timer0.cof
+    Project:     index_timer0.PJT

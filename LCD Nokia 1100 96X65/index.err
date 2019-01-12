@@ -1,0 +1,8 @@
+>>> Warning 202 "D:\PROGRAMAS\PROJETOS\NOKIA1100_1\driver1100.c" Line 232(9,12): Variable never used:   aux
+>>> Warning 202 "D:\PROGRAMAS\PROJETOS\NOKIA1100_1\driver1100.c" Line 233(9,10): Variable never used:   i
+>>> Warning 202 "D:\PROGRAMAS\PROJETOS\NOKIA1100_1\driver1100.c" Line 233(11,12): Variable never used:   o
+>>> Warning 202 "D:\PROGRAMAS\PROJETOS\NOKIA1100_1\driver1100.c" Line 234(9,10): Variable never used:   c
+>>> Warning 202 "D:\PROGRAMAS\PROJETOS\NOKIA1100_1\driver1100.c" Line 235(9,14): Variable never used:   index
+>>> Warning 202 "index.c" Line 8(6,7): Variable never used:   i
+      Memory usage:   ROM=14%      RAM=38% - 41%
+      0 Errors,  6 Warnings.

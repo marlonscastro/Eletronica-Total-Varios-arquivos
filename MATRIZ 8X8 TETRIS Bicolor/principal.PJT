@@ -1,0 +1,57 @@
+[PROJECT]
+Target=principal.hex
+Development_Mode=
+Processor=0x673F
+Processor_Text=PIC16F73
+ToolSuite=CCS
+
+[Directories]
+Include=C:\Program Files (x86)\PICC\devices\;C:\Program Files (x86)\PICC\drivers\;C:\Arquivos de Programas\PICC\devices\;C:\Arquivos de Programas\PICC\drivers\;
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=principal.c
+BuildTool=C-COMPILER
+OptionString=+FM
+AdditionalOptionString=
+BuildRequired=1
+
+[principal.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=principal.c
+
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+
+[Opened Files]
+1=principal.c
+2=
+3=
+[Units]
+Count=1
+1=principal.c
+Link=0
+[defines]
+enabled=0
+D1=
+V1=
+[fileformats]
+debug=0
+error=2
+object=0
+list=0
+scratch=0
+sta=0
+tre=0
+allerrors=1
+allwarnings=1
+stayupne=1
+stayupoe=0

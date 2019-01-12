@@ -1,0 +1,6 @@
+>>> Warning 202 "main.c" Line 30(9,21): Variable never used:   HalfStep6845
+>>> Warning 202 "main.c" Line 31(23,28): Variable never used:   delay
+>>> Warning 202 "main.c" Line 39(8,9): Variable never used:   i
+>>> Warning 202 "main.c" Line 40(15,19): Variable never used:   dado
+      Memory usage:   ROM=2%      RAM=8% - 9%
+      0 Errors,  4 Warnings.

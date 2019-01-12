@@ -1,0 +1,7 @@
+>>> Warning 216 "main.c" Line 292(0,1): Interrupts disabled during call to prevent re-entrancy:  (@delay_us1)
+>>> Warning 202 "main.c" Line 263(11,12): Variable never used:   j
+>>> Warning 202 "main.c" Line 263(14,15): Variable never used:   n
+>>> Warning 202 "main.c" Line 264(9,12): Variable never used:   var
+>>> Warning 202 "main.c" Line 265(9,12): Variable never used:   txt
+      Memory usage:   ROM=11%      RAM=36% - 39%
+      0 Errors,  5 Warnings.

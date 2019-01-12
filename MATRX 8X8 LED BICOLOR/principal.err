@@ -1,0 +1,4 @@
+>>> Warning 202 "principal.c" Line 6(52,59): Variable never used:   largOBJ
+>>> Warning 202 "principal.c" Line 12(6,8): Variable never used:   vd
+      Memory usage:   ROM=10%      RAM=22% - 24%
+      0 Errors,  2 Warnings.

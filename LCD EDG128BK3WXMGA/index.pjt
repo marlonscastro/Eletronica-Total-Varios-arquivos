@@ -1,0 +1,59 @@
+[Directories]
+Include=C:\Program Files\PICC\devices\;C:\Program Files\PICC\drivers\;
+Library=
+LinkerScript=
+[defines]
+enabled=0
+D1=
+V1=
+[fileformats]
+forcecoff=0
+debug=0
+error=2
+object=0
+list=0
+scratch=0
+sta=0
+tre=0
+allerrors=1
+allwarnings=1
+stayupne=0
+stayupoe=0
+[PROJECT]
+Target=index.hex
+Development_Mode=
+Processor=0x876F
+Processor_Text=PIC16F876
+ToolSuite=CCS
+[Target Data]
+BuildTool=C-COMPILER
+OptionString=+FH
+AdditionalOptionString=
+BuildRequired=1
+[index.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+[mru-list]
+1=index.c
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+[Units]
+Link=0
+Count=1
+1=index.c
+[Opened Files]
+1=index.c
+2=EDG128BK3WXMGA.c
+3=
+4=
+5=
+6=..\..\..\AppData\Local\Temp\Temp1_pic_tutorial9.zip\lib\Common\I2C.h
+7=..\..\..\AppData\Local\Temp\Temp1_pic_tutorial9.zip\lib\Common\I2C_Addr.h
+8=..\..\..\AppData\Local\Temp\Temp1_pic_tutorial9.zip\lib\Common\PIC.h
+9=..\..\..\AppData\Local\Temp\Temp1_pic_tutorial9.zip\C tutorial\24Cxx_EEPROM.c
+10=..\..\..\AppData\Local\Temp\Temp1_pic_tutorial9.zip\lib\Boards\mainboard.c
+11=

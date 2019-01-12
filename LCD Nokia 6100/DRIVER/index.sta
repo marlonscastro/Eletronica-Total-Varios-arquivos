@@ -1,0 +1,55 @@
+
+ROM used: 662 (2%)
+          662 (2%) including unused fragments
+
+          1 Average locations per line
+          8 Average locations per statement
+
+RAM used: 4 (0%) at main() level
+          26 (1%) worst case
+
+Stack used: 4 worst case (out of 31 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   15     6   7  index.c
+  461     0   0  ..\..\..\..\..\Program Files\PICC\devices\18F4550.h
+  378    78  93  driver6610Epson.c
+   73     0   0  nokialcd_controlcodes.h
+----- -----
+  927    84 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     40   3   1             @delay_ms1
+0     60   5   2   343  4.8  LCDData
+0     60   5   2   343  4.8  LCDCommand
+0    170  13   0   773  1.5  Epson_InitLcd
+ Inline        5   193  2.6  LCDSetWindow
+ Inline        0    17  0.8  LCDBeginWrite
+0     68   5   4   104  2.3  LCDWriteWindow
+0     44   3   4   147  3.8  LCDWritePair
+0     30   2   3   108  2.0  LCDSetPixel
+0    108   8  12   617  9.2  LCDFillBox
+0     20   2   1    82  2.1  LCDClearScreen
+0     58   4   0   141  2.2  MAIN
+
+Program metrics:
+    Functions               11
+    Statements              84
+    Comments                362
+    Volume (V)              4560
+    Difficilty (D)          36.2
+    Effort to implement (E) 165205
+    Time to implement (T)   2 hours, 33 minutes
+    Est Delivered Bugs (B)  1
+    Cyclomatic Complexity   5
+    Maintainability (MI)    132
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00002     4  0  
+00004-07FFE   658  32106  
+
+
+

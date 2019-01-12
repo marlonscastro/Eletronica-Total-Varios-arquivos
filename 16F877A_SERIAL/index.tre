@@ -1,0 +1,12 @@
+юдindex
+   юдmain  0/57  Ram=3
+      цд??0??
+      цд@PSTRINGC7_71  0/70  Ram=3
+      Ё  цд@PUTCHAR_2_  0/34  Ram=1
+      Ё  юд@PUTCHAR_2_  0/34  Ram=1
+      цд@delay_ms1  0/23  Ram=1
+      цд@GETCH_1_  0/38  Ram=1
+      цд@PUTCHAR_2_  0/34  Ram=1
+      юд@PSTRINGC7_71  0/70  Ram=3
+         цд@PUTCHAR_2_  0/34  Ram=1
+         юд@PUTCHAR_2_  0/34  Ram=1

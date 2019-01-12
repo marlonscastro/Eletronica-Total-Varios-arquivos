@@ -1,0 +1,102 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     CurrentLine
+005     QuantChrLine
+006     OffsetX
+007-008 strtok.save
+009     x_ext
+00A     y_ext
+00B     MAIN.v
+00C     @delay_us1.P1
+00C     @delay_ms1.P2
+00C     clear_screen.p
+00C     MAIN.@SCRATCH1
+00D     putSprite.x
+00D     clear_screen.c
+00D     MAIN.@SCRATCH2
+00E     putSprite.y
+00F     putSprite.i
+010     putSprite.Sp1
+011     putSprite.Sp2
+012     HMF6598_Write_data.byte_data
+012     putSprite.@SCRATCH1
+013     HMF6598_Gotoxy.x
+014     HMF6598_Gotoxy.y
+015     HMF6598_Gotoxy.OffsetChr
+016     HMF6598_Gotoxy.@SCRATCH1
+017     HMF6598_Write_command.byte_command
+017     HMF6598_Gotoxy.@SCRATCH2
+018     HMF6598_OutPort.byteDC
+018     @DIV88.P1
+019     @DIV88.P1
+01A     @DIV88.@SCRATCH1
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2
+FBB     CCP_2_LOW
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE1-FE2 @READ_PACKED_MEMORY.P1
+FE1-FE2 @WRITE_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PROGRAM_MEMORY.P1
+FE9-FEA @WRITE_PACKED_MEMORY.P2
+FE9-FEA @READ_PACKED_MEMORY.P3
+FE9-FEA @READ_PROGRAM_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0064  @delay_ms1
+001C  @delay_us1
+0158  HMF6598_InitLcd
+003C  HMF6598_OutPort
+0058  HMF6598_Write_command
+0110  HMF6598_Write_data
+0128  clear_screen
+00B4  HMF6598_Gotoxy
+008C  @DIV88
+0004  bloco
+01D0  putSprite
+0274  MAIN
+0274  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\GAME_TEST\MOVE_SPRITE\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\18F4550.h
+    HMF6598SYH-PY.c
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\GAME_TEST\MOVE_SPRITE\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

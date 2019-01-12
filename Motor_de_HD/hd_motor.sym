@@ -1,0 +1,52 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1_LOW
+015-016 CCP_1
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+021     main.x
+022     main.i
+023     main.tempo
+024-029 main.mat
+02A     @delay_ms1.P1
+02A     main.@SCRATCH1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+10D-10E @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+0004  @delay_ms1
+0019  main
+0019  @cinit
+
+Project Directory:
+    D:\DVD_BACKUP9\ELETRONICA\Gravador de PIC\Ic-Prog\PROJETOS PIC\Motor_de_HD\
+
+Project Files:
+    hd_motor.c
+    C:\Arquivos de programas\PICC\devices\16F628A.h
+
+Units:
+    hd_motor.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      hd_motor.err
+    Ext Symbols: hd_motor.esym
+    INHX8:       hd_motor.hex
+    Symbols:     hd_motor.sym
+    List:        hd_motor.lst
+    Debug/COFF:  hd_motor.cof
+    Project:     hd_motor.PJT
+    Call Tree:   hd_motor.tre
+    Statistics:  hd_motor.sta

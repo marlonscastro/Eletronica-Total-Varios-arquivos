@@ -1,0 +1,71 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+013     CCP_1
+013     CCP_1_LOW
+014     CCP_1_HIGH
+019.6   C1OUT
+020     @SCRATCH
+021     @SCRATCH
+021     _RETURN_
+022     @SCRATCH
+023     @SCRATCH
+025     MAIN.chr
+026-027 write_ext_eeprom.address
+026-027 read_ext_eeprom.address
+026     MAIN.@SCRATCH1
+027     @PUTCHAR_1_.P1
+028     write_ext_eeprom.data
+028     read_ext_eeprom.data
+029.0   ext_eeprom_ready.ack
+029     @I2C_READ_1.P1
+029     write_ext_eeprom.@SCRATCH1
+029     read_ext_eeprom.@SCRATCH1
+02A     @I2C_WRITE_1.P1
+02A     @I2C_READ_1.@SCRATCH1
+02B     @I2C_READ_1.@SCRATCH2
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+000004  @const559.call
+00000E  init_ext_eeprom
+000013  @PUTCHAR_1_
+000035  @I2C_WRITE_1
+000069  ext_eeprom_ready
+000092  write_ext_eeprom
+0000D2  read_ext_eeprom
+00012A  @I2C_READ_1
+00016F  MAIN
+00016F  @cinit1
+000182  @cinit2
+
+Project Directory:
+    F:\12F683 24LC08\
+
+Project Files:
+    main.c                                                  [27-mar-14 07:58  CRC=C5DE95FD]
+    C:\Arquivos de programas\PICC\devices\12F683.h          [19-jul-13 15:09  CRC=904C41E6]
+    2408.c                                                  [26-mar-14 15:09  CRC=9EFD32C4]
+
+Source signature=94253D6B
+
+Units:
+    main (main)
+
+Compiler Settings:
+    Processor:      PIC12F683
+    Pointer Size:   8
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    XREF file:   main.xsym
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.ccspjt
+    Call Tree:   main.tre
+    Statistics:  main.STA

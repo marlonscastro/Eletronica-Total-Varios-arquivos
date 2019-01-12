@@ -1,0 +1,82 @@
+#define sce    PIN_B0 // Chip Enable
+#define dc     PIN_B1 // Data Command LOW: Cmd; HIGH: Data;
+#define sda    PIN_B2 // Data
+#define sclk   PIN_B3 // Clock
+#define rst    PIN_B4 // RESET (Active Low)
+
+#define CMD      0
+#define DATA     1
+
+
+#ifndef ON
+#define ON           1
+#endif
+
+#ifndef OFF
+#define OFF          0
+#endif
+
+void Lcd_Clear(void);
+void Lcd_Init(void);
+void Lcd_Write(int1 cd,unsigned char c);
+void Gotoxy(char x,char y);
+
+
+      //Lcd_Write(CMD,(0x00|(x&0x0F)));         // X axis initialisation: 0000 xxxx ( x3 x2 x1 x0)
+      //Lcd_Write(CMD,(0x10|((x>>4)&0x07)));    // X axis initialisation: 0010 0xxx  ( x6 x5 x4)
+
+
+void Lcd_Clear(void){
+   unsigned long i;
+   Lcd_Write(CMD,0x40); // Y = 0
+   Lcd_Write(CMD,0x80);
+   for(i=0;i<918;i++)
+      Lcd_Write(DATA,0x00);
+}
+
+// Purpose:       Initialize the LCD.
+//                Call before using any other LCD function.
+void Lcd_Init(void){
+  output_low(sce);
+  output_low(rst);
+  delay_ms(10);
+  output_high(rst); 
+   
+  delay_ms(10);
+   
+  Lcd_Write(CMD, 0x21); // PowerON, ExtCommandSet
+  Lcd_Write(CMD, 0x09); // Internal HV-gen x3
+  Lcd_Write(CMD, 0xe0); // Set Vop
+  Lcd_Write(CMD, 0x15); // Bias n=2    //15
+  Lcd_Write(CMD, 0x06); // Temperature coeff 2
+  Lcd_Write(CMD, 0x20); // StandartCommandSet
+  Lcd_Write(CMD, 0x0C); // normal mode, display non-inverted
+  delay_ms(1000);
+  
+  Lcd_Clear();   
+}
+
+// Purpose:    Write a byte of data to lcd
+// Inputs:     c - the byte of data to write
+void Lcd_Write(int1 CMD_DATA,unsigned char c){
+   int i;
+   //output_low(sce);
+   output_bit(dc,CMD_DATA);
+   for(i=0;i<8;i++){
+      output_low(sclk);
+      if((c & 0x80))
+         output_high(sda);
+      else
+         output_low(sda);
+      output_high(sclk);
+      c <<= 1;
+      delay_us(10);
+   }
+   //output_high(sce);
+}
+
+void Gotoxy(char x,char y){
+   Lcd_Write(CMD, (y | 0x40));
+   Lcd_Write(CMD, (x | 0x80));
+}
+

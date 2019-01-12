@@ -1,0 +1,126 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004-005 strtok.save
+006     CurrentLine
+007     QuantChrLine
+008     OffsetX
+009-408 Buffer
+409     MAIN.i
+40A     MAIN.cont
+40B     MAIN.j
+40C     MAIN.k
+40D     clear_screen.p
+40D     @delay_ms1.P1
+40D     @PUTCHAR_3_.P2
+40D     @GETCH_2_.@SCRATCH1
+40D     @PSTRINGC_190.@SCRATCH1
+40E     clear_screen.c
+40E     @PSTRINGC_190.@SCRATCH2
+40F     PE12864_Printchar.cvar
+40F     clear_screen.@SCRATCH1
+410     PE12864_Printchar.i
+410     clear_screen.@SCRATCH2
+411     newLine.@SCRATCH1
+411     PE12864_Printchar.@SCRATCH1
+412     PE12864_Write_data.byte_data
+412     PE12864_Printchar.@SCRATCH2
+413     PE12864_Gotoxy.x
+413-414 @MUL1616.P1
+413     PE12864_Write_data.@SCRATCH1
+414     PE12864_Gotoxy.y
+414     PE12864_Write_data.@SCRATCH2
+415-416 @MUL1616.P1
+415     PE12864_Gotoxy.OffsetChr
+416     PE12864_Gotoxy.@SCRATCH1
+417     PE12864_Write_command.byte_command
+417     @MUL1616.@SCRATCH1
+417     PE12864_Gotoxy.@SCRATCH2
+418     PE12864_SerialOut.byteDC
+418     @DIV88.P1
+419     PE12864_SerialOut.i
+419     @DIV88.P1
+41A     PE12864_SerialOut.@SCRATCH1
+41A     @DIV88.@SCRATCH1
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2
+FBB     CCP_2_LOW
+FBC     CCP_2_HIGH
+FBE     CCP_1_LOW
+FBE     CCP_1
+FBF     CCP_1_HIGH
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P1
+FE9-FEA @WRITE_PACKED_MEMORY.P2
+FE9-FEA @READ_PACKED_MEMORY.P3
+FE9-FEA @WRITE_PROGRAM_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+028C  @delay_ms1
+065A  @GETCH_2_
+06A4  @PUTCHAR_3_
+0004  TEXT
+0114  TEXT2
+0476  PE12864_InitLcd
+02B8  PE12864_SerialOut
+02EE  PE12864_Write_command
+03BC  PE12864_Write_data
+039A  @MUL1616
+051E  newLine
+040A  clear_screen
+0326  PE12864_Gotoxy
+02FA  @DIV88
+0554  PE12864_Printchar
+0200  @const267
+0210  @const270
+0220  @const289
+063A  @PSTRINGC_190
+0240  @const291
+0252  @const292
+0258  @const293
+06EA  MAIN
+0266  @const300
+0274  @const301
+06EA  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\ELETRONICA\PROJETOS PIC CCS\COM SERIAL TESTES\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\18F4550.h
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+    DriverPE12864LRF.c
+
+Units:
+    D:\ELETRONICA\PROJETOS PIC CCS\COM SERIAL TESTES\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

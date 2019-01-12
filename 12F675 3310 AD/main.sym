@@ -1,0 +1,89 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+019.6   C1OUT
+020     @SCRATCH
+021     @SCRATCH
+021     _RETURN_
+022     @SCRATCH
+023     @SCRATCH
+024     char_row
+025     charsel
+026     charpos
+027     chardata
+028-029 ddram
+02A-02D valor
+02E-02F @ITOF.P1
+02E-031 @PRINTF_L32D_57FPFPF.P2
+02E     MAIN.@SCRATCH1
+02F     @delay_ms1.P1
+032     @PRINTF_L32D_57FPFPF.P1
+033     @PRINTF_L32D_57FPFPF.@SCRATCH1
+034     @PRINTF_L32D_57FPFPF.@SCRATCH2
+035     @PRINTF_L32D_57FPFPF.@SCRATCH3
+036     @PRINTF_L32D_57FPFPF.@SCRATCH4
+037     @PRINTF_L32D_57FPFPF.@SCRATCH5
+038     @PRINTF_L32D_57FPFPF.@SCRATCH6
+039-03C @FTOSD.P1
+039-03C @DIV3232.P2
+039     @PUTCHAR_1_.P3
+039-03C @MULFF.P4
+03D-040 @MULFF.P1
+03D-040 @DIV3232.P2
+03D     @FTOSD.@SCRATCH1
+041     @MULFF.@SCRATCH1
+041     @DIV3232.@SCRATCH1
+042     @MULFF.@SCRATCH2
+042     @DIV3232.@SCRATCH2
+043     @MULFF.@SCRATCH3
+043     @DIV3232.@SCRATCH3
+044     @MULFF.@SCRATCH4
+044     @DIV3232.@SCRATCH4
+045     @MULFF.@SCRATCH5
+045     @DIV3232.@SCRATCH5
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+001B  @delay_ms1
+00C1  @PUTCHAR_1_
+0210  MAIN
+002F  @ITOF
+004C  @MULFF
+000A  @const123
+0158  @FTOSD
+00E3  @DIV3232
+0131  @PRINTF_L32D_57FPFPF
+0210  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    F:\12F675 3310 AD\
+
+Project Files:
+    main.c
+    C:\Arquivos de programas\PICC\devices\12F675.h
+    driver3310.c
+
+Units:
+    F:\12F675 3310 AD\main (main)
+
+Compiler Settings:
+    Processor:      PIC12F675
+    Pointer Size:   8
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.PJT
+    Call Tree:   main.tre
+    Statistics:  main.sta

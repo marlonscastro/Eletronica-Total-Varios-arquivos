@@ -1,0 +1,86 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004     @WRITE_PROGRAM_MEMORY8.P2
+008     PSP_DATA
+015-016 CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B-01C CCP_2
+01C     CCP_2_HIGH
+021     MAIN.i
+022     lcd_ini.conta
+022     MAIN.@SCRATCH1
+023     @PRINTF_D_72.P1
+023     lcd_ini.@SCRATCH1
+024     @PRINTF_D_72.P1
+025     @PRINTF_D_72.@SCRATCH1
+026     @PRINTF_D_72.@SCRATCH2
+027     @PRINTF_D_72.@SCRATCH3
+028     @PRINTF_D_72.@SCRATCH4
+029     lcd_escreve.c
+029     @DIV88.P1
+02A     @DIV88.P1
+02A     lcd_pos_xy.x
+02A     @delay_ms1.P1
+02B     lcd_pos_xy.y
+02B     @DIV88.@SCRATCH1
+02C     lcd_pos_xy.endereco
+02D     lcd_pos_xy.@SCRATCH1
+02E     lcd_envia_byte.endereco
+02F     lcd_envia_byte.dado
+030     lcd_envia_byte.@SCRATCH1
+031     lcd_envia_nibble.dado
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+09C.6   C1OUT
+09C.7   C2OUT
+10D-10E @WRITE_PROGRAM_MEMORY8.P1
+10D-10E @READ_PROGRAM_MEMORY8.P2
+
+ROM Allocation:
+0023  @delay_ms1
+0004  INI_LCD
+0038  lcd_envia_nibble
+005F  lcd_envia_byte
+007F  lcd_ini
+00D9  lcd_pos_xy
+00BF  lcd_escreve
+0173  MAIN
+000C  @const81
+00F7  @DIV88
+010C  @PRINTF_D_72
+0173  @cinit
+
+Project Directory:
+    D:\DVD_BACKUP9\ELETRONICA\Gravador de PIC\Ic-Prog\PROJETOS PIC\Projeto_LCD\
+
+Project Files:
+    index_lcd.c
+    C:\Arquivos de programas\PICC\devices\16f877A.h
+    mod_lcd.c
+
+Units:
+    index_lcd.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index_lcd.err
+    Ext Symbols: index_lcd.esym
+    INHX8:       index_lcd.hex
+    Symbols:     index_lcd.sym
+    List:        index_lcd.lst
+    Debug/COFF:  index_lcd.cof
+    Project:     index_lcd.PJT
+    Call Tree:   index_lcd.tre
+    Statistics:  index_lcd.sta

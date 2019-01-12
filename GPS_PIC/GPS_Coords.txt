@@ -1,0 +1,133 @@
+DVD 1 Live In Minneapolis - Where The Wild Things Are
+
+01 Paint Me Your Face
+02 Now We Run
+03 Oooo
+04 Building The Church
+05 Tender Surrender
+06 Band Intros
+07.Firewall
+08 The Crying Machine
+09 Shove The Sun Aside
+10 I'm Becoming
+11 Die To Live
+12 Freak Show Excess
+13 Apples In Paradise
+14 All About Eve
+15 Gary 7
+16 Beastly Rap
+17 Treasure Island
+18 Angel Food
+19 Earthquake Sky
+
+DVD 2:
+01 The Audience Is Listening
+02 The Murder
+03 Juice
+04 Whispering A Prayer
+05 Taurus Bulba
+06 Liberty
+07 Answers
+08 For The Love Of God
+
+
+amelinha - solo dos amantes
+
+Obadias	00:16:36:33:08:51
+
+$PLCS,REV,PLN012056S01,070326,161109
+$GPRMC,235948.00,V,0000.0001,N,00000.0000,E,,,161206,,,N*45
+$GPGGA,235948.00,0000.0002,N,00000.0000,E,0,00,0.0,,M,,M,,*5C
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+$GPRMC,235949.00,V,0000.0003,N,00000.0000,E,,,161206,,,N*44
+$GPGGA,235949.00,0000.0004,N,00000.0000,E,0,00,0.0,,M,,M,,*5D
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+$GPRMC,235950.00,V,0000.0005,N,00000.0000,E,,,161206,,,N*4C
+$GPGGA,235950.00,0000.0006,N,00000.0000,E,0,00,0.0,,M,,M,,*55
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+$GPGSV,1,1,01,03,77,270,*4E
+$GPRMC,235951.00,V,0000.0007,N,00000.0000,E,,,161206,,,N*4D
+$GPGGA,235951.00,0000.0008,N,00000.0000,E,0,00,0.0,,M,,M,,*54
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+$GPRMC,235952.00,V,0000.0009,N,00000.0000,E,,,161206,,,N*4E
+$GPGGA,235952.00,0000.0010,N,00000.0000,E,0,00,0.0,,M,,M,,*57
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+$GPRMC,235953.00,V,0000.0011,N,00000.0000,E,,,161206,,,N*4F
+$GPGGA,235953.00,0000.0012,N,00000.0000,E,0,00,0.0,,M,,M,,*56
+$GPGSA,A,1,,,,,,,,,,,,,,,*1E
+$GPGSV,1,1,01,03,77,270,*4E
+
+
+$GPRMC,213820.79,A,0800.8226,S,03454.5543,W,000.0,000.8,050410,022.6,W,A*25 
+
+$GPRMC,
+213820.79,
+A,
+0800.8226,
+S,
+03454.5543,
+W,
+000.0,
+000.8,
+050410,
+022.6,
+W,
+A*25 
+
+
+08 00.8226S 034 54.5643W
+
+RMC - NMEA has its own version of essential gps pvt (position, velocity, time) data. It is called RMC, The Recommended Minimum, which will look similar to:
+
+$GPRMC,123519.25,A,4807.0381,N,01131.0004,E,022.4,084.4,230394,003.1,W*6A
+
+Where:
+     RMC          Recommended Minimum sentence C
+     123519       Fix taken at 12:35:19 UTC
+     A            Status A=active or V=Void.
+     4807.038,N   Latitude 48 deg 07.038' N
+     01131.000,E  Longitude 11 deg 31.000' E
+     022.4        Speed over the ground in knots (Milhas Náuticas, 1852 Metros ou 1,852 Km)
+     084.4        Track angle in degrees True
+     230394       Date - 23rd of March 1994
+     003.1,W      Magnetic Variation
+     *6A          The checksum data, always begins with *
+
+Note that, as of the 2.3 release of NMEA, there is a new field in the RMC sentence at the end just prior to the checksum. For more information on this field see here. 
+
+#include <stdio.h>
+#include <string.h>
+#define NUM 25
+char *splite(char *temp[NUM], char* str, char* delim);
+main()
+{ char *temp[NUM];
+ char str[] = "Ajuda-te e o ceu te ajudara!"; 
+ splite(temp,str," "); 
+ printf("%s ",temp[2]); 
+ getch();
+}
+char *splite(char *temp[NUM], char* str, char* delim)
+{ 
+int register i=0; char *pch; 
+pch = strtok (str,delim); 
+   while (pch != NULL){  
+	   temp[i++]=pch;   
+	   pch = strtok (NULL, delim); 
+  }  
+    temp[i]='\0'; 
+    return *temp;
+}  
+
+
+Que tipo de caracteres ?
+ 
+O Modulo envia várias linhas semelhantes a essa 
+$GPRMC,213820.79,A,0800.8226,S,03454.5543,W,000.0,000.8,050410,022.6,W,A*25.  
+fazendo "Putc(getc());" o pic esa capturando todos os caracteres enviados pelo gps e imprimindo diretamente no lcd. 
+
+a idéia básica é pegar uma Linha, $GPRMC por exemplo e extrair as informações disponiveis nela tais como: Lat, Long, veloc, hora e data e depois usar esses dados ...
+
+http://www.gpsinformation.org/dale/nmea.htm 
+
+
+

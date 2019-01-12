@@ -1,0 +1,154 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004-303 memory
+304     XX
+305     YY
+306     i
+307-30B c
+30C     Lcd_Clear.i
+30C     lcd_text57.x
+30C     @delay_ms1.P1
+30C     lcd_rect.x1
+30C     lcd_circle.x
+30D     lcd_text57.y
+30D     lcd_rect.y1
+30D     lcd_circle.y
+30E     lcd_circle.radius
+30E-30F lcd_text57.textptr
+30E     lcd_rect.x2
+30F     lcd_rect.y2
+30F     lcd_circle.fill
+310     lcd_rect.fill
+310     lcd_circle.color
+310     lcd_text57.size
+311     lcd_circle.a
+311     lcd_rect.color
+311     lcd_text57.color
+312     lcd_text57.j
+312     lcd_circle.b
+312     i
+313     lcd_text57.k
+313     xmin
+313     lcd_circle.P
+314     lcd_text57.l
+314     xmax
+314     lcd_circle.@SCRATCH1
+315     lcd_text57.m
+315     ymin
+315     @MUL88.P1
+315     lcd_circle.@SCRATCH2
+316-31A lcd_text57.pixelData
+316     @MUL88.P1
+316     ymax
+316     lcd_circle.@SCRATCH3
+317     lcd_circle.@SCRATCH4
+318     lcd_line.x1
+319     lcd_line.y1
+31A     lcd_line.x2
+31B     lcd_line.y2
+31B     lcd_text57.@SCRATCH1
+31C     lcd_line.color
+31C     lcd_text57.@SCRATCH2
+31D-31E lcd_line.dy
+31D     lcd_text57.@SCRATCH3
+31E     lcd_text57.@SCRATCH4
+31F-320 lcd_line.dx
+31F     lcd_text57.@SCRATCH5
+321     lcd_line.addx
+322     lcd_line.addy
+323-324 lcd_line.P
+325-326 lcd_line.diff
+327     lcd_line.i
+328     lcd_pixel.x
+328     lcd_line.@SCRATCH1
+329     lcd_pixel.y
+32A     lcd_pixel.color
+32B-332 lcd_pixel.aux
+333     lcd_pixel.i
+334     lcd_pixel.o
+335     lcd_pixel.c
+336     lcd_pixel.index
+337     lcd_pixel.temp
+338     Gotoxy.x
+338     lcd_pixel.@SCRATCH1
+339     Gotoxy.y
+339     lcd_pixel.@SCRATCH2
+33A     Gotoxy.@SCRATCH1
+33B     Lcd_Write.cd
+33C     Lcd_Write.c
+33D     Lcd_Write.i
+33E-33F @MUL1616.P1
+33E     Lcd_Write.@SCRATCH1
+33F     Lcd_Write.@SCRATCH2
+340-341 @MUL1616.P1
+342     @MUL1616.@SCRATCH1
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1_LOW
+FBE     CCP_1
+FBF     CCP_1_HIGH
+FE1-FE2 @READ_PACKED_MEMORY.P1
+FE1-FE2 @WRITE_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PACKED_MEMORY.P1
+FE9-FEA @WRITE_PROGRAM_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P3
+FE9-FEA @READ_PACKED_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+0200  @delay_ms1
+0004  FONT
+0114  FONT2
+02D6  Lcd_Clear
+0380  Lcd_Init
+024C  Lcd_Write
+022A  @MUL1616
+0462  Gotoxy
+04A2  lcd_pixel
+0546  lcd_line
+06D2  lcd_circle
+0684  @MUL88
+08E6  lcd_text57
+0A8E  lcd_rect
+0B52  MAIN
+0B52  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD Nokia 1100 96X65\
+
+Project Files:
+    index.c
+    C:\Program Files (x86)\PICC\devices\18F4550.h
+    driver1100.c
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD Nokia 1100 96X65\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

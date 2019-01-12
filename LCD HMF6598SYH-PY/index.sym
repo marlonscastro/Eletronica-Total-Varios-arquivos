@@ -1,0 +1,206 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     CurrentLine
+005     QuantChrLine
+006     OffsetX
+007-008 strtok.save
+009-00C _Randseed
+00D-00E @sprintf_string
+00F-012 atan2.y
+00F     MAIN.i
+010     MAIN.j
+011-014 circulo.aC
+011     @delay_ms1.P1
+011     @delay_us1.P2
+011     clear_screen.p
+011     @PSTRINGC_84.@SCRATCH1
+012     clear_screen.c
+012     @PSTRINGC_84.@SCRATCH2
+013-016 atan2.x
+013     HMF6598_Printchar.cvar
+014     HMF6598_Printchar.i
+015-018 circulo.bC
+015     newLine.@SCRATCH1
+015     HMF6598_Printchar.@SCRATCH1
+016     HMF6598_Printchar.@SCRATCH2
+017-01A atan2.z
+019-01C circulo.r
+01B.0   atan2.sign
+01C     atan2.quad
+01D-01E circulo.i
+01F-022 circulo.y
+023-026 circulo.x
+027     circulo.@SCRATCH1
+028     circulo.@SCRATCH2
+029     circulo.@SCRATCH3
+02A     circulo.@SCRATCH4
+02B-02E @DIVFF.P1
+02B     HMF6598_PutPixel.x
+02B-02E sin.x
+02B     circulo.@SCRATCH5
+02C     HMF6598_PutPixel.y
+02C     circulo.@SCRATCH6
+02D     HMF6598_PutPixel.COLOR
+02D     circulo.@SCRATCH7
+02E-031 floor.x
+02E     HMF6598_PutPixel.BytePlot
+02F     HMF6598_PutPixel.tempByte
+02F-032 @DIVFF.P1
+02F     sin.@SCRATCH1
+030     HMF6598_Write_data.byte_data
+030     HMF6598_PutPixel.@SCRATCH1
+030     sin.@SCRATCH2
+031     HMF6598_Gotoxy.x
+031     sin.@SCRATCH3
+032     HMF6598_Gotoxy.y
+032-035 CEIL_FLOOR.x
+032     sin.@SCRATCH4
+033     HMF6598_Gotoxy.OffsetChr
+033-036 cos.x
+033     @DIVFF.@SCRATCH1
+034     HMF6598_Gotoxy.@SCRATCH1
+034     @DIVFF.@SCRATCH2
+035     HMF6598_Write_command.byte_command
+035     HMF6598_Gotoxy.@SCRATCH2
+035     @DIVFF.@SCRATCH3
+036     @DIV88.P1
+036     HMF6598_OutPort.byteDC
+036     CEIL_FLOOR.n
+036     @DIVFF.@SCRATCH4
+037-03A cos.y
+037-03A CEIL_FLOOR.y
+037     @DIV88.P1
+037     @DIVFF.@SCRATCH5
+038     @DIV88.@SCRATCH1
+038     @DIVFF.@SCRATCH6
+03B-03E cos.t
+03B-03E CEIL_FLOOR.res
+03F-042 cos.t2
+03F-040 CEIL_FLOOR.l
+041.0   CEIL_FLOOR.s
+042     CEIL_FLOOR.@SCRATCH1
+043     cos.quad
+043     CEIL_FLOOR.@SCRATCH2
+044     cos.i
+044     CEIL_FLOOR.@SCRATCH3
+045-048 cos.frac
+045     CEIL_FLOOR.@SCRATCH4
+049-060 cos.p
+061-064 @SFTOI.P1
+061-064 @FLT.P2
+061     cos.@SCRATCH1
+062     cos.@SCRATCH2
+063     cos.@SCRATCH3
+064     cos.@SCRATCH4
+065-068 @FLT.P1
+065-068 @MULFF.P2
+065-066 @ITOF.P3
+065-068 @ADDFF.P4
+069-06C @ADDFF.P1
+069-06C @MULFF.P2
+069     @FLT.@SCRATCH1
+06A     @FLT.@SCRATCH2
+06D     @MULFF.@SCRATCH1
+06D     @ADDFF.@SCRATCH1
+06E     @MULFF.@SCRATCH2
+06E     @ADDFF.@SCRATCH2
+06F     @MULFF.@SCRATCH3
+06F     @ADDFF.@SCRATCH3
+070     @ADDFF.@SCRATCH4
+071     @ADDFF.@SCRATCH5
+072     @ADDFF.@SCRATCH6
+073     @ADDFF.@SCRATCH7
+074     @ADDFF.@SCRATCH8
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FE1-FE2 @READ_PACKED_MEMORY.P1
+FE1-FE2 @WRITE_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PROGRAM_MEMORY.P1
+FE9-FEA @READ_PACKED_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P3
+FE9-FEA @WRITE_PACKED_MEMORY.P4
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P1
+FF6-FF8 @READ_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+028C  @delay_ms1
+0244  @delay_us1
+0004  TEXT
+0114  TEXT2
+0380  HMF6598_InitLcd
+0264  HMF6598_OutPort
+0280  HMF6598_Write_command
+0338  HMF6598_Write_data
+1192  HMF6598_Read_data
+03F8  newLine
+0350  clear_screen
+02DC  HMF6598_Gotoxy
+02B4  @DIV88
+0422  HMF6598_Printchar
+11CA  HMF6598_PutPixel
+0E4A  CEIL_FLOOR
+09F6  @FLT
+0A6C  @SFTOI
+050A  @ITOF
+0540  @MULFF
+078C  @ADDFF
+117C  floor
+0632  @DIVFF
+0AA4  cos
+0E00  sin
+1222  circulo
+1500  MAIN
+0200  @const582
+04EA  @PSTRINGC_84
+021C  @const584
+0238  @const585
+1500  @cinit
+0136  StrtoulGO
+0136  StrtolGO
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD HMF6598SYH-PY\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\18F4550.h
+    HMF6598SYH-PY.c
+    C:\Program Files\PICC\drivers\math.h
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+    C:\Program Files\PICC\drivers\stdlib.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD HMF6598SYH-PY\index (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX32:      index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

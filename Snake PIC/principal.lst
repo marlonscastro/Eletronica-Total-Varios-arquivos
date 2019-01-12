@@ -1,0 +1,976 @@
+CCS PCM C Compiler, Version 4.074, 10898               03-mai-10 12:16
+
+               Filename: principal.lst
+
+               ROM used: 785 words (38%)
+                         Largest free fragment is 1263
+               RAM used: 73 (33%) at main() level
+                         82 (37%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   211
+0003:  NOP
+.................... #include <16F628A.h> 
+.................... //////// Standard Header file for the PIC16F628A device //////////////// 
+.................... #device PIC16F628A 
+.................... #list 
+....................  
+.................... #use delay(clock=4000000) 
+0004:  MOVLW  61
+0005:  MOVWF  04
+0006:  BCF    03.7
+0007:  MOVF   00,W
+0008:  BTFSC  03.2
+0009:  GOTO   018
+000A:  MOVLW  01
+000B:  MOVWF  78
+000C:  CLRF   77
+000D:  DECFSZ 77,F
+000E:  GOTO   00D
+000F:  DECFSZ 78,F
+0010:  GOTO   00C
+0011:  MOVLW  4A
+0012:  MOVWF  77
+0013:  DECFSZ 77,F
+0014:  GOTO   013
+0015:  GOTO   016
+0016:  DECFSZ 00,F
+0017:  GOTO   00A
+0018:  GOTO   288 (RETURN)
+.................... #FUSES XT, NOWDT, NOMCLR, NOLVP 
+....................    int comando = 1, tam = 2, sem = 0, tempo = 100; 
+*
+0217:  MOVLW  01
+0218:  MOVWF  20
+0219:  MOVLW  02
+021A:  MOVWF  21
+021B:  CLRF   22
+021C:  MOVLW  64
+021D:  MOVWF  23
+....................    int col[24] = {4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; 
+021E:  MOVLW  04
+021F:  MOVWF  24
+0220:  MOVLW  03
+0221:  MOVWF  25
+0222:  CLRF   26
+0223:  CLRF   27
+0224:  CLRF   28
+0225:  CLRF   29
+0226:  CLRF   2A
+0227:  CLRF   2B
+0228:  CLRF   2C
+0229:  CLRF   2D
+022A:  CLRF   2E
+022B:  CLRF   2F
+022C:  CLRF   30
+022D:  CLRF   31
+022E:  CLRF   32
+022F:  CLRF   33
+0230:  CLRF   34
+0231:  CLRF   35
+0232:  CLRF   36
+0233:  CLRF   37
+0234:  CLRF   38
+0235:  CLRF   39
+0236:  CLRF   3A
+0237:  CLRF   3B
+....................    int lin[24] = {5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; 
+0238:  MOVLW  05
+0239:  MOVWF  3C
+023A:  MOVWF  3D
+023B:  CLRF   3E
+023C:  CLRF   3F
+023D:  CLRF   40
+023E:  CLRF   41
+023F:  CLRF   42
+0240:  CLRF   43
+0241:  CLRF   44
+0242:  CLRF   45
+0243:  CLRF   46
+0244:  CLRF   47
+0245:  CLRF   48
+0246:  CLRF   49
+0247:  CLRF   4A
+0248:  CLRF   4B
+0249:  CLRF   4C
+024A:  CLRF   4D
+024B:  CLRF   4E
+024C:  CLRF   4F
+024D:  CLRF   50
+024E:  CLRF   51
+024F:  CLRF   52
+0250:  CLRF   53
+....................    int comida[] = {1,1}; 
+0251:  MOVLW  01
+0252:  MOVWF  54
+0253:  MOVWF  55
+.................... byte mat[] = { 
+....................          0b00000000, 
+....................          0b00000010, 
+....................          0b00000000,   
+....................          0b00000000, 
+....................          0b00000000, 
+....................          0b00011000,  
+....................          0b00000000, 
+....................          0b00000000, 
+....................    }; 
+0254:  CLRF   56
+0255:  MOVLW  02
+0256:  MOVWF  57
+0257:  CLRF   58
+0258:  CLRF   59
+0259:  CLRF   5A
+025A:  MOVLW  18
+025B:  MOVWF  5B
+025C:  CLRF   5C
+025D:  CLRF   5D
+.................... void mover_auto(int *col, int *lin){ 
+....................    /* --- COMANDOS ---  1: Esquerda 2: Direita 3: Cima  4: Baixo  */ 
+....................    int i, x, tmp; 
+....................    for(x=tam; x>0; x--){ 
+*
+0019:  MOVF   21,W
+001A:  MOVWF  66
+001B:  MOVF   66,F
+001C:  BTFSC  03.2
+001D:  GOTO   0EA
+....................       i = x-1; 
+001E:  MOVLW  01
+001F:  SUBWF  66,W
+0020:  MOVWF  65
+....................       if(x == tam){ 
+0021:  MOVF   21,W
+0022:  SUBWF  66,W
+0023:  BTFSS  03.2
+0024:  GOTO   044
+....................          tmp = col[i]; 
+0025:  MOVF   65,W
+0026:  ADDWF  61,W
+0027:  MOVWF  04
+0028:  BCF    03.7
+0029:  BTFSC  62.0
+002A:  BSF    03.7
+002B:  MOVF   00,W
+002C:  MOVWF  67
+....................          bit_clear(mat[lin[i]], tmp); 
+002D:  MOVF   65,W
+002E:  ADDWF  63,W
+002F:  MOVWF  04
+0030:  BCF    03.7
+0031:  BTFSC  64.0
+0032:  BSF    03.7
+0033:  MOVLW  56
+0034:  ADDWF  00,W
+0035:  MOVWF  04
+0036:  BCF    03.7
+0037:  MOVLW  01
+0038:  MOVWF  77
+0039:  MOVF   67,W
+003A:  MOVWF  78
+003B:  BTFSC  03.2
+003C:  GOTO   041
+003D:  BCF    03.0
+003E:  RLF    77,F
+003F:  DECFSZ 78,F
+0040:  GOTO   03D
+0041:  MOVF   77,W
+0042:  XORLW  FF
+0043:  ANDWF  00,F
+....................       } 
+....................       if(i > 0){ 
+0044:  MOVF   65,F
+0045:  BTFSC  03.2
+0046:  GOTO   076
+....................          col[i] = col[i-1];       
+0047:  MOVF   65,W
+0048:  ADDWF  61,W
+0049:  MOVWF  78
+004A:  MOVF   62,W
+004B:  MOVWF  7A
+004C:  BTFSC  03.0
+004D:  INCF   7A,F
+004E:  MOVLW  01
+004F:  SUBWF  65,W
+0050:  ADDWF  61,W
+0051:  MOVWF  04
+0052:  BCF    03.7
+0053:  BTFSC  62.0
+0054:  BSF    03.7
+0055:  MOVF   00,W
+0056:  MOVWF  6B
+0057:  MOVF   78,W
+0058:  MOVWF  04
+0059:  BCF    03.7
+005A:  BTFSC  7A.0
+005B:  BSF    03.7
+005C:  MOVF   6B,W
+005D:  MOVWF  00
+....................          lin[i] = lin[i-1];          
+005E:  MOVF   65,W
+005F:  ADDWF  63,W
+0060:  MOVWF  78
+0061:  MOVF   64,W
+0062:  MOVWF  7A
+0063:  BTFSC  03.0
+0064:  INCF   7A,F
+0065:  MOVLW  01
+0066:  SUBWF  65,W
+0067:  ADDWF  63,W
+0068:  MOVWF  04
+0069:  BCF    03.7
+006A:  BTFSC  64.0
+006B:  BSF    03.7
+006C:  MOVF   00,W
+006D:  MOVWF  6B
+006E:  MOVF   78,W
+006F:  MOVWF  04
+0070:  BCF    03.7
+0071:  BTFSC  7A.0
+0072:  BSF    03.7
+0073:  MOVF   6B,W
+0074:  MOVWF  00
+....................       } 
+....................       else{ 
+0075:  GOTO   0E8
+....................          if(comando == 1){ 
+0076:  DECFSZ 20,W
+0077:  GOTO   091
+....................             if(col[i] == 7) 
+0078:  MOVF   65,W
+0079:  ADDWF  61,W
+007A:  MOVWF  04
+007B:  BCF    03.7
+007C:  BTFSC  62.0
+007D:  BSF    03.7
+007E:  MOVF   00,W
+007F:  SUBLW  07
+0080:  BTFSS  03.2
+0081:  GOTO   08A
+....................                col[i] = 0; 
+0082:  MOVF   65,W
+0083:  ADDWF  61,W
+0084:  MOVWF  04
+0085:  BCF    03.7
+0086:  BTFSC  62.0
+0087:  BSF    03.7
+0088:  CLRF   00
+....................             else 
+0089:  GOTO   091
+....................                col[i]++; 
+008A:  MOVF   65,W
+008B:  ADDWF  61,W
+008C:  MOVWF  04
+008D:  BCF    03.7
+008E:  BTFSC  62.0
+008F:  BSF    03.7
+0090:  INCF   00,F
+....................          } 
+....................          if(comando == 2){ 
+0091:  MOVF   20,W
+0092:  SUBLW  02
+0093:  BTFSS  03.2
+0094:  GOTO   0AE
+....................             if(col[i] == 0) 
+0095:  MOVF   65,W
+0096:  ADDWF  61,W
+0097:  MOVWF  04
+0098:  BCF    03.7
+0099:  BTFSC  62.0
+009A:  BSF    03.7
+009B:  MOVF   00,F
+009C:  BTFSS  03.2
+009D:  GOTO   0A7
+....................                col[i] = 7; 
+009E:  MOVF   65,W
+009F:  ADDWF  61,W
+00A0:  MOVWF  04
+00A1:  BCF    03.7
+00A2:  BTFSC  62.0
+00A3:  BSF    03.7
+00A4:  MOVLW  07
+00A5:  MOVWF  00
+....................             else 
+00A6:  GOTO   0AE
+....................                col[i]--; 
+00A7:  MOVF   65,W
+00A8:  ADDWF  61,W
+00A9:  MOVWF  04
+00AA:  BCF    03.7
+00AB:  BTFSC  62.0
+00AC:  BSF    03.7
+00AD:  DECF   00,F
+....................          } 
+....................          if(comando == 3){ 
+00AE:  MOVF   20,W
+00AF:  SUBLW  03
+00B0:  BTFSS  03.2
+00B1:  GOTO   0CB
+....................             if(lin[i] == 0) 
+00B2:  MOVF   65,W
+00B3:  ADDWF  63,W
+00B4:  MOVWF  04
+00B5:  BCF    03.7
+00B6:  BTFSC  64.0
+00B7:  BSF    03.7
+00B8:  MOVF   00,F
+00B9:  BTFSS  03.2
+00BA:  GOTO   0C4
+....................                lin[i] = 7; 
+00BB:  MOVF   65,W
+00BC:  ADDWF  63,W
+00BD:  MOVWF  04
+00BE:  BCF    03.7
+00BF:  BTFSC  64.0
+00C0:  BSF    03.7
+00C1:  MOVLW  07
+00C2:  MOVWF  00
+....................             else 
+00C3:  GOTO   0CB
+....................                lin[i]--; 
+00C4:  MOVF   65,W
+00C5:  ADDWF  63,W
+00C6:  MOVWF  04
+00C7:  BCF    03.7
+00C8:  BTFSC  64.0
+00C9:  BSF    03.7
+00CA:  DECF   00,F
+....................          } 
+....................          if(comando == 4){ 
+00CB:  MOVF   20,W
+00CC:  SUBLW  04
+00CD:  BTFSS  03.2
+00CE:  GOTO   0E8
+....................             if(lin[i] == 7) 
+00CF:  MOVF   65,W
+00D0:  ADDWF  63,W
+00D1:  MOVWF  04
+00D2:  BCF    03.7
+00D3:  BTFSC  64.0
+00D4:  BSF    03.7
+00D5:  MOVF   00,W
+00D6:  SUBLW  07
+00D7:  BTFSS  03.2
+00D8:  GOTO   0E1
+....................                lin[i] = 0; 
+00D9:  MOVF   65,W
+00DA:  ADDWF  63,W
+00DB:  MOVWF  04
+00DC:  BCF    03.7
+00DD:  BTFSC  64.0
+00DE:  BSF    03.7
+00DF:  CLRF   00
+....................             else 
+00E0:  GOTO   0E8
+....................                lin[i]++; 
+00E1:  MOVF   65,W
+00E2:  ADDWF  63,W
+00E3:  MOVWF  04
+00E4:  BCF    03.7
+00E5:  BTFSC  64.0
+00E6:  BSF    03.7
+00E7:  INCF   00,F
+....................          } 
+....................       } 
+....................    } 
+00E8:  DECF   66,F
+00E9:  GOTO   01B
+....................    for(i = 0; i < tam; i++){ 
+00EA:  CLRF   65
+00EB:  MOVF   21,W
+00EC:  SUBWF  65,W
+00ED:  BTFSC  03.0
+00EE:  GOTO   10F
+....................       tmp = col[i]; 
+00EF:  MOVF   65,W
+00F0:  ADDWF  61,W
+00F1:  MOVWF  04
+00F2:  BCF    03.7
+00F3:  BTFSC  62.0
+00F4:  BSF    03.7
+00F5:  MOVF   00,W
+00F6:  MOVWF  67
+....................       bit_set(mat[lin[i]], tmp); 
+00F7:  MOVF   65,W
+00F8:  ADDWF  63,W
+00F9:  MOVWF  04
+00FA:  BCF    03.7
+00FB:  BTFSC  64.0
+00FC:  BSF    03.7
+00FD:  MOVLW  56
+00FE:  ADDWF  00,W
+00FF:  MOVWF  04
+0100:  BCF    03.7
+0101:  MOVLW  01
+0102:  MOVWF  77
+0103:  MOVF   67,W
+0104:  MOVWF  78
+0105:  BTFSC  03.2
+0106:  GOTO   10B
+0107:  BCF    03.0
+0108:  RLF    77,F
+0109:  DECFSZ 78,F
+010A:  GOTO   107
+010B:  MOVF   77,W
+010C:  IORWF  00,F
+....................    } 
+010D:  INCF   65,F
+010E:  GOTO   0EB
+....................    // Cobra Morreu 
+....................    for(i = 0; i < tam-1; i++){ 
+010F:  CLRF   65
+0110:  MOVLW  01
+0111:  SUBWF  21,W
+0112:  SUBWF  65,W
+0113:  BTFSC  03.0
+0114:  GOTO   199
+....................       if((col[0] == col[i+1]) && (lin[0] == lin[i+1])){ 
+0115:  MOVF   61,W
+0116:  MOVWF  04
+0117:  BCF    03.7
+0118:  BTFSC  62.0
+0119:  BSF    03.7
+011A:  MOVF   00,W
+011B:  MOVWF  68
+011C:  MOVLW  01
+011D:  ADDWF  65,W
+011E:  ADDWF  61,W
+011F:  MOVWF  04
+0120:  BCF    03.7
+0121:  BTFSC  62.0
+0122:  BSF    03.7
+0123:  MOVF   00,W
+0124:  SUBWF  68,W
+0125:  BTFSS  03.2
+0126:  GOTO   197
+0127:  MOVF   63,W
+0128:  MOVWF  04
+0129:  BCF    03.7
+012A:  BTFSC  64.0
+012B:  BSF    03.7
+012C:  MOVF   00,W
+012D:  MOVWF  6A
+012E:  MOVLW  01
+012F:  ADDWF  65,W
+0130:  ADDWF  63,W
+0131:  MOVWF  04
+0132:  BCF    03.7
+0133:  BTFSC  64.0
+0134:  BSF    03.7
+0135:  MOVF   00,W
+0136:  SUBWF  6A,W
+0137:  BTFSS  03.2
+0138:  GOTO   197
+....................          for(x = 0; x < tam; x++){       
+0139:  CLRF   66
+013A:  MOVF   21,W
+013B:  SUBWF  66,W
+013C:  BTFSC  03.0
+013D:  GOTO   15F
+....................             tmp = col[x]; 
+013E:  MOVF   66,W
+013F:  ADDWF  61,W
+0140:  MOVWF  04
+0141:  BCF    03.7
+0142:  BTFSC  62.0
+0143:  BSF    03.7
+0144:  MOVF   00,W
+0145:  MOVWF  67
+....................             bit_clear(mat[lin[x]], tmp); 
+0146:  MOVF   66,W
+0147:  ADDWF  63,W
+0148:  MOVWF  04
+0149:  BCF    03.7
+014A:  BTFSC  64.0
+014B:  BSF    03.7
+014C:  MOVLW  56
+014D:  ADDWF  00,W
+014E:  MOVWF  04
+014F:  BCF    03.7
+0150:  MOVLW  01
+0151:  MOVWF  77
+0152:  MOVF   67,W
+0153:  MOVWF  78
+0154:  BTFSC  03.2
+0155:  GOTO   15A
+0156:  BCF    03.0
+0157:  RLF    77,F
+0158:  DECFSZ 78,F
+0159:  GOTO   156
+015A:  MOVF   77,W
+015B:  XORLW  FF
+015C:  ANDWF  00,F
+....................          } 
+015D:  INCF   66,F
+015E:  GOTO   13A
+....................          bit_clear(mat[comida[0]], comida[1]); 
+015F:  MOVLW  56
+0160:  ADDWF  54,W
+0161:  MOVWF  04
+0162:  BCF    03.7
+0163:  MOVLW  01
+0164:  MOVWF  77
+0165:  MOVF   55,W
+0166:  MOVWF  78
+0167:  BTFSC  03.2
+0168:  GOTO   16D
+0169:  BCF    03.0
+016A:  RLF    77,F
+016B:  DECFSZ 78,F
+016C:  GOTO   169
+016D:  MOVF   77,W
+016E:  XORLW  FF
+016F:  ANDWF  00,F
+....................          col[0] = 4; 
+0170:  MOVF   61,W
+0171:  MOVWF  04
+0172:  BCF    03.7
+0173:  BTFSC  62.0
+0174:  BSF    03.7
+0175:  MOVLW  04
+0176:  MOVWF  00
+....................          col[1] = 3; 
+0177:  MOVLW  01
+0178:  ADDWF  61,W
+0179:  MOVWF  04
+017A:  BCF    03.7
+017B:  BTFSC  62.0
+017C:  BSF    03.7
+017D:  MOVLW  03
+017E:  MOVWF  00
+....................          lin[0] = 5; 
+017F:  MOVF   63,W
+0180:  MOVWF  04
+0181:  BCF    03.7
+0182:  BTFSC  64.0
+0183:  BSF    03.7
+0184:  MOVLW  05
+0185:  MOVWF  00
+....................          lin[1] = 5; 
+0186:  MOVLW  01
+0187:  ADDWF  63,W
+0188:  MOVWF  04
+0189:  BCF    03.7
+018A:  BTFSC  64.0
+018B:  BSF    03.7
+018C:  MOVLW  05
+018D:  MOVWF  00
+....................          comida[0] = 1; 
+018E:  MOVLW  01
+018F:  MOVWF  54
+....................          comida[1] = 1; 
+0190:  MOVWF  55
+....................          comando = 1; 
+0191:  MOVWF  20
+....................          tam = 2; 
+0192:  MOVLW  02
+0193:  MOVWF  21
+....................          tempo = 100; 
+0194:  MOVLW  64
+0195:  MOVWF  23
+....................          break; 
+0196:  GOTO   199
+....................       } 
+....................    }    
+0197:  INCF   65,F
+0198:  GOTO   110
+....................    // Acho a comida 
+....................    if((col[0] == comida[1]) && (lin[0] == comida[0])){ 
+0199:  MOVF   61,W
+019A:  MOVWF  04
+019B:  BCF    03.7
+019C:  BTFSC  62.0
+019D:  BSF    03.7
+019E:  MOVF   55,W
+019F:  SUBWF  00,W
+01A0:  BTFSS  03.2
+01A1:  GOTO   210
+01A2:  MOVF   63,W
+01A3:  MOVWF  04
+01A4:  BCF    03.7
+01A5:  BTFSC  64.0
+01A6:  BSF    03.7
+01A7:  MOVF   54,W
+01A8:  SUBWF  00,W
+01A9:  BTFSS  03.2
+01AA:  GOTO   210
+....................       if(sem > 63) 
+01AB:  MOVF   22,W
+01AC:  SUBLW  3F
+01AD:  BTFSC  03.0
+01AE:  GOTO   1B1
+....................          sem = sem % 64; 
+01AF:  MOVLW  3F
+01B0:  ANDWF  22,F
+....................       for(i = 0; i < 8; i++){ 
+01B1:  CLRF   65
+01B2:  MOVF   65,W
+01B3:  SUBLW  07
+01B4:  BTFSS  03.0
+01B5:  GOTO   209
+....................          for(x = 0; x < 8; x++){ 
+01B6:  CLRF   66
+01B7:  MOVF   66,W
+01B8:  SUBLW  07
+01B9:  BTFSS  03.0
+01BA:  GOTO   204
+....................             if(sem > 0){ 
+01BB:  MOVF   22,F
+01BC:  BTFSC  03.2
+01BD:  GOTO   1BF
+....................                sem--; 
+01BE:  DECF   22,F
+....................             } 
+....................             if(sem == 0){ 
+01BF:  MOVF   22,F
+01C0:  BTFSS  03.2
+01C1:  GOTO   202
+....................                for(tmp = 0; tmp < tam-1; tmp++){ 
+01C2:  CLRF   67
+01C3:  MOVLW  01
+01C4:  SUBWF  21,W
+01C5:  SUBWF  67,W
+01C6:  BTFSC  03.0
+01C7:  GOTO   1EA
+....................                   if((col[tmp] == x) && (lin[tmp] == i)){ 
+01C8:  MOVF   67,W
+01C9:  ADDWF  61,W
+01CA:  MOVWF  04
+01CB:  BCF    03.7
+01CC:  BTFSC  62.0
+01CD:  BSF    03.7
+01CE:  MOVF   66,W
+01CF:  SUBWF  00,W
+01D0:  BTFSS  03.2
+01D1:  GOTO   1E8
+01D2:  MOVF   67,W
+01D3:  ADDWF  63,W
+01D4:  MOVWF  04
+01D5:  BCF    03.7
+01D6:  BTFSC  64.0
+01D7:  BSF    03.7
+01D8:  MOVF   65,W
+01D9:  SUBWF  00,W
+01DA:  BTFSS  03.2
+01DB:  GOTO   1E8
+....................                      if((i == 7) && (x == 7)){ 
+01DC:  MOVF   65,W
+01DD:  SUBLW  07
+01DE:  BTFSS  03.2
+01DF:  GOTO   1E6
+01E0:  MOVF   66,W
+01E1:  SUBLW  07
+01E2:  BTFSS  03.2
+01E3:  GOTO   1E6
+....................                         i = 0; 
+01E4:  CLRF   65
+....................                         x = 0; 
+01E5:  CLRF   66
+....................                      } 
+....................                      sem++; 
+01E6:  INCF   22,F
+....................                      break; 
+01E7:  GOTO   1EA
+....................                   } 
+....................                } 
+01E8:  INCF   67,F
+01E9:  GOTO   1C3
+....................                if(sem == 0){ 
+01EA:  MOVF   22,F
+01EB:  BTFSS  03.2
+01EC:  GOTO   202
+....................                   comida[0] = i; 
+01ED:  MOVF   65,W
+01EE:  MOVWF  54
+....................                   comida[1] = x; 
+01EF:  MOVF   66,W
+01F0:  MOVWF  55
+....................                   bit_set(mat[i], x); 
+01F1:  MOVLW  56
+01F2:  ADDWF  65,W
+01F3:  MOVWF  04
+01F4:  BCF    03.7
+01F5:  MOVLW  01
+01F6:  MOVWF  77
+01F7:  MOVF   66,W
+01F8:  MOVWF  78
+01F9:  BTFSC  03.2
+01FA:  GOTO   1FF
+01FB:  BCF    03.0
+01FC:  RLF    77,F
+01FD:  DECFSZ 78,F
+01FE:  GOTO   1FB
+01FF:  MOVF   77,W
+0200:  IORWF  00,F
+....................                   break;                
+0201:  GOTO   204
+....................                } 
+....................             } 
+....................          }    
+0202:  INCF   66,F
+0203:  GOTO   1B7
+....................          if(sem == 0) 
+0204:  MOVF   22,F
+0205:  BTFSC  03.2
+....................             break; 
+0206:  GOTO   209
+....................       } 
+0207:  INCF   65,F
+0208:  GOTO   1B2
+....................       if(tam < 24){ 
+0209:  MOVF   21,W
+020A:  SUBLW  17
+020B:  BTFSS  03.0
+020C:  GOTO   210
+....................          tam++; 
+020D:  INCF   21,F
+....................          tempo = tempo - 4; 
+020E:  MOVLW  04
+020F:  SUBWF  23,F
+....................       } 
+....................    } 
+.................... } 
+0210:  GOTO   30B (RETURN)
+.................... void main(){ 
+0211:  CLRF   04
+0212:  BCF    03.7
+0213:  MOVLW  1F
+0214:  ANDWF  03,F
+0215:  MOVLW  07
+0216:  MOVWF  1F
+....................    int x; 
+....................    long int cont = 0; 
+*
+025E:  CLRF   5F
+025F:  CLRF   60
+....................    output_high(pin_a1); 
+0260:  BSF    03.5
+0261:  BCF    05.1
+0262:  BCF    03.5
+0263:  BSF    05.1
+....................    output_low(pin_a1);    
+0264:  BSF    03.5
+0265:  BCF    05.1
+0266:  BCF    03.5
+0267:  BCF    05.1
+....................    output_high(pin_a0);    
+0268:  BSF    03.5
+0269:  BCF    05.0
+026A:  BCF    03.5
+026B:  BSF    05.0
+....................    while(true){ 
+....................       for (x = 0; x < 8; x++){ 
+026C:  CLRF   5E
+026D:  MOVF   5E,W
+026E:  SUBLW  07
+026F:  BTFSS  03.0
+0270:  GOTO   28A
+....................          output_low(pin_a0);  
+0271:  BSF    03.5
+0272:  BCF    05.0
+0273:  BCF    03.5
+0274:  BCF    05.0
+....................          output_high(pin_a0);       
+0275:  BSF    03.5
+0276:  BCF    05.0
+0277:  BCF    03.5
+0278:  BSF    05.0
+....................          output_b(~mat[x]); 
+0279:  MOVLW  56
+027A:  ADDWF  5E,W
+027B:  MOVWF  04
+027C:  BCF    03.7
+027D:  MOVF   00,W
+027E:  XORLW  FF
+027F:  MOVWF  61
+0280:  BSF    03.5
+0281:  CLRF   06
+0282:  BCF    03.5
+0283:  MOVF   61,W
+0284:  MOVWF  06
+....................          delay_ms(1); 
+0285:  MOVLW  01
+0286:  MOVWF  61
+0287:  GOTO   004
+....................       } 
+0288:  INCF   5E,F
+0289:  GOTO   26D
+....................       output_high(pin_a1); 
+028A:  BSF    03.5
+028B:  BCF    05.1
+028C:  BCF    03.5
+028D:  BSF    05.1
+....................       output_low(pin_a1); 
+028E:  BSF    03.5
+028F:  BCF    05.1
+0290:  BCF    03.5
+0291:  BCF    05.1
+....................       if(!input(pin_A2)){ 
+0292:  BSF    03.5
+0293:  BSF    05.2
+0294:  BCF    03.5
+0295:  BTFSC  05.2
+0296:  GOTO   29E
+....................          if(comando != 1) 
+0297:  DECFSZ 20,W
+0298:  GOTO   29A
+0299:  GOTO   29C
+....................             comando = 2; 
+029A:  MOVLW  02
+029B:  MOVWF  20
+....................          sem = sem + 4; 
+029C:  MOVLW  04
+029D:  ADDWF  22,F
+....................       } 
+....................       if(!input(pin_A3)){ 
+029E:  BSF    03.5
+029F:  BSF    05.3
+02A0:  BCF    03.5
+02A1:  BTFSC  05.3
+02A2:  GOTO   2AB
+....................          if(comando != 3)       
+02A3:  MOVF   20,W
+02A4:  SUBLW  03
+02A5:  BTFSC  03.2
+02A6:  GOTO   2A9
+....................             comando = 4; 
+02A7:  MOVLW  04
+02A8:  MOVWF  20
+....................          sem = sem + 4; 
+02A9:  MOVLW  04
+02AA:  ADDWF  22,F
+....................       } 
+....................       if(!input(pin_A4)){ 
+02AB:  BSF    03.5
+02AC:  BSF    05.4
+02AD:  BCF    03.5
+02AE:  BTFSC  05.4
+02AF:  GOTO   2B8
+....................          if(comando != 2)       
+02B0:  MOVF   20,W
+02B1:  SUBLW  02
+02B2:  BTFSC  03.2
+02B3:  GOTO   2B6
+....................             comando = 1; 
+02B4:  MOVLW  01
+02B5:  MOVWF  20
+....................          sem = sem + 4; 
+02B6:  MOVLW  04
+02B7:  ADDWF  22,F
+....................       } 
+....................       if(!input(pin_A5)){ 
+02B8:  BSF    03.5
+02B9:  BSF    05.5
+02BA:  BCF    03.5
+02BB:  BTFSC  05.5
+02BC:  GOTO   2C5
+....................          if(comando != 4)     
+02BD:  MOVF   20,W
+02BE:  SUBLW  04
+02BF:  BTFSC  03.2
+02C0:  GOTO   2C3
+....................             comando = 3; 
+02C1:  MOVLW  03
+02C2:  MOVWF  20
+....................          sem = sem + 4; 
+02C3:  MOVLW  04
+02C4:  ADDWF  22,F
+....................       } 
+....................       // Pisca Comida 
+....................       if((cont % 4) == 0){ 
+02C5:  MOVF   5F,W
+02C6:  ANDLW  03
+02C7:  MOVWF  61
+02C8:  CLRF   62
+02C9:  MOVF   61,F
+02CA:  BTFSS  03.2
+02CB:  GOTO   2FB
+02CC:  MOVF   62,F
+02CD:  BTFSS  03.2
+02CE:  GOTO   2FB
+....................          if((cont % 8) > 0) 
+02CF:  MOVF   5F,W
+02D0:  ANDLW  07
+02D1:  MOVWF  61
+02D2:  CLRF   62
+02D3:  MOVF   61,F
+02D4:  BTFSS  03.2
+02D5:  GOTO   2D9
+02D6:  MOVF   62,F
+02D7:  BTFSC  03.2
+02D8:  GOTO   2EB
+....................             bit_clear(mat[comida[0]], comida[1]);       
+02D9:  MOVLW  56
+02DA:  ADDWF  54,W
+02DB:  MOVWF  04
+02DC:  BCF    03.7
+02DD:  MOVLW  01
+02DE:  MOVWF  77
+02DF:  MOVF   55,W
+02E0:  MOVWF  78
+02E1:  BTFSC  03.2
+02E2:  GOTO   2E7
+02E3:  BCF    03.0
+02E4:  RLF    77,F
+02E5:  DECFSZ 78,F
+02E6:  GOTO   2E3
+02E7:  MOVF   77,W
+02E8:  XORLW  FF
+02E9:  ANDWF  00,F
+....................          else             
+02EA:  GOTO   2FB
+....................             bit_set(mat[comida[0]], comida[1]);                   
+02EB:  MOVLW  56
+02EC:  ADDWF  54,W
+02ED:  MOVWF  04
+02EE:  BCF    03.7
+02EF:  MOVLW  01
+02F0:  MOVWF  77
+02F1:  MOVF   55,W
+02F2:  MOVWF  78
+02F3:  BTFSC  03.2
+02F4:  GOTO   2F9
+02F5:  BCF    03.0
+02F6:  RLF    77,F
+02F7:  DECFSZ 78,F
+02F8:  GOTO   2F5
+02F9:  MOVF   77,W
+02FA:  IORWF  00,F
+....................       } 
+....................       // Movimenta a cobra 
+....................       if(cont > tempo){ 
+02FB:  MOVF   60,F
+02FC:  BTFSS  03.2
+02FD:  GOTO   302
+02FE:  MOVF   5F,W
+02FF:  SUBWF  23,W
+0300:  BTFSC  03.0
+0301:  GOTO   30C
+....................          cont = 0; 
+0302:  CLRF   60
+0303:  CLRF   5F
+....................          mover_auto(col, lin); 
+0304:  CLRF   62
+0305:  MOVLW  24
+0306:  MOVWF  61
+0307:  CLRF   64
+0308:  MOVLW  3C
+0309:  MOVWF  63
+030A:  GOTO   019
+....................       } 
+....................       else 
+030B:  GOTO   30F
+....................          cont++; 
+030C:  INCF   5F,F
+030D:  BTFSC  03.2
+030E:  INCF   60,F
+....................    } 
+030F:  GOTO   26C
+.................... } 
+....................  
+0310:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F41   XT NOWDT PUT NOPROTECT BROWNOUT NOMCLR NOLVP NOCPD

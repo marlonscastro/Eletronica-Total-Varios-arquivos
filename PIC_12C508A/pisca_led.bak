@@ -1,0 +1,20 @@
+// primeiro exemplo
+
+#include <12C508A.h>
+#use delay(clock=4000000)
+
+//#use rs232(baud=19200, xmit=PIN_B2, rcv=PIN_B1)
+#FUSES NOWDT, XT                   
+
+void main()
+{
+   int tempo;
+   tempo = 200;
+   while (true){
+      output_high(pin_B0);
+      delay_ms(tempo);
+      output_low(pin_B0);
+      delay_ms(tempo);
+   }
+}
+

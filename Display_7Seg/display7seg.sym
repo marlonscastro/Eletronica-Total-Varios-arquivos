@@ -1,0 +1,46 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+00C     @SCRATCH
+00D     @SCRATCH
+00D     _RETURN_
+00E     @SCRATCH
+00F     @SCRATCH
+010     @SCRATCH
+012     main.valor
+013-014 main.atraso
+015     main.@SCRATCH1
+016     @delay_us1.P1
+10D-10E @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+0012  @delay_us1
+0004  tabela
+0023  main
+0023  @cinit
+
+Project Directory:
+    D:\DVD_BACKUP9\ELETRONICA\Gravador de PIC\Ic-Prog\PROJETOS PIC\Display_7Seg\
+
+Project Files:
+    display7seg.c
+    C:\Arquivos de programas\PICC\devices\16F84A.h
+
+Units:
+    display7seg.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F84A
+    Pointer Size:   8
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      display7seg.err
+    Ext Symbols: display7seg.esym
+    INHX8:       display7seg.hex
+    Symbols:     display7seg.sym
+    List:        display7seg.lst
+    Debug/COFF:  display7seg.cof
+    Project:     display7seg.PJT
+    Call Tree:   display7seg.tre
+    Statistics:  display7seg.sta

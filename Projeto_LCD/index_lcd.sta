@@ -1,0 +1,56 @@
+
+ROM used: 416 (5%)
+          416 (5%) including unused fragments
+
+          1 Average locations per line
+          5 Average locations per statement
+
+RAM used: 8 (2%) at main() level
+          23 (6%) worst case
+
+Stack used: 4 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   58     8  10  index_lcd.c
+  313     0   0  C:\Arquivos de programas\PICC\devices\16f877A.h
+  166    73  90  mod_lcd.c
+----- -----
+  537    81 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     21   5   1             @delay_ms1
+0      8   2   0             @const57
+0     39   9   1   260  1.9  lcd_envia_nibble
+0     32   8   3   176  2.7  lcd_envia_byte
+0     64  15   2   460  4.3  lcd_ini
+ Inline        4   186  5.5  lcd_pos_xy
+0     56  13   1   290  4.1  lcd_escreve
+0     45  11   2   153  3.7  MAIN
+0     23   6   0    57  3.0  @const81
+0     21   5   3    93  1.0  @DIV88
+0    103  25   6   482  8.0  @PRINTF_D_72
+
+Program metrics:
+    Functions               9
+    Statements              81
+    Comments                164
+    Volume (V)              3436
+    Difficilty (D)          33.6
+    Effort to implement (E) 115361
+    Time to implement (T)   1 hours, 47 minutes
+    Est Delivered Bugs (B)  1
+    Cyclomatic Complexity   12
+    Maintainability (MI)    120
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-007FF   412  1632  
+00800-00FFF     0  2048  
+01000-017FF     0  2048  
+01800-01FFF     0  2048  
+
+
+

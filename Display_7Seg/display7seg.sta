@@ -1,0 +1,44 @@
+
+ROM used: 72 (7%)
+          72 (7%) including unused fragments
+
+          0 Average locations per line
+          12 Average locations per statement
+
+RAM used: 9 (13%) at main() level
+          10 (15%) worst case
+
+Stack used: 1 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   37     6 100  display7seg.c
+  116     0   0  C:\Arquivos de programas\PICC\devices\16F84A.h
+----- -----
+  153     6 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     17  24   1             @delay_us1
+0     14  19   0             @const47
+0     37  51   4   176  4.0  main
+
+Program metrics:
+    Functions               1
+    Statements              6
+    Comments                54
+    Volume (V)              180
+    Difficilty (D)          3.6
+    Effort to implement (E) 647
+    Time to implement (T)   1 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   1
+    Maintainability (MI)    68
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-003FF    68  952  
+
+
+

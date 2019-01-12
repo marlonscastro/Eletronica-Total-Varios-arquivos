@@ -1,0 +1,122 @@
+CCS PCM C Compiler, Version 4.074, 5342               07-mar-10 14:36
+
+               Filename: com_serial.lst
+
+               ROM used: 97 words (9%)
+                         Largest free fragment is 927
+               RAM used: 7 (10%) at main() level
+                         8 (12%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   048
+0003:  NOP
+.................... // primeiro exemplo 
+....................  
+.................... #include <16F84A.h> 
+.................... //////// Standard Header file for the PIC16F84A device //////////////// 
+.................... #device PIC16F84A 
+.................... #list 
+....................  
+.................... #use delay(clock=4000000) 
+*
+0034:  MOVLW  13
+0035:  MOVWF  04
+0036:  MOVF   00,W
+0037:  BTFSC  03.2
+0038:  GOTO   047
+0039:  MOVLW  01
+003A:  MOVWF  0D
+003B:  CLRF   0C
+003C:  DECFSZ 0C,F
+003D:  GOTO   03C
+003E:  DECFSZ 0D,F
+003F:  GOTO   03B
+0040:  MOVLW  4A
+0041:  MOVWF  0C
+0042:  DECFSZ 0C,F
+0043:  GOTO   042
+0044:  GOTO   045
+0045:  DECFSZ 00,F
+0046:  GOTO   039
+0047:  GOTO   05F (RETURN)
+....................  
+.................... #use rs232(baud=9600, parity=N, xmit=PIN_B6, rcv=PIN_B7) 
+*
+0012:  BSF    03.5
+0013:  BCF    06.6
+0014:  BCF    03.5
+0015:  BCF    06.6
+0016:  MOVLW  08
+0017:  MOVWF  0D
+0018:  GOTO   019
+0019:  NOP
+001A:  BSF    0D.7
+001B:  GOTO   02A
+001C:  BCF    0D.7
+001D:  RRF    14,F
+001E:  BTFSC  03.0
+001F:  BSF    06.6
+0020:  BTFSS  03.0
+0021:  BCF    06.6
+0022:  BSF    0D.6
+0023:  GOTO   02A
+0024:  BCF    0D.6
+0025:  DECFSZ 0D,F
+0026:  GOTO   01D
+0027:  GOTO   028
+0028:  NOP
+0029:  BSF    06.6
+002A:  MOVLW  1C
+002B:  MOVWF  04
+002C:  DECFSZ 04,F
+002D:  GOTO   02C
+002E:  GOTO   02F
+002F:  BTFSC  0D.7
+0030:  GOTO   01C
+0031:  BTFSC  0D.6
+0032:  GOTO   024
+0033:  GOTO   058 (RETURN)
+.................... #FUSES NOWDT, XT, NOPROTECT                    
+....................  
+.................... void main() 
+.................... { 
+*
+0048:  CLRF   04
+0049:  MOVLW  1F
+004A:  ANDWF  03,F
+004B:  BSF    03.5
+004C:  BCF    06.6
+004D:  BCF    03.5
+004E:  BSF    06.6
+....................    int tempo; 
+....................    tempo = 800; 
+004F:  MOVLW  20
+0050:  MOVWF  12
+....................    while (true){ 
+....................       printf("Olá mundo"); 
+0051:  CLRF   13
+0052:  MOVF   13,W
+0053:  CALL   004
+0054:  INCF   13,F
+0055:  MOVWF  0C
+0056:  MOVWF  14
+0057:  GOTO   012
+0058:  MOVLW  09
+0059:  SUBWF  13,W
+005A:  BTFSS  03.2
+005B:  GOTO   052
+....................       delay_ms(tempo); 
+005C:  MOVF   12,W
+005D:  MOVWF  13
+005E:  GOTO   034
+....................    } 
+005F:  GOTO   051
+.................... } 
+....................  
+0060:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3FF1   XT NOWDT PUT NOPROTECT

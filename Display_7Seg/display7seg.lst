@@ -1,0 +1,112 @@
+CCS PCM C Compiler, Version 4.074, 10898               22-mar-10 21:32
+
+               Filename: display7seg.lst
+
+               ROM used: 72 words (7%)
+                         Largest free fragment is 952
+               RAM used: 9 (13%) at main() level
+                         10 (15%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   023
+0003:  NOP
+.................... // Display Sete Segmentos  
+....................  
+.................... #include <16F84A.h> 
+.................... //////// Standard Header file for the PIC16F84A device //////////////// 
+.................... #device PIC16F84A 
+.................... #list 
+....................  
+.................... #use delay(clock=3000000) 
+0012:  MOVLW  18
+0013:  SUBWF  16,F
+0014:  BTFSS  03.0
+0015:  GOTO   022
+0016:  MOVLW  16
+0017:  MOVWF  04
+0018:  MOVLW  FC
+0019:  ANDWF  00,F
+001A:  BCF    03.0
+001B:  RRF    00,F
+001C:  RRF    00,F
+001D:  MOVF   00,W
+001E:  BTFSC  03.2
+001F:  GOTO   022
+0020:  DECFSZ 00,F
+0021:  GOTO   020
+0022:  RETLW  00
+.................... //#use rs232(baud=19200, xmit=PIN_B2, rcv=PIN_B1) 
+.................... #FUSES XT                    
+....................  
+....................    byte const tabela[] = {  
+....................          0b10111111, // 0   
+....................          0b10000110, // 1   
+....................          0b11011011, // 2   
+....................          0b11001111, // 3   
+....................          0b11100110, // 4   
+....................          0b11101101, // 5   
+....................          0b11111101, // 6   
+....................          0b10000111, // 7   
+....................          0b11111111, // 8   
+....................          0b11100111, // 9            
+....................    }; 
+....................  
+.................... void main() 
+.................... { 
+0023:  CLRF   04
+0024:  MOVLW  1F
+0025:  ANDWF  03,F
+....................    int valor; 
+....................    int16 atraso = 300; 
+0026:  MOVLW  2C
+0027:  MOVWF  13
+0028:  MOVLW  01
+0029:  MOVWF  14
+....................    while(true){ 
+....................       for (valor = 0; valor < 10; valor++){ 
+002A:  CLRF   12
+002B:  MOVF   12,W
+002C:  SUBLW  09
+002D:  BTFSS  03.0
+002E:  GOTO   046
+....................          output_b(tabela[valor]); 
+002F:  MOVF   12,W
+0030:  CALL   004
+0031:  MOVWF  15
+0032:  BSF    03.5
+0033:  CLRF   06
+0034:  BCF    03.5
+0035:  MOVF   15,W
+0036:  MOVWF  06
+....................          delay_us(atraso);             
+0037:  MOVF   14,W
+0038:  MOVWF  15
+0039:  INCF   15,F
+003A:  DECF   15,F
+003B:  BTFSC  03.2
+003C:  GOTO   041
+003D:  MOVLW  FF
+003E:  MOVWF  16
+003F:  CALL   012
+0040:  GOTO   03A
+0041:  MOVF   13,W
+0042:  MOVWF  16
+0043:  CALL   012
+....................       } 
+0044:  INCF   12,F
+0045:  GOTO   02B
+....................       /*if (atraso > 25) 
+....................          atraso = atraso/2; 
+....................       else 
+....................          atraso = 800;*/ 
+....................    } 
+0046:  GOTO   02A
+.................... } 
+....................  
+0047:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3FF1   XT NOWDT PUT NOPROTECT

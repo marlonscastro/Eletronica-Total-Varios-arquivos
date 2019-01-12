@@ -1,0 +1,22 @@
+ÀÄmain
+   ÀÄMAIN  0/78  Ram=2
+      ÃÄ@cinit1  (Inline)  Ram=0
+      ÃÄinit_ext_eeprom  0/5  Ram=0
+      ÃÄ@const559  0/10  Ram=0
+      ÃÄ@PUTCHAR_1_  0/34  Ram=1
+      ÃÄwrite_ext_eeprom  0/64  Ram=4
+      ³  ÃÄext_eeprom_ready  0/41  Ram=1
+      ³  ³  ÀÄ@I2C_WRITE_1  0/52  Ram=1
+      ³  ÃÄ@I2C_WRITE_1  0/52  Ram=1
+      ³  ÃÄ@I2C_WRITE_1  0/52  Ram=1
+      ³  ÀÄ@I2C_WRITE_1  0/52  Ram=1
+      ÃÄread_ext_eeprom  0/157  Ram=4
+      ³  ÃÄext_eeprom_ready  0/41  Ram=1
+      ³  ³  ÀÄ*
+      ³  ÃÄ@I2C_WRITE_1  0/52  Ram=1
+      ³  ÃÄ@I2C_WRITE_1  0/52  Ram=1
+      ³  ÃÄ@I2C_WRITE_1  0/52  Ram=1
+      ³  ÀÄ@I2C_READ_1  (Inline)  Ram=3
+      ÃÄ@PUTCHAR_1_  0/34  Ram=1
+      ÃÄ@PUTCHAR_1_  0/34  Ram=1
+      ÀÄ@PUTCHAR_1_  0/34  Ram=1

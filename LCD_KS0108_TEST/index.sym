@@ -1,0 +1,105 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+021-024 atan2.y
+021-031 MAIN.inverse_test_txt
+025-028 atan2.x
+029-02C atan2.z
+02D.0   atan2.sign
+02E     atan2.quad
+032     glcd_image.inverse
+032     glcd_init.mode
+032     glcd_text57.x
+032     MAIN.@SCRATCH1
+033     @delay_ms1.P1
+033     glcd_image.i
+033     glcd_text57.y
+034     glcd_image.j
+034-035 glcd_text57.textptr
+035     glcd_image.k
+036-037 glcd_image.count
+036     glcd_text57.size
+037     glcd_text57.color
+038     glcd_image.width
+038     glcd_text57.i
+039     glcd_text57.j
+039     glcd_image.height
+03A     glcd_fillScreen.color
+03A     glcd_text57.k
+03A     glcd_image.@SCRATCH1
+03B     glcd_fillScreen.i
+03B     glcd_text57.l
+03C     glcd_fillScreen.j
+03C     glcd_text57.m
+03D-041 glcd_text57.pixelData
+03D     glcd_fillScreen.@SCRATCH1
+042     glcd_text57.@SCRATCH1
+043     glcd_text57.@SCRATCH2
+044     @MUL88.P1
+044     glcd_pixel.x
+044     glcd_text57.@SCRATCH3
+045     glcd_pixel.y
+045     @MUL88.P1
+045     glcd_text57.@SCRATCH4
+046     glcd_pixel.color
+046     glcd_text57.@SCRATCH5
+047     glcd_pixel.data
+048     glcd_pixel.chip
+049     glcd_readByte.chip
+049     glcd_pixel.@SCRATCH1
+04A     glcd_writeByte.chip
+04A     glcd_readByte.data
+04B     glcd_writeByte.data
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+07DF  @delay_ms1
+0004  image
+040D  TEXT
+0513  TEXT2
+0689  glcd_init
+06D5  glcd_pixel
+061B  @MUL88
+0640  glcd_fillScreen
+076C  glcd_image
+05F3  glcd_writeByte
+06FF  glcd_readByte
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\16F628A_LCD_KS0108_TEST\
+
+Project Files:
+    index.c
+    C:\Program Files\PICC\devices\16f628A.h
+    demo\Extended_GLCD.c
+    C:\Program Files\PICC\drivers\math.h
+    demo\Bitmap.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\16F628A_LCD_KS0108_TEST\index (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    Symbols:     index.sym

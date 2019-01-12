@@ -1,0 +1,100 @@
+CCS PCM C Compiler, Version 4.074, 10898               22-mar-10 21:30
+
+               Filename: main.lst
+
+               ROM used: 54 words (5%)
+                         Largest free fragment is 970
+               RAM used: 6 (9%) at main() level
+                         7 (10%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   015
+0003:  NOP
+.................... #include <16F84A.h> 
+.................... //////// Standard Header file for the PIC16F84A device //////////////// 
+.................... #device PIC16F84A 
+.................... #list 
+....................  
+....................  
+.................... #FUSES NOWDT                    //No Watch Dog Timer 
+.................... #FUSES XT                       //Crystal osc <= 4mhz for PCM/PCH , 3mhz to 10 mhz for PCD 
+.................... #FUSES PUT                      //Power Up Timer 
+.................... //#FUSES PROTECT                  //Code protected from reads 
+....................  
+.................... #use delay(clock=3000000) 
+0004:  MOVLW  18
+0005:  SUBWF  13,F
+0006:  BTFSS  03.0
+0007:  GOTO   014
+0008:  MOVLW  13
+0009:  MOVWF  04
+000A:  MOVLW  FC
+000B:  ANDWF  00,F
+000C:  BCF    03.0
+000D:  RRF    00,F
+000E:  RRF    00,F
+000F:  MOVF   00,W
+0010:  BTFSC  03.2
+0011:  GOTO   014
+0012:  DECFSZ 00,F
+0013:  GOTO   012
+0014:  RETLW  00
+.................... //#use rs232(baud=9600,parity=N,xmit=PIN_C6,rcv=PIN_C7,bits=8) 
+....................  
+.................... void main() 
+.................... { 
+0015:  CLRF   04
+0016:  MOVLW  1F
+0017:  ANDWF  03,F
+....................    int tempo; 
+....................    setup_timer_0(RTCC_INTERNAL|RTCC_DIV_1); 
+0018:  BSF    03.5
+0019:  MOVF   01,W
+001A:  ANDLW  C7
+001B:  IORLW  08
+001C:  MOVWF  01
+....................      
+....................    tempo = 500; 
+001D:  MOVLW  F4
+001E:  BCF    03.5
+001F:  MOVWF  12
+....................    while (true){ 
+....................    if (input(pin_B1)){ 
+0020:  BSF    03.5
+0021:  BSF    06.1
+0022:  BCF    03.5
+0023:  BTFSS  06.1
+0024:  GOTO   02D
+....................          output_low(pin_B7); 
+0025:  BSF    03.5
+0026:  BCF    06.7
+0027:  BCF    03.5
+0028:  BCF    06.7
+....................          delay_us(tempo);   
+0029:  MOVF   12,W
+002A:  MOVWF  13
+002B:  CALL   004
+....................          }  
+....................    else{ 
+002C:  GOTO   034
+....................          output_high(pin_B7); 
+002D:  BSF    03.5
+002E:  BCF    06.7
+002F:  BCF    03.5
+0030:  BSF    06.7
+....................          delay_us(tempo);     
+0031:  MOVF   12,W
+0032:  MOVWF  13
+0033:  CALL   004
+....................       } 
+....................    } 
+0034:  GOTO   020
+....................  
+.................... } 
+0035:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3FF1   XT NOWDT PUT NOPROTECT

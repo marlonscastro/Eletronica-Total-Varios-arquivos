@@ -1,0 +1,51 @@
+
+ROM used: 653 (64%)
+          653 (64%) including unused fragments
+
+          1 Average locations per line
+          5 Average locations per statement
+
+RAM used: 15 (23%) at main() level
+          38 (59%) worst case
+
+Stack used: 2 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   30    11   8  main.c
+  214     0   0  C:\Arquivos de programas\PICC\devices\12F675.h
+  364   125  92  driver3310.c
+----- -----
+  608   136 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     20   3   1             @delay_ms1
+0     34   5   1             @PUTCHAR_1_
+0    125  19   1   254  3.4  MAIN
+0     29   4   2   254  3.4  @ITOF
+0    117  18  13             @MULFF
+0     17   3   0             @const123
+ Inline        5             @FTOSD
+0     78  12  13             @DIV3232
+0    223  34  11             @PRINTF_L32D_57FPFPF
+
+Program metrics:
+    Functions               2
+    Statements              136
+    Comments                224
+    Volume (V)              623
+    Difficilty (D)          6.0
+    Effort to implement (E) 3716
+    Time to implement (T)   3 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   1
+    Maintainability (MI)    41
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-003FF   649  371  
+
+
+

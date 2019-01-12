@@ -1,0 +1,159 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+013     CCP_1_LOW
+013     CCP_1
+014     CCP_1_HIGH
+019.6   C1OUT
+020     @SCRATCH
+021     @SCRATCH
+021     _RETURN_
+022     @SCRATCH
+023     @SCRATCH
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     @INTERRUPT_AREA
+029     @INTERRUPT_AREA
+02A     @INTERRUPT_AREA
+02B     @INTERRUPT_AREA
+02C     @INTERRUPT_AREA
+02D     char_row
+02E     charsel
+02F     charpos
+030     chardata
+031-032 ddram
+033-034 x
+035     s
+036     m
+037     c
+038-03B W_100ms_preco
+03C-03F valor_total
+040-043 WtMedido
+044     @PRINTF_D_83.P1
+044-047 @PRINTF_L32D_83FPFPF.P2
+044     @delay_ms1.P3
+044     nokia_gotoxy.xnokia
+045     nokia_gotoxy.ynokia
+045     @PRINTF_D_83.P1
+046     nokia_gotoxy.@SCRATCH1
+046     @PRINTF_D_83.@SCRATCH1
+047     nokia_write_command.bytefornokia_command
+047     @PRINTF_D_83.@SCRATCH2
+048     @PRINTF_L32D_83FPFPF.P1
+048     @PRINTF_D_83.@SCRATCH3
+049     @PRINTF_D_83.@SCRATCH4
+049     @PRINTF_L32D_83FPFPF.@SCRATCH1
+04A     @DIV88.P1
+04A     @PRINTF_L32D_83FPFPF.@SCRATCH2
+04B     @DIV88.P1
+04B     @PRINTF_L32D_83FPFPF.@SCRATCH3
+04C     @DIV88.@SCRATCH1
+04C     @PRINTF_L32D_83FPFPF.@SCRATCH4
+04D     @PRINTF_L32D_83FPFPF.@SCRATCH5
+04E     @PRINTF_L32D_83FPFPF.@SCRATCH6
+04F-052 @FTOSD.P1
+04F     nokia_printchar.cvar
+04F-052 @DIV3232.P1
+050     nokia_write_data.bytefornokia_data
+050     table_to_nokialcd.@SCRATCH1
+051     nokia_write_dorc.bytefornokia
+051     table_to_nokialcd.@SCRATCH2
+052     nokia_write_dorc.caa
+052     @MUL88.P1
+053-056 @DIV3232.P1
+053     @MUL88.P2
+053     nokia_write_dorc.@SCRATCH1
+053     @FTOSD.@SCRATCH1
+057     @DIV3232.@SCRATCH1
+058     @DIV3232.@SCRATCH2
+059     @DIV3232.@SCRATCH3
+05A     @DIV3232.@SCRATCH4
+05B     @DIV3232.@SCRATCH5
+05C-05D @ITOF.P1
+05C-05D @DIV1616.P2
+05C-05F @ADDFF.P3
+05C     TIMER0_isr.@SCRATCH1
+05D     TIMER0_isr.@SCRATCH2
+05E-05F @DIV1616.P1
+05E     TIMER0_isr.@SCRATCH3
+05F     TIMER0_isr.@SCRATCH4
+060-063 @ADDFF.P1
+060-063 @MULFF.P2
+060     @DIV1616.@SCRATCH1
+064-067 @MULFF.P1
+064     @ADDFF.@SCRATCH1
+065     @ADDFF.@SCRATCH2
+066     @ADDFF.@SCRATCH3
+067     @ADDFF.@SCRATCH4
+068     @MULFF.@SCRATCH1
+068     @ADDFF.@SCRATCH5
+069     @MULFF.@SCRATCH2
+069     @ADDFF.@SCRATCH6
+06A     @MULFF.@SCRATCH3
+06A     @ADDFF.@SCRATCH7
+06B     @MULFF.@SCRATCH4
+06B     @ADDFF.@SCRATCH8
+06C     @MULFF.@SCRATCH5
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+04BB  @delay_ms1
+003A  TABLE5
+0131  TABLE6
+050A  nokia_init
+0528  nokia_clean_ddram
+04ED  nokia_write_command
+0502  nokia_write_data
+04CE  nokia_write_dorc
+04F5  nokia_gotoxy
+057D  nokia_printchar
+057F  table_to_nokialcd
+0558  @MUL88
+029D  TIMER0_isr
+02C7  @DIV1616
+0300  @ITOF
+0228  @MULFF
+036B  @ADDFF
+04B3  isr_ra
+0751  MAIN
+0543  @DIV88
+05B9  @PRINTF_D_83
+0699  @FTOSD
+061E  @DIV3232
+066C  @PRINTF_L32D_83FPFPF
+0751  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    H:\12F683 3310 AD\
+
+Project Files:
+    main.c
+    C:\Program Files (x86)\PICC\devices\12F683.h
+    driver3310.c
+
+Units:
+    H:\12F683 3310 AD\main (main)
+
+Compiler Settings:
+    Processor:      PIC12F683
+    Pointer Size:   8
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.PJT
+    Call Tree:   main.tre
+    Statistics:  main.sta

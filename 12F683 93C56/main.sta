@@ -1,0 +1,49 @@
+
+ROM used: 332 (16%)
+          332 (16%) including unused fragments
+
+          1 Average locations per line
+          6 Average locations per statement
+
+RAM used: 6 (5%) at main() level
+          12 (9%) worst case
+
+Stack used: 1 worst case (out of 8 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   25     9  17  main.c
+  279     0   0  C:\Arquivos de programas\PICC\devices\12F683.h
+  109    44  83  9356.c
+----- -----
+  413    53 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+ Inline        1             @delay_ms1
+0     34  10   1             @PUTCHAR_1_
+0     65  20   3   577  4.4  init_ext_eeprom
+0     78  23   6   598  4.6  write_ext_eeprom
+0     67  20   6   683  6.5  read_ext_eeprom
+0     74  22   2   226  2.2  MAIN
+0     10   3   0   226  2.2  @const81
+
+Program metrics:
+    Functions               5
+    Statements              53
+    Comments                99
+    Volume (V)              3217
+    Difficilty (D)          19.7
+    Effort to implement (E) 63346
+    Time to implement (T)   59 minutes
+    Est Delivered Bugs (B)  1
+    Cyclomatic Complexity   7
+    Maintainability (MI)    127
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-007FF   328  1716  
+
+
+

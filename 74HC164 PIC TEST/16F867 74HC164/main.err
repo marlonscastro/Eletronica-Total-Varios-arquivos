@@ -1,0 +1,4 @@
+>>> Warning 202 "main.c" Line 33(11,14): Variable never used:   amp
+>>> Warning 202 "main.c" Line 34(9,10): Variable never used:   i
+      Memory usage:   ROM=2%      RAM=5% - 7%
+      0 Errors,  2 Warnings.

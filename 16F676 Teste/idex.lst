@@ -1,0 +1,43 @@
+CCS PCM C Compiler, Version 4.114, 93460303               10-nov-12 14:46
+
+               Filename: D:\SkyDrive\Eletronica\PROJETOS PIC CCS\16F676 Teste\idex.lst
+
+               ROM used: 16 words (2%)
+                         Largest free fragment is 1008
+               RAM used: 4 (6%) at main() level
+                         4 (6%) worst case
+               Stack:    0 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   004
+0003:  NOP
+.................... #include <16F676.h> 
+.................... //////// Standard Header file for the PIC16F676 device //////////////// 
+.................... #device PIC16F676 
+.................... #list 
+....................  
+.................... #use delay(clock=4000000) 
+.................... #FUSES NOWDT, NOBROWNOUT, PUT, XT    
+....................  
+.................... void main(){ 
+0004:  CLRF   04
+0005:  MOVLW  1F
+0006:  ANDWF  03,F
+0007:  BCF    1F.6
+0008:  MOVLW  00
+0009:  BSF    03.5
+000A:  MOVWF  11
+000B:  MOVLW  07
+000C:  BCF    03.5
+000D:  MOVWF  19
+....................  
+....................    while(true){} 
+000E:  GOTO   00E
+.................... } 
+....................  
+000F:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3FA1   XT NOWDT PUT MCLR NOBROWNOUT NOPROTECT NOCPD

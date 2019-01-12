@@ -1,0 +1,4 @@
+>>> Warning 202 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD SIEMENS A52_A55_C55 102X65\driverA52.c" Line 24(12,16): Variable never used:   FONT
+>>> Warning 202 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD SIEMENS A52_A55_C55 102X65\driverA52.c" Line 76(12,17): Variable never used:   FONT2
+      Memory usage:   ROM=1%      RAM=0% - 0%
+      0 Errors,  2 Warnings.

@@ -1,0 +1,134 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004     @WRITE_PROGRAM_MEMORY8.P2
+008     lcd
+008     PSP_DATA
+015     CCP_1_LOW
+015-016 CCP_1
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B-01C CCP_2
+01C     CCP_2_HIGH
+020.0   func
+021-066 MAIN.vet
+067-06D MAIN.arg
+06E     MAIN.y
+06F     MAIN.i
+070     MAIN.var
+071     MAIN.x
+072     MAIN.valor
+073-076 MAIN.valorf
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+07C     MAIN.k
+09C.6   C1OUT
+09C.7   C2OUT
+0A0     lcd_init.i
+0A0-0A3 @SFTOI.P1
+0A0     @PRINTF_D_87.P2
+0A0     MAIN.@SCRATCH1
+0A1     @PRINTF_D_87.P1
+0A1-0A4 @MULFF.P2
+0A1     lcd_init.@SCRATCH1
+0A1     MAIN.@SCRATCH2
+0A2     @MUL88.P1
+0A2     MAIN.@SCRATCH3
+0A2     @PRINTF_D_87.@SCRATCH1
+0A3     @MUL88.P1
+0A3     MAIN.@SCRATCH4
+0A3     @PRINTF_D_87.@SCRATCH2
+0A4     MAIN.@SCRATCH5
+0A4     @PRINTF_D_87.@SCRATCH3
+0A5-0A8 @MULFF.P1
+0A5-0A6 @ITOF.P2
+0A5-0A8 @ADDFF.P3
+0A5     @PRINTF_D_87.@SCRATCH4
+0A6     lcd_putc.c
+0A6     @DIV88.P1
+0A7     @delay_ms1.P1
+0A7     @DIV88.P2
+0A7     lcd_gotoxy.x
+0A8     lcd_gotoxy.y
+0A8     @DIV88.@SCRATCH1
+0A9     lcd_gotoxy.address
+0A9-0AC @ADDFF.P1
+0A9     @MULFF.@SCRATCH1
+0AA     lcd_gotoxy.@SCRATCH1
+0AA     @MULFF.@SCRATCH2
+0AB     lcd_send_byte.address
+0AB     @MULFF.@SCRATCH3
+0AC     lcd_send_byte.n
+0AC     @MULFF.@SCRATCH4
+0AD     lcd_read_byte.low
+0AD     lcd_send_byte.@SCRATCH1
+0AD     @MULFF.@SCRATCH5
+0AD     @ADDFF.@SCRATCH1
+0AE     lcd_send_nibble.n
+0AE     lcd_read_byte.high
+0AE     @ADDFF.@SCRATCH2
+0AF     lcd_read_byte.@SCRATCH1
+0AF     @ADDFF.@SCRATCH3
+0B0     @ADDFF.@SCRATCH4
+0B1     @ADDFF.@SCRATCH5
+0B2     @ADDFF.@SCRATCH6
+0B3     @ADDFF.@SCRATCH7
+0B4     @ADDFF.@SCRATCH8
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+
+ROM Allocation:
+0034  @delay_ms1
+0004  LCD_INIT_STRING
+0058  lcd_read_byte
+0049  lcd_send_nibble
+0057  lcd_send_byte
+00A1  lcd_init
+00E5  lcd_gotoxy
+00F9  lcd_putc
+00DB  muda
+03DE  MAIN
+000C  @const106
+0016  @const107
+012A  @MUL88
+0153  @ITOF
+0172  @MULFF
+01E9  @ADDFF
+0331  @SFTOI
+001F  @const121
+0354  @DIV88
+036B  @PRINTF_D_87
+002A  @const128
+03DE  @cinit
+
+Project Directory:
+    D:\DVD_BACKUP9\ELETRONICA\Gravador de PIC\Ic-Prog\PROJETOS PIC\GPS_PIC\
+
+Project Files:
+    index.c
+    C:\Arquivos de programas\PICC\devices\16f877A.h
+    C:\Arquivos de programas\PICC\drivers\lcd.c
+
+Units:
+    index.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX8:       index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Debug/COFF:  index.cof
+    Project:     index.PJT
+    Call Tree:   index.tre
+    Statistics:  index.sta

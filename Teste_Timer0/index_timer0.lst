@@ -1,0 +1,138 @@
+CCS PCM C Compiler, Version 4.114, 93460303               20-mai-12 22:34
+
+               Filename: E:\SkyDrive\Eletronica\PROJETOS PIC CCS\Teste_Timer0\index_timer0.lst
+
+               ROM used: 91 words (4%)
+                         Largest free fragment is 1957
+               RAM used: 15 (7%) at main() level
+                         16 (7%) worst case
+               Stack:    1 worst case (0 in main + 1 for interrupts)
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   047
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  21
+0008:  MOVF   7F,W
+0009:  MOVWF  20
+000A:  MOVF   0A,W
+000B:  MOVWF  27
+000C:  CLRF   0A
+000D:  SWAPF  20,F
+000E:  MOVF   04,W
+000F:  MOVWF  22
+0010:  MOVF   77,W
+0011:  MOVWF  23
+0012:  MOVF   78,W
+0013:  MOVWF  24
+0014:  MOVF   79,W
+0015:  MOVWF  25
+0016:  MOVF   7A,W
+0017:  MOVWF  26
+0018:  BCF    03.7
+0019:  BCF    03.5
+001A:  BTFSS  0B.5
+001B:  GOTO   01E
+001C:  BTFSC  0B.2
+001D:  GOTO   02F
+001E:  MOVF   22,W
+001F:  MOVWF  04
+0020:  MOVF   23,W
+0021:  MOVWF  77
+0022:  MOVF   24,W
+0023:  MOVWF  78
+0024:  MOVF   25,W
+0025:  MOVWF  79
+0026:  MOVF   26,W
+0027:  MOVWF  7A
+0028:  MOVF   27,W
+0029:  MOVWF  0A
+002A:  SWAPF  21,W
+002B:  MOVWF  03
+002C:  SWAPF  7F,F
+002D:  SWAPF  7F,W
+002E:  RETFIE
+.................... #include <16f628A.h> 
+.................... //////// Standard Header file for the PIC16F628A device //////////////// 
+.................... #device PIC16F628A 
+.................... #list 
+....................  
+.................... #use delay(clock=4000000) 
+.................... #fuses XT,NOWDT,PUT,NOLVP 
+....................  
+.................... #int_timer0 
+.................... void trata_t0 (){ 
+....................    static boolean led; 
+*
+004D:  BCF    28.0
+....................    static int conta; 
+004E:  CLRF   29
+....................    // reinicia o timer 0 em 131 mais a contagem que já passou 
+....................    set_timer0(131+get_timer0()); 
+*
+002F:  MOVF   01,W
+0030:  ADDLW  83
+0031:  MOVWF  2A
+0032:  MOVF   2A,W
+0033:  MOVWF  01
+....................    conta++; 
+0034:  INCF   29,F
+....................    // se já ocorreram 125 interrupções 
+....................    if (conta == 125){ 
+0035:  MOVF   29,W
+0036:  SUBLW  7D
+0037:  BTFSS  03.2
+0038:  GOTO   044
+....................       conta=0; 
+0039:  CLRF   29
+....................       led = !led;  // inverte o led 
+003A:  MOVLW  01
+003B:  XORWF  28,F
+....................       output_bit (pin_b0,led); 
+003C:  BTFSC  28.0
+003D:  GOTO   040
+003E:  BCF    06.0
+003F:  GOTO   041
+0040:  BSF    06.0
+0041:  BSF    03.5
+0042:  BCF    06.0
+0043:  BCF    03.5
+....................    } 
+.................... } 
+0044:  BCF    0B.2
+0045:  BCF    0A.3
+0046:  GOTO   01E
+.................... void main(){ 
+0047:  CLRF   04
+0048:  BCF    03.7
+0049:  MOVLW  1F
+004A:  ANDWF  03,F
+004B:  MOVLW  07
+004C:  MOVWF  1F
+....................    // configura o timer 0 para clock interno e prescaler dividindo por 64 
+....................    setup_timer_0 ( RTCC_INTERNAL | RTCC_DIV_64 ); 
+*
+004F:  BSF    03.5
+0050:  MOVF   01,W
+0051:  ANDLW  C0
+0052:  IORLW  05
+0053:  MOVWF  01
+....................    set_timer0(131);     // inicia o timer 0 em 131 
+0054:  MOVLW  83
+0055:  BCF    03.5
+0056:  MOVWF  01
+....................    // habilita interrupções 
+....................    enable_interrupts (global | int_timer0); 
+0057:  MOVLW  E0
+0058:  IORWF  0B,F
+....................    while (true); // espera interrupção 
+0059:  GOTO   059
+.................... } 
+005A:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F61   NOWDT PUT XT MCLR BROWNOUT NOLVP NOCPD NOPROTECT

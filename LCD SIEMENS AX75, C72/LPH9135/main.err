@@ -1,0 +1,7 @@
+>>> Warning 202 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD SIEMENS AX75, C72\LPH9135\LPH9135.h" Line 175(14,15): Variable never used:   i
+>>> Warning 202 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD SIEMENS AX75, C72\LPH9135\LPH9135.h" Line 245(19,20): Variable never used:   m
+>>> Warning 202 "D:\SkyDrive\Eletronica\PROJETOS PIC CCS\LCD SIEMENS AX75, C72\LPH9135\LPH9135.h" Line 351(16,17): Variable never used:   m
+>>> Warning 202 "main.c" Line 15(6,10): Variable never used:   text
+>>> Warning 202 "main.c" Line 27(8,9): Variable never used:   i
+      Memory usage:   ROM=6%      RAM=13% - 16%
+      0 Errors,  5 Warnings.

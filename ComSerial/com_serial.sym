@@ -1,0 +1,47 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+00C     @SCRATCH
+00D     @SCRATCH
+00D     _RETURN_
+00E     @SCRATCH
+00F     @SCRATCH
+010     @SCRATCH
+012     main.tempo
+013     @delay_ms1.P1
+013     main.@SCRATCH1
+014     @PUTCHAR_1_.P1
+10D-10E @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+0034  @delay_ms1
+0012  @PUTCHAR_1_
+0048  main
+0004  @const56
+0048  @cinit
+
+Project Directory:
+    D:\DVD_BACKUP9\ELETRONICA\Gravador de PIC\Ic-Prog\PROJETOS PIC\ComSerial\
+
+Project Files:
+    com_serial.c
+    C:\Arquivos de programas\PICC\devices\16F84A.h
+
+Units:
+    com_serial.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F84A
+    Pointer Size:   8
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      com_serial.err
+    Ext Symbols: com_serial.esym
+    INHX8:       com_serial.hex
+    Symbols:     com_serial.sym
+    List:        com_serial.lst
+    Debug/COFF:  com_serial.cof
+    Project:     com_serial.PJT
+    Call Tree:   com_serial.tre
+    Statistics:  com_serial.sta

@@ -1,0 +1,22 @@
+#include <18F4550.h>
+#device adc=8
+#use delay(clock=48000000)
+#fuses HSPLL, PLL4, CPUDIV1, PUT, NOWDT, NOBROWNOUT, NOLVP
+
+#include "driverA52.c"
+
+void main (void) {
+   Lcd_Init();
+   Gotoxy(50, 4);
+   Lcd_Write(DATA, 0xff);
+   Gotoxy(0, 0);
+   Lcd_Write(DATA, 0xff);
+   while(true){
+      output_high(pin_D1);
+      delay_ms(100);
+      output_low(pin_D1);
+      delay_ms(100);
+      Lcd_Write(DATA, 0xff);
+   };
+} 
+

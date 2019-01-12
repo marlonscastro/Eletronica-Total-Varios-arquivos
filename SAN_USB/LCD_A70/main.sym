@@ -1,0 +1,148 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     @INTERRUPT_AREA
+005     @INTERRUPT_AREA
+006     @INTERRUPT_AREA
+007     @INTERRUPT_AREA
+008     @INTERRUPT_AREA
+009     @INTERRUPT_AREA
+00A     @INTERRUPT_AREA
+00B     @INTERRUPT_AREA
+00C     @INTERRUPT_AREA
+00D     @INTERRUPT_AREA
+00E     @INTERRUPT_AREA
+00F     @INTERRUPT_AREA
+010     @INTERRUPT_AREA
+011     @INTERRUPT_AREA
+012     @INTERRUPT_AREA
+013     @INTERRUPT_AREA
+014     @INTERRUPT_AREA
+015     @INTERRUPT_AREA
+016     @INTERRUPT_AREA
+017     @INTERRUPT_AREA
+018     @INTERRUPT_AREA
+019-01A strtok.save
+01B-01C i
+01D     XX
+01E     YY
+01F     tempo
+020-023 MAIN.amp
+024     MAIN.i
+025     MAIN.@SCRATCH1
+025     @PSTRINGC_189.@SCRATCH1
+025     @PSTRINGC_185.@SCRATCH1
+026     @delay_ms1.P1
+026     @PSTRINGC_189.@SCRATCH2
+026     @PSTRINGC_185.@SCRATCH2
+027     printChar5x8.cvar
+027     printChar8x12.cvar
+028     printChar8x12.i
+028     printChar5x8.i
+029     printChar5x8.c
+029     printChar8x12.j
+02A     printChar8x12.inc
+02A     printChar5x8.@SCRATCH1
+02B-02C printChar8x12.pos
+02B     printChar5x8.@SCRATCH2
+02D-03C printChar8x12.c
+03D     printChar8x12.bitTest
+03E     printChar8x12.bitset
+03F-040 @MUL1616.P1
+03F     printChar8x12.@SCRATCH1
+040     WriteDisplay.Value
+040     GotoXRow.x
+040     printChar8x12.@SCRATCH2
+041     GotoXRow.Row
+041-042 @MUL1616.P1
+041     printChar8x12.@SCRATCH3
+042     GotoXRow.@SCRATCH1
+043     SendCommand.Command
+043     @MUL1616.@SCRATCH1
+044     lcd_write.dados
+045     @SPI_XFER_1.P1
+046     @SPI_XFER_1.P1
+047     @SPI_XFER_1.@SCRATCH1
+048     @SPI_XFER_1.@SCRATCH2
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2
+FBB     CCP_2_LOW
+FBC     CCP_2_HIGH
+FBE     CCP_1
+FBE     CCP_1_LOW
+FBF     CCP_1_HIGH
+FD3     OSCCON
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PROGRAM_MEMORY.P1
+FE9-FEA @READ_PACKED_MEMORY.P2
+FE9-FEA @WRITE_PACKED_MEMORY.P3
+FE9-FEA @READ_PROGRAM_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+1998  @delay_ms1
+1A18  @SPI_XFER_1
+10AE  font8x12
+16BC  font5x8
+1A52  lcd_write
+19C2  Reset_LCD
+1A7A  Init_LCD
+1AF2  ClearDisplay
+1AB0  GotoXRow
+1A5E  SendCommand
+1AD6  WriteDisplay
+1C8C  printChar5x8
+1B1C  @MUL1616
+1B3A  printChar8x12
+194A  TIMER0_isr
+1D10  MAIN
+195E  @const220
+1C6C  @PSTRINGC_189
+196A  @const222
+197A  @const223
+1988  @const224
+1CEE  @PSTRINGC_185
+1D10  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\SAN_USB\LCD_A70\
+
+Project Files:
+    main.c
+    SanUSB.h
+    C:\Program Files\PICC\devices\18F4550.h
+    driverA70.c
+    C:\Program Files\PICC\drivers\string.h
+    C:\Program Files\PICC\drivers\stddef.h
+    C:\Program Files\PICC\drivers\ctype.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\SAN_USB\LCD_A70\main (main)
+
+Compiler Settings:
+    Processor:      PIC18F4550
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX32:      main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.PJT

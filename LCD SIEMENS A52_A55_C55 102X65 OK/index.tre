@@ -1,0 +1,29 @@
+ÀÄindex
+   ÀÄMAIN  0/92  Ram=0
+      ÃÄ??0??
+      ÃÄLcd_Init  0/100  Ram=1
+      ³  ÃÄ@delay_ms1  0/40  Ram=1
+      ³  ÃÄ@delay_ms1  0/40  Ram=1
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÃÄ@delay_ms1  0/40  Ram=1
+      ³  ÀÄLcd_Clear  0/54  Ram=2
+      ³     ÃÄLcd_Write  0/62  Ram=3
+      ³     ÃÄLcd_Write  0/62  Ram=3
+      ³     ÀÄLcd_Write  0/62  Ram=3
+      ÃÄGotoxy  0/26  Ram=3
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÀÄLcd_Write  0/62  Ram=3
+      ÃÄLcd_Write  0/62  Ram=3
+      ÃÄGotoxy  0/26  Ram=3
+      ³  ÃÄLcd_Write  0/62  Ram=3
+      ³  ÀÄLcd_Write  0/62  Ram=3
+      ÃÄLcd_Write  0/62  Ram=3
+      ÃÄ@delay_ms1  0/40  Ram=1
+      ÃÄ@delay_ms1  0/40  Ram=1
+      ÀÄLcd_Write  0/62  Ram=3

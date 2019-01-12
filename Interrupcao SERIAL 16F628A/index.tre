@@ -1,0 +1,15 @@
+ÀÄindex
+   ÃÄMAIN  0/68  Ram=1
+   ³  ÃÄ??0??
+   ³  ÃÄ@delay_ms1  0/21  Ram=1
+   ³  ÃÄ@const79  0/8  Ram=0
+   ³  ÀÄ@delay_ms1  0/21  Ram=1
+   ÃÄTimeOut_Timer  0/26  Ram=0
+   ÀÄserial_isr  0/91  Ram=2
+      ÃÄ@const76  0/17  Ram=0
+      ÃÄ@PUTCHAR_2_  0/34  Ram=1
+      ÃÄ@PUTCHAR_2_  0/34  Ram=1
+      ÃÄ@PUTCHAR_2_  0/34  Ram=1
+      ÃÄ@PUTCHAR_2_  0/34  Ram=1
+      ÃÄ@PUTCHAR_2_  0/34  Ram=1
+      ÀÄ@PUTCHAR_2_  0/34  Ram=1

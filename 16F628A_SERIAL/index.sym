@@ -1,0 +1,64 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+015     CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01F.6   C1OUT
+01F.7   C2OUT
+020-021 strtok.save
+022-023 @sprintf_string
+024-02F MAIN.temp
+030-052 MAIN.chr
+053-075 MAIN.vet
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     MAIN.@SCRATCH1
+07C     MAIN.@SCRATCH2
+07D     @SPRINTF.P1
+07D     @PUTCHAR_1_.P2
+09B-09C @READ_PROGRAM_MEMORY8.P1
+
+ROM Allocation:
+0046  @PUTCHAR_1_
+0004  @const168
+0075  MAIN
+000D  @const175
+0068  @SPRINTF
+001F  @const179
+002E  @const180
+0075  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    E:\SkyDrive\Eletronica\PROJETOS PIC CCS\16F628A_SERIAL\
+
+Project Files:
+    index.c
+    D:\Arquivos de programas\PICC\devices\16F628A.h
+    D:\Arquivos de programas\PICC\drivers\string.h
+    D:\Arquivos de programas\PICC\drivers\stddef.h
+    D:\Arquivos de programas\PICC\drivers\ctype.h
+
+Units:
+    E:\SkyDrive\Eletronica\PROJETOS PIC CCS\16F628A_SERIAL\index (main)
+
+Compiler Settings:
+    Processor:      PIC16F628A
+    Pointer Size:   16
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      index.err
+    Ext Symbols: index.esym
+    INHX8:       index.hex
+    Symbols:     index.sym
+    List:        index.lst
+    Project:     index.PJT

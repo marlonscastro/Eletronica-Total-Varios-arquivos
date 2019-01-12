@@ -1,0 +1,620 @@
+CCS PCM C Compiler, Version 4.074, 10898               07-abr-10 17:00
+
+               Filename: principal.lst
+
+               ROM used: 320 words (4%)
+                         Largest free fragment is 2048
+               RAM used: 9 (2%) at main() level
+                         18 (5%) worst case
+               Stack:    4 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   114
+0003:  NOP
+.................... // Este programa ecoa o caractere enviado serialmente, além de imprimi-lo 
+.................... // no display 
+.................... #include <16f877A.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #use delay(clock=4000000) 
+*
+000C:  MOVLW  24
+000D:  MOVWF  04
+000E:  BCF    03.7
+000F:  MOVF   00,W
+0010:  BTFSC  03.2
+0011:  GOTO   020
+0012:  MOVLW  01
+0013:  MOVWF  78
+0014:  CLRF   77
+0015:  DECFSZ 77,F
+0016:  GOTO   015
+0017:  DECFSZ 78,F
+0018:  GOTO   014
+0019:  MOVLW  4A
+001A:  MOVWF  77
+001B:  DECFSZ 77,F
+001C:  GOTO   01B
+001D:  GOTO   01E
+001E:  DECFSZ 00,F
+001F:  GOTO   012
+0020:  RETLW  00
+.................... #fuses HS,NOWDT,PUT,NOBROWNOUT,NOLVP 
+.................... #include <mod_lcd.c> 
+.................... /************************************************************************/ 
+.................... /*  MOD_LCD.C - Biblioteca de manipulação de módulo LCD                 */ 
+.................... /*                                                                      */ 
+.................... /*  Autor: Fábio Pereira                                                */ 
+.................... /*                                                                      */ 
+.................... /************************************************************************/ 
+....................  
+.................... // As definições a seguir são utilizadas para acesso aos pinos do display 
+.................... // caso o pino RW não seja utilizado, comente a definição lcd_rw 
+.................... #ifndef lcd_enable 
+.................... 	#define lcd_enable 		pin_e1		// pino enable do LCD 
+.................... 	#define lcd_rs			pin_e0		// pino rs do LCD 
+.................... 	//#define lcd_rw		pin_e2		// pino rw do LCD 
+.................... 	#define lcd_d4			pin_d4		// pino de dados d4 do LCD 
+.................... 	#define lcd_d5			pin_d5		// pino de dados d5 do LCD 
+.................... 	#define lcd_d6			pin_d6		// pino de dados d6 do LCD 
+.................... 	#define lcd_d7			pin_d7		// pino de dados d7 do LCD 
+.................... #endif 
+....................  
+.................... #define lcd_type 2           // 0=5x7, 1=5x10, 2=2 linhas 
+.................... #define lcd_seg_lin 0x40    // Endereço da segunda linha na RAM do LCD 
+....................  
+.................... // a constante abaixo define a seqüência de inicialização do módulo LCD 
+.................... byte CONST INI_LCD[4] = {0x20 | (lcd_type << 2), 0xf, 1, 6}; 
+....................  
+.................... byte lcd_le_byte() 
+.................... // lê um byte do LCD (somente com pino RW) 
+.................... { 
+.................... 	byte dado; 
+.................... 	// configura os pinos de dados como entradas 
+.................... 	input(lcd_d4); 
+.................... 	input(lcd_d5); 
+.................... 	input(lcd_d6); 
+.................... 	input(lcd_d7); 
+.................... 	// se o pino rw for utilizado, coloca em 1 
+.................... 	#ifdef lcd_rw 
+.................... 		output_high(lcd_rw); 
+.................... 	#endif 
+....................    output_high(lcd_enable); // habilita display 
+.................... 	dado = 0;	// zera a variável de leitura 
+.................... 	// lê os quatro bits mais significativos 
+.................... 	if (input(lcd_d7)) bit_set(dado,7); 
+.................... 	if (input(lcd_d6)) bit_set(dado,6); 
+.................... 	if (input(lcd_d5)) bit_set(dado,5); 
+.................... 	if (input(lcd_d4)) bit_set(dado,4); 
+.................... 	// dá um pulso na linha enable 
+.................... 	output_low(lcd_enable); 
+.................... 	output_high(lcd_enable); 
+.................... 	// lê os quatro bits menos significativos 
+.................... 	if (input(lcd_d7)) bit_set(dado,3); 
+.................... 	if (input(lcd_d6)) bit_set(dado,2); 
+.................... 	if (input(lcd_d5)) bit_set(dado,1); 
+.................... 	if (input(lcd_d4)) bit_set(dado,0); 
+.................... 	output_low(lcd_enable);	// desabilita o display 
+.................... 	return dado;	// retorna o byte lido 
+.................... } 
+....................  
+.................... void lcd_envia_nibble( byte dado ) 
+.................... // envia um dado de quatro bits para o display 
+.................... { 
+.................... 	// coloca os quatro bits nas saidas 
+.................... 	output_bit(lcd_d4,bit_test(dado,0)); 
+0021:  BTFSC  2B.0
+0022:  GOTO   025
+0023:  BCF    08.4
+0024:  GOTO   026
+0025:  BSF    08.4
+0026:  BSF    03.5
+0027:  BCF    08.4
+.................... 	output_bit(lcd_d5,bit_test(dado,1)); 
+0028:  BCF    03.5
+0029:  BTFSC  2B.1
+002A:  GOTO   02D
+002B:  BCF    08.5
+002C:  GOTO   02E
+002D:  BSF    08.5
+002E:  BSF    03.5
+002F:  BCF    08.5
+.................... 	output_bit(lcd_d6,bit_test(dado,2)); 
+0030:  BCF    03.5
+0031:  BTFSC  2B.2
+0032:  GOTO   035
+0033:  BCF    08.6
+0034:  GOTO   036
+0035:  BSF    08.6
+0036:  BSF    03.5
+0037:  BCF    08.6
+.................... 	output_bit(lcd_d7,bit_test(dado,3)); 
+0038:  BCF    03.5
+0039:  BTFSC  2B.3
+003A:  GOTO   03D
+003B:  BCF    08.7
+003C:  GOTO   03E
+003D:  BSF    08.7
+003E:  BSF    03.5
+003F:  BCF    08.7
+.................... 	// dá um pulso na linha enable 
+.................... 	output_high(lcd_enable); 
+0040:  BCF    09.1
+0041:  BCF    03.5
+0042:  BSF    09.1
+.................... 	output_low(lcd_enable); 
+0043:  BSF    03.5
+0044:  BCF    09.1
+0045:  BCF    03.5
+0046:  BCF    09.1
+.................... } 
+0047:  RETLW  00
+....................  
+....................  
+.................... void lcd_envia_byte( boolean endereco, byte dado ) 
+.................... { 
+.................... 	// coloca a linha rs em 0 
+.................... 	output_low(lcd_rs); 
+0048:  BSF    03.5
+0049:  BCF    09.0
+004A:  BCF    03.5
+004B:  BCF    09.0
+.................... 	// aguarda o display ficar desocupado 
+.................... 	//while ( bit_test(lcd_le_byte(),7) ) ; 
+.................... 	// configura a linha rs dependendo do modo selecionado 
+.................... 	output_bit(lcd_rs,endereco); 
+004C:  MOVF   28,F
+004D:  BTFSS  03.2
+004E:  GOTO   051
+004F:  BCF    09.0
+0050:  GOTO   052
+0051:  BSF    09.0
+0052:  BSF    03.5
+0053:  BCF    09.0
+.................... 	delay_us(100);	// aguarda 100 us 
+0054:  MOVLW  21
+0055:  MOVWF  77
+0056:  DECFSZ 77,F
+0057:  GOTO   056
+.................... 	// caso a linha rw esteja definida, coloca em 0 
+.................... 	#ifdef lcd_rw 
+.................... 		output_low(lcd_rw); 
+.................... 	#endif 
+.................... 	// desativa linha enable 
+.................... 	output_low(lcd_enable); 
+0058:  BCF    09.1
+0059:  BCF    03.5
+005A:  BCF    09.1
+.................... 	// envia a primeira parte do byte 
+.................... 	lcd_envia_nibble(dado >> 4); 
+005B:  SWAPF  29,W
+005C:  MOVWF  2A
+005D:  MOVLW  0F
+005E:  ANDWF  2A,F
+005F:  MOVF   2A,W
+0060:  MOVWF  2B
+0061:  CALL   021
+.................... 	// envia a segunda parte do byte 
+.................... 	lcd_envia_nibble(dado & 0x0f); 
+0062:  MOVF   29,W
+0063:  ANDLW  0F
+0064:  MOVWF  2A
+0065:  MOVWF  2B
+0066:  CALL   021
+.................... } 
+0067:  RETLW  00
+....................  
+....................  
+.................... void lcd_ini() 
+.................... // rotina de inicialização do display 
+.................... { 
+.................... 	byte conta; 
+.................... 	output_low(lcd_d4); 
+0068:  BSF    03.5
+0069:  BCF    08.4
+006A:  BCF    03.5
+006B:  BCF    08.4
+.................... 	output_low(lcd_d5); 
+006C:  BSF    03.5
+006D:  BCF    08.5
+006E:  BCF    03.5
+006F:  BCF    08.5
+.................... 	output_low(lcd_d6); 
+0070:  BSF    03.5
+0071:  BCF    08.6
+0072:  BCF    03.5
+0073:  BCF    08.6
+.................... 	output_low(lcd_d7); 
+0074:  BSF    03.5
+0075:  BCF    08.7
+0076:  BCF    03.5
+0077:  BCF    08.7
+.................... 	output_low(lcd_rs); 
+0078:  BSF    03.5
+0079:  BCF    09.0
+007A:  BCF    03.5
+007B:  BCF    09.0
+.................... 	#ifdef lcd_rw 
+.................... 		output_high(lcd_rw); 
+.................... 	#endif 
+.................... 	output_low(lcd_enable); 
+007C:  BSF    03.5
+007D:  BCF    09.1
+007E:  BCF    03.5
+007F:  BCF    09.1
+.................... 	delay_ms(15); 
+0080:  MOVLW  0F
+0081:  MOVWF  24
+0082:  CALL   00C
+.................... 	// envia uma seqüência de 3 vezes 0x03 
+.................... 	// e depois 0x02 para configurar o módulo 
+.................... 	// para modo de 4 bits 
+.................... 	for(conta=1;conta<=3;++conta) 
+0083:  MOVLW  01
+0084:  MOVWF  23
+0085:  MOVF   23,W
+0086:  SUBLW  03
+0087:  BTFSS  03.0
+0088:  GOTO   091
+.................... 	{ 
+.................... 		lcd_envia_nibble(3); 
+0089:  MOVLW  03
+008A:  MOVWF  2B
+008B:  CALL   021
+.................... 		delay_ms(5); 
+008C:  MOVLW  05
+008D:  MOVWF  24
+008E:  CALL   00C
+.................... 	} 
+008F:  INCF   23,F
+0090:  GOTO   085
+.................... 	lcd_envia_nibble(2); 
+0091:  MOVLW  02
+0092:  MOVWF  2B
+0093:  CALL   021
+.................... 	// envia string de inicialização do display 
+.................... 	for(conta=0;conta<=3;++conta) lcd_envia_byte(0,INI_LCD[conta]); 
+0094:  CLRF   23
+0095:  MOVF   23,W
+0096:  SUBLW  03
+0097:  BTFSS  03.0
+0098:  GOTO   0A2
+0099:  MOVF   23,W
+009A:  CALL   004
+009B:  MOVWF  24
+009C:  CLRF   28
+009D:  MOVF   24,W
+009E:  MOVWF  29
+009F:  CALL   048
+00A0:  INCF   23,F
+00A1:  GOTO   095
+.................... 	delay_ms(15); 
+00A2:  MOVLW  0F
+00A3:  MOVWF  24
+00A4:  CALL   00C
+.................... } 
+00A5:  BCF    0A.3
+00A6:  BCF    0A.4
+00A7:  GOTO   123 (RETURN)
+....................  
+.................... void lcd_pos_xy( byte x, byte y) 
+.................... { 
+....................    byte endereco; 
+....................    if(y!=1) 
+*
+00C8:  DECFSZ 25,W
+00C9:  GOTO   0CB
+00CA:  GOTO   0CE
+....................    	endereco = lcd_seg_lin; 
+00CB:  MOVLW  40
+00CC:  MOVWF  26
+....................    else 
+00CD:  GOTO   0CF
+....................    	endereco = 0; 
+00CE:  CLRF   26
+....................    endereco += x-1; 
+00CF:  MOVLW  01
+00D0:  SUBWF  24,W
+00D1:  ADDWF  26,F
+....................    lcd_envia_byte(0,0x80|endereco); 
+00D2:  MOVF   26,W
+00D3:  IORLW  80
+00D4:  MOVWF  27
+00D5:  CLRF   28
+00D6:  MOVF   27,W
+00D7:  MOVWF  29
+00D8:  CALL   048
+.................... } 
+00D9:  RETLW  00
+....................  
+.................... void lcd_escreve( char c) 
+.................... // envia caractere para o display 
+.................... { 
+....................    switch (c) 
+.................... 	{ 
+*
+00EA:  MOVF   23,W
+00EB:  XORLW  0C
+00EC:  BTFSC  03.2
+00ED:  GOTO   0F8
+00EE:  XORLW  06
+00EF:  BTFSC  03.2
+00F0:  GOTO   100
+00F1:  XORLW  07
+00F2:  BTFSC  03.2
+00F3:  GOTO   100
+00F4:  XORLW  05
+00F5:  BTFSC  03.2
+00F6:  GOTO   106
+00F7:  GOTO   10B
+....................      case '\f' 	:	lcd_envia_byte(0,1); 
+00F8:  CLRF   28
+00F9:  MOVLW  01
+00FA:  MOVWF  29
+00FB:  CALL   048
+.................... 	  			delay_ms(2); 
+00FC:  MOVLW  02
+00FD:  MOVWF  24
+00FE:  CALL   00C
+.................... 				break; 
+00FF:  GOTO   111
+....................      case '\n'	: 
+.................... 	  case '\r' 	:	lcd_pos_xy(1,2); 
+0100:  MOVLW  01
+0101:  MOVWF  24
+0102:  MOVLW  02
+0103:  MOVWF  25
+0104:  CALL   0C8
+.................... 	  			break; 
+0105:  GOTO   111
+....................      case '\b' 	:	lcd_envia_byte(0,0x10); 
+0106:  CLRF   28
+0107:  MOVLW  10
+0108:  MOVWF  29
+0109:  CALL   048
+.................... 	  			break; 
+010A:  GOTO   111
+....................      default	:	lcd_envia_byte(1,c); 
+010B:  MOVLW  01
+010C:  MOVWF  28
+010D:  MOVF   23,W
+010E:  MOVWF  29
+010F:  CALL   048
+.................... 	  			break; 
+0110:  GOTO   111
+....................    } 
+.................... } 
+0111:  BCF    0A.3
+0112:  BCF    0A.4
+0113:  GOTO   13E (RETURN)
+....................  
+.................... char lcd_le( byte x, byte y) 
+.................... // le caractere do display 
+.................... { 
+.................... 	char valor; 
+.................... 	// seleciona a posição do caractere 
+.................... 	lcd_pos_xy(x,y); 
+.................... 	// ativa rs 
+.................... 	output_high(lcd_rs); 
+.................... 	// lê o caractere 
+.................... 	valor = lcd_le_byte(); 
+.................... 	// desativa rs 
+.................... 	output_low(lcd_rs); 
+.................... 	// retorna o valor do caractere 
+.................... 	return valor; 
+.................... } 
+....................  
+.................... #include <usart.c> 
+.................... //************************************************************ 
+.................... //*                                                          * 
+.................... //*  USART.C                                                 * 
+.................... //*                                                          * 
+.................... //*  Biblioteca de manipulação da USART                      * 
+.................... //*  Suporta o modo assíncrono                               * 
+.................... //*                                                          * 
+.................... //*  Autor: Fábio Pereira                                    * 
+.................... //*                                                          * 
+.................... //************************************************************ 
+....................  
+.................... //char usart_rx, usart_tx, txreg, rcreg, spbrg; 
+.................... char txreg, spbrg; 
+....................  
+.................... struct rcsta_reg 
+.................... 	{ 
+.................... 		int rx9d : 1; 
+.................... 		int oerr : 1; 
+.................... 		int ferr : 1; 
+.................... 		int aden : 1; 
+.................... 		int cren : 1; 
+.................... 		int sren : 1; 
+.................... 		int rx9  : 1; 
+.................... 		int spen : 1; 
+.................... 	} rcsta; 
+....................  
+.................... struct txsta_reg 
+.................... 	{ 
+.................... 		int tx9d : 1; 
+.................... 		int trmt : 1; 
+.................... 		int brgh : 1; 
+.................... 		int xxx  : 1; 
+.................... 		int sync : 1; 
+.................... 		int txen : 1; 
+.................... 		int tx9  : 1; 
+.................... 		int csrc : 1; 
+.................... 	} txsta; 
+....................  
+.................... // define os endereços das variáveis 
+.................... #locate rcsta = 0x18 
+.................... #locate txreg = 0x19 
+.................... #locate rxreg = 0x1a 
+.................... #locate txsta = 0x98 
+.................... #locate spbrg = 0x99 
+.................... #byte r_pir1  = 0x0c	// define o registrador r_pir1 
+.................... #bit flag_rc = r_pir1.5	// define o flag_rc 
+.................... // definições utilizadas nas funções 
+....................  
+.................... void usart_inicializa ( int vel, boolean brgh ) 
+.................... /*  
+.................... O valor dos parâmetros vel e brgh deve ser retirado a partir das  
+.................... tabelas de baud rate fornecidas pela Microchip ou no livro:  
+.................... Microcontroladores PIC: Técnicas Avançadas. 
+.................... */ 
+....................  
+.................... { 
+.................... 	txsta.brgh = brgh;	// seleciona o modo do gerador de baud rate 
+*
+00A8:  BSF    03.5
+00A9:  BCF    18.2
+00AA:  BCF    03.5
+00AB:  BTFSS  24.0
+00AC:  GOTO   0B0
+00AD:  BSF    03.5
+00AE:  BSF    18.2
+00AF:  BCF    03.5
+.................... 	spbrg = vel;  		// configura o gerador de baud rate 
+00B0:  MOVF   23,W
+00B1:  BSF    03.5
+00B2:  MOVWF  19
+....................  
+.................... 	// configura os pinos da USART como entradas !!!!! 
+....................  
+.................... 	#if __device__ == 627 
+.................... 	input (pin_b2); 
+.................... 	input (pin_b3); 
+.................... 	#endif 
+.................... 	#if __device__ == 628 
+.................... 	input (pin_b2); 
+.................... 	input (pin_b3); 
+.................... 	#endif 
+.................... 	#if __device__ == 876 
+.................... 	input (pin_c7); 
+.................... 	input (pin_c6); 
+.................... 	#endif 
+.................... 	#if __device__ == 877 
+.................... 	input (pin_c7); 
+00B3:  BCF    03.5
+00B4:  BSF    20.7
+00B5:  MOVF   20,W
+00B6:  BSF    03.5
+00B7:  MOVWF  07
+.................... 	input (pin_c6); 
+00B8:  BCF    03.5
+00B9:  BSF    20.6
+00BA:  MOVF   20,W
+00BB:  BSF    03.5
+00BC:  MOVWF  07
+.................... 	#endif 
+....................  
+.................... 	txsta.sync = 0;  		// seleciona o modo assíncrono 
+00BD:  BCF    18.4
+.................... 	rcsta.spen = 1;  		// habilita a USART 
+00BE:  BCF    03.5
+00BF:  BSF    18.7
+.................... 	txsta.tx9 = 0;   		// seleciona o modo de 8 bits 
+00C0:  BSF    03.5
+00C1:  BCF    18.6
+.................... 	txsta.txen = 1;  		// ativa o transmissor da USART 
+00C2:  BSF    18.5
+.................... 	rcsta.cren = 1;		// modo de recepção contínua 
+00C3:  BCF    03.5
+00C4:  BSF    18.4
+.................... } 
+00C5:  BCF    0A.3
+00C6:  BCF    0A.4
+00C7:  GOTO   12D (RETURN)
+....................  
+.................... void usart_transmite (char dado) 
+.................... { 
+.................... 	while (!txsta.trmt); 	// aguarda o buffer de transmissão esvaziar 
+*
+00E1:  BSF    03.5
+00E2:  BTFSS  18.1
+00E3:  GOTO   0E2
+.................... 	txreg = dado;		// coloca novo caractere para transmissão 
+00E4:  BCF    03.5
+00E5:  MOVF   23,W
+00E6:  MOVWF  19
+.................... } 
+00E7:  BCF    0A.3
+00E8:  BCF    0A.4
+00E9:  GOTO   13B (RETURN)
+....................  
+.................... char usart_recebe (void) 
+.................... { 
+.................... 	while (!flag_rc);	// aguarda a recepção de caracteres 
+*
+00DA:  BTFSS  0C.5
+00DB:  GOTO   0DA
+.................... 	return rxreg;		// retorna o caractere recebido 
+00DC:  MOVF   1A,W
+00DD:  MOVWF  78
+.................... } 
+00DE:  BCF    0A.3
+00DF:  BCF    0A.4
+00E0:  GOTO   133 (RETURN)
+....................  
+.................... void main() 
+.................... { 
+*
+0114:  CLRF   04
+0115:  BCF    03.7
+0116:  MOVLW  1F
+0117:  ANDWF  03,F
+0118:  BSF    03.5
+0119:  BSF    1F.0
+011A:  BSF    1F.1
+011B:  BSF    1F.2
+011C:  BCF    1F.3
+011D:  MOVLW  07
+011E:  MOVWF  1C
+....................    char k[]; 
+....................    lcd_ini(); 
+*
+0122:  GOTO   068
+....................    setup_adc_ports(no_analogs); 
+0123:  BSF    03.5
+0124:  BSF    1F.0
+0125:  BSF    1F.1
+0126:  BSF    1F.2
+0127:  BCF    1F.3
+....................    //usart_inicializa (12,1); // velocidade: 19200 
+....................    usart_inicializa (12,0); // velocidade: 4800 
+0128:  MOVLW  0C
+0129:  BCF    03.5
+012A:  MOVWF  23
+012B:  CLRF   24
+012C:  GOTO   0A8
+....................    lcd_pos_xy(1,2); 
+012D:  MOVLW  01
+012E:  MOVWF  24
+012F:  MOVLW  02
+0130:  MOVWF  25
+0131:  CALL   0C8
+....................    while(true){ 
+....................       k=usart_recebe(); 
+0132:  GOTO   0DA
+0133:  CLRF   7A
+0134:  MOVF   78,W
+0135:  MOVWF  21
+0136:  MOVF   7A,W
+0137:  MOVWF  22
+....................       usart_transmite (k); 
+0138:  MOVF   21,W
+0139:  MOVWF  23
+013A:  GOTO   0E1
+....................       printf (lcd_escreve,"%c",k); 
+013B:  MOVF   21,W
+013C:  MOVWF  23
+013D:  GOTO   0EA
+....................    } 
+013E:  GOTO   132
+.................... } 
+....................  
+013F:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F32   HS NOWDT PUT NODEBUG NOPROTECT NOBROWNOUT NOLVP NOCPD NOWRT

@@ -1,0 +1,42 @@
+void LReset(void)
+{
+  LCD_DC_PORT = 1;
+  Delay(1);
+  LCD_CE_PORT = 1;
+  Delay(1);
+  LCD_RST_PORT=0; //res=0
+  Delay2(1);
+  LCD_RST_PORT=1; //res=1
+  Delay2(1);
+}
+
+//=== LCD VDD ON ===
+void LOn(void)
+{
+  LCD_RST_PORT=0;
+  LCD_RST_DDR=1;
+  LCD_VDD_PORT=0;
+  LCD_VDD_DDR=1;
+  LCD_CE_DDR=1;
+  LCD_DC_DDR=1;
+  Delay2(100);
+  LCD_VDD_PORT=1;
+  Delay2(100);
+}
+
+//=== Init for Siemens C55/A55 LCD - OK! ===
+void LInitSiemensC55(void)
+{
+  LOn();
+  LReset();
+  Delay(1000);
+  
+  LSend(0x21,0); // PowerON, ExtCommandSet
+  LSend(0x09,0); // Internal HV-gen x3
+  LSend(0xE0,0); // Set Vop
+  LSend(0x16,0); // Bias n=2    //15
+  LSend(0x06,0); // Temperature coeff 2
+  LSend(0x20,0); // StandartCommandSet
+  LSend(0x0C,0); // normal mode, display non-inverted
+  Delay(1000);
+}

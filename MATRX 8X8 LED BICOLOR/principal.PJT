@@ -1,0 +1,40 @@
+[PROJECT]
+Target=principal.HEX
+Development_Mode=2
+Processor=0x673F
+Processor_Text=PIC16F73
+ToolSuite=CCS
+
+[Directories]
+Include=
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=principal.c
+BuildTool=C-COMPILER
+OptionString=+FM
+AdditionalOptionString=
+BuildRequired=1
+
+[principal.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=PRINCI~1.C
+
+[Windows]
+0=0000 PRINCI~1.C 0 0 796 451 3 0
+
+[Opened Files]
+1=principal.c
+2=
+3=
+[Units]
+Count=1
+1=principal.c (main)

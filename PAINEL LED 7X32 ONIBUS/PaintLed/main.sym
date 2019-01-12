@@ -1,0 +1,128 @@
+004     @WRITE_PROGRAM_MEMORY8.P1
+004-005 @READ_PROGRAM_MEMORY8.P2
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01B     CCP_2
+01B     CCP_2_LOW
+01C     CCP_2_HIGH
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     @INTERRUPT_AREA
+029     tempo
+02A     x_obj
+02B     y_obj
+02C     @TRIS_C
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+07F     @INTERRUPT_AREA
+0FF     @INTERRUPT_AREA
+10D-10E @WRITE_PROGRAM_MEMORY8.P1
+10D-10E @READ_PROGRAM_MEMORY8.P2
+110-16F MAT
+17F     @INTERRUPT_AREA
+190     MAIN.i
+191     MAIN.j
+192     MAIN.n
+193-194 MAIN.var
+195-19E MAIN.txt
+19F     @DIV88.P1
+19F     MAIN.@SCRATCH1
+1A0     @DIV88.P1
+1A0     put_led.x
+1A1     put_led.y
+1A1     @DIV88.@SCRATCH1
+1A2     put_led.COLOR
+1A3     varre_coluna.i
+1A3     rb_isr.@SCRATCH1
+1A4-1A7 varre_coluna.chr
+1A8     varre_coluna.@SCRATCH1
+1A9     @delay_us1.P1
+1A9     write_col.colData
+1A9     varre_coluna.@SCRATCH2
+1AA     write_col.i
+1AA     varre_coluna.@SCRATCH3
+1AB     varre_coluna.@SCRATCH4
+1AB     write_col.@SCRATCH1
+1FF     @INTERRUPT_AREA
+27F     @INTERRUPT_AREA
+2FF     @INTERRUPT_AREA
+37F     @INTERRUPT_AREA
+3FF     @INTERRUPT_AREA
+47F     @INTERRUPT_AREA
+4FF     @INTERRUPT_AREA
+57F     @INTERRUPT_AREA
+5FF     @INTERRUPT_AREA
+67F     @INTERRUPT_AREA
+6FF     @INTERRUPT_AREA
+77F     @INTERRUPT_AREA
+7FF     @INTERRUPT_AREA
+87F     @INTERRUPT_AREA
+8FF     @INTERRUPT_AREA
+97F     @INTERRUPT_AREA
+9FF     @INTERRUPT_AREA
+A7F     @INTERRUPT_AREA
+AFF     @INTERRUPT_AREA
+B7F     @INTERRUPT_AREA
+BFF     @INTERRUPT_AREA
+C7F     @INTERRUPT_AREA
+CFF     @INTERRUPT_AREA
+D7F     @INTERRUPT_AREA
+DFF     @INTERRUPT_AREA
+E7F     @INTERRUPT_AREA
+EFF     @INTERRUPT_AREA
+F7F     @INTERRUPT_AREA
+FFF     @INTERRUPT_AREA
+
+ROM Allocation:
+003A  @delay_us1
+004D  TIMER0_isr
+00FF  rb_isr
+0058  varre_coluna
+006C  write_col
+0239  put_led
+027D  MAIN
+0262  @DIV88
+027D  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\PAINEL LED 7X32 ONIBUS NOVO\
+
+Project Files:
+    main.c
+    C:\Program Files\PICC\devices\16F876.h
+
+Units:
+    D:\SkyDrive\Eletronica\PROJETOS PIC CCS\PAINEL LED 7X32 ONIBUS NOVO\main (main)
+
+Compiler Settings:
+    Processor:      PIC16F876
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.PJT
